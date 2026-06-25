@@ -1,15 +1,40 @@
 {
   "schema": "chatgpt_lab.github_pages_assessment.v1",
-  "status": "NEEDS_CHANGES",
+  "status": "PARTIAL_READY_DEPLOYMENT_UNVERIFIED",
   "repository": "grahama1970/snippets",
   "branch": "preview-monocle-man-netlify",
-  "findings": [
-    "No .github/workflows/pages.yml file exists on the benchmark branch.",
-    "No .github/workflows/deploy.yml file exists on the benchmark branch.",
+  "pull_request": "https://github.com/grahama1970/snippets/pull/4",
+  "head_commit": "bc37d7be7419077d946e443678224d421fb0324d",
+  "merge_commit": "aa30c43cbbb61d40ae7b22625e8dee24bb35c511",
+  "findings_before_pr4": [
+    "No GitHub Pages workflow existed on the benchmark branch.",
     "No gh-pages ref was found through direct file lookup.",
-    "No root index.html or committed monocle-man-site/dist/index.html exists on the benchmark branch.",
-    "The only checked-in deployment configuration currently found is monocle-man-site/netlify.toml."
+    "No root index.html or committed monocle-man-site/dist/index.html existed on the benchmark branch.",
+    "The only checked-in deployment configuration found before PR #4 was monocle-man-site/netlify.toml."
   ],
-  "decision": "Treat Netlify as stale or secondary until source proves it. Add a GitHub Pages workflow and verify delivery through GitHub Actions/Pages as the live-delivery authority for this experiment.",
-  "updated_at": "2026-06-25T16:55:00-04:00"
+  "changes_landed_in_pr4": [
+    "Added .github/workflows/monocle-man-pages.yml.",
+    "Set Vite base to ./ so built static assets are portable on GitHub Pages.",
+    "Documented GitHub Pages as the current GitHub-first delivery path and Netlify as historical compatibility config.",
+    "Added tests/monocle-man-animation.spec.ts to prove decorative animation runs under no-preference motion settings."
+  ],
+  "evidence": {
+    "pages_pr_build_run": {
+      "run_id": 28200836938,
+      "head_sha": "bc37d7be7419077d946e443678224d421fb0324d",
+      "conclusion": "success",
+      "notes": "PR run proved checkout, Node setup, dependency install, and Vite React build. Configure/upload/deploy steps were intentionally skipped on pull_request."
+    },
+    "benchmark_pr_run": {
+      "run_id": 28200837231,
+      "head_sha": "bc37d7be7419077d946e443678224d421fb0324d",
+      "conclusion": "success",
+      "artifact_id": 7891035281,
+      "artifact_digest": "sha256:dc470f692016d680cb991faf6d20d08b8da3ad66fb6448283f3af8f53b32ed96",
+      "notes": "Benchmark run passed after adding the normal-motion animation test."
+    }
+  },
+  "remaining_gap": "Post-merge GitHub Pages deployment and live URL visual inspection are not yet proven. The available fetch_commit_workflow_runs helper exposes pull_request-triggered runs and returned no push-triggered run for merge commit aa30c43cbbb61d40ae7b22625e8dee24bb35c511. GitHub Pages settings/deployment endpoints are not exposed in the current connector tool list.",
+  "required_next_diagnostic": "Inspect GitHub Actions for push run(s) on preview-monocle-man-netlify after merge commit aa30c43cbbb61d40ae7b22625e8dee24bb35c511, confirm the deploy-pages job output page_url, then visually inspect that live URL at desktop and mobile sizes.",
+  "updated_at": "2026-06-25T17:16:00-04:00"
 }
