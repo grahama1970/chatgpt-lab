@@ -89,3 +89,11 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 **Decision:** Do not author project commits under third-party model names, vendor names, or bot-like identities that imply a controller other than ChatGPT Web or the lab identity made the change.
 
 **Consequence:** Local project-agent commits must set repo-local Git identity before committing. The source-check workflow validates the latest commit author and core authority docs so accidental global Git identity leakage is treated as a control-plane error.
+
+## 2026-06-25 — D-014: Local project agents are last-resort low-capacity execution bridges
+
+**Decision:** Local project agents are not default collaborators or semantic authorities. They are cost-constrained, low-capacity execution bridges for local-only proof collection, local command execution, and tiny bounded bug fixes when ChatGPT Web cannot produce the required evidence through direct connectors, GitHub, hosted CI, selected skills, deployment tooling, or `$ask` collaboration.
+
+**Consequence:** ChatGPT Web must not delegate architecture, broad implementation, planning, review verdicts, evidence reconciliation, or next-step selection to a local project agent. Any local-agent use requires a bounded task contract and raw receipts. The canonical policy is `sources/control-plane/LOCAL_AGENT_POLICY.md`.
+
+**Monocle implication:** For the current live-delivery blocker, a local agent would only be allowed to run a narrow command set such as `gh` workflow/deployment inspection and live screenshot capture, then return receipts. It must not make a PASS claim.
