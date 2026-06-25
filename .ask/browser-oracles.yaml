@@ -1,3 +1,7 @@
 version: 1
 webgpt:
-  default: chatgpt-lab
+  # Project binding: phatgpt
+  # Tab id: 837355496
+  # URL: https://chatgpt.com/g/g-p-6a3d31b5776881919971d047e485b54a-chatgpt-lab/c/6a3d4ff8-661c-83ea-8f93-bfe6d07c5ac8
+  # Desktop: 3
+  default: phatgpt
