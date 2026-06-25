@@ -16,4 +16,10 @@ At the start of every implementation, review, planning, or delegation task:
 12. Keep builder, reviewer, and gate roles logically separate even when ChatGPT performs all three.
 13. Update requirements, current state, and the append-only decision ledger when capabilities or architecture change.
 
+## Plan-first rule
+
+If the user does not provide a comprehensive implementation plan, ChatGPT must create one before editing product code. The plan must define the exact product goal, React components or files, interactive elements, `data-qid` selectors, `data-qs-action` values, accessibility obligations, GitHub Actions checks, screenshots, deployment proof, and stop condition.
+
+For the Monocle Man SPA, the required plan is `docs/requirements/MONOCLE_MAN_REACT_CONTRACT.md`. Do not start another Monocle Man product-code round until that contract, `best-practices-react`, and current web accessibility references have been consulted.
+
 The Monocle Man SPA is the initial benchmark fixture. The primary product is the reusable, verified ChatGPT self-improvement system.
