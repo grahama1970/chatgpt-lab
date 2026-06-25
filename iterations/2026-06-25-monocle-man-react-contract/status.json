@@ -1,8 +1,8 @@
 {
   "schema": "chatgpt_lab.iteration_status.v1",
   "iteration_id": "2026-06-25-monocle-man-react-contract",
-  "state": "PARTIAL_READY_DEPLOYMENT_UNVERIFIED",
-  "phase": "react_and_pages_workflow_merged_live_delivery_unverified",
+  "state": "BLOCKED_LIVE_DELIVERY_PROOF",
+  "phase": "react_and_pages_workflow_merged_live_delivery_tool_blocked",
   "scope": "frontend_react_ci_and_github_pages_delivery_path",
   "react_pr": {
     "pull_request": "https://github.com/grahama1970/snippets/pull/3",
@@ -23,8 +23,19 @@
     "artifact_digest": "sha256:dc470f692016d680cb991faf6d20d08b8da3ad66fb6448283f3af8f53b32ed96",
     "verdict": "PASS_FOR_PR_BUILD_AND_BENCHMARK"
   },
+  "delivery_proof_pr": {
+    "pull_request": "https://github.com/grahama1970/snippets/pull/5",
+    "candidate_commit": "2ab8efa75c8394afe63266d4851de6e593a41fe0",
+    "merged_commit": "e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e",
+    "pages_pr_build_run": "28203526971",
+    "benchmark_run": "28203526868",
+    "artifact_id": "7892100656",
+    "artifact_digest": "sha256:66793ccf37659226e5bbdbfbe813d7aface53260bc8d1a55f69e49860263d8f9",
+    "verdict": "PASS_FOR_PR_BUILD_AND_BENCHMARK"
+  },
   "live_delivery": {
-    "state": "NOT_ESTABLISHED",
+    "state": "BLOCKED_TOOL_ACCESS",
+    "proof_attempt_record": "iterations/2026-06-25-monocle-man-react-contract/evidence/live-delivery-proof-attempt-pr5.json",
     "missing": [
       "post_merge_pages_deploy_run",
       "deploy_pages_page_url",
@@ -36,10 +47,11 @@
   },
   "report": {
     "path": "iterations/2026-06-25-monocle-man-react-contract/REPORT.md",
-    "state": "WRITTEN"
+    "state": "UPDATED_WITH_PR5_BLOCKER"
   },
   "blockers": [
-    "post_merge_github_pages_deployment_metadata_not_retrieved_by_available_connector",
+    "available_github_connector_does_not_expose_push_triggered_pages_runs_or_pages_deployments",
+    "assistant_runtime_cannot_resolve_likely_github_pages_urls",
     "live_visual_inspection_not_yet_recorded",
     "review_design_bundle_missing",
     "review_code_bundle_missing"
@@ -47,5 +59,6 @@
   "warnings": [
     "playwright_provides_deterministic_interaction_evidence_but_standalone_test_interactions_manifest_missing"
   ],
-  "updated_at": "2026-06-25T17:35:00-04:00"
+  "required_next_diagnostic": "Use GitHub UI, gh CLI, or a connector/API surface that can list push-triggered workflow runs and GitHub Pages deployments for grahama1970/snippets, workflow Monocle Man GitHub Pages, branch preview-monocle-man-netlify, merge commit e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e. Record page_url and capture live screenshots.",
+  "updated_at": "2026-06-25T18:13:00-04:00"
 }
