@@ -1,63 +1,54 @@
 # Current State
 
 **As of:** 2026-06-25  
-**Profile:** repository bootstrap  
+**Profile:** Slice 001 benchmark hardening  
 **Overall readiness:** `NOT_READY`  
 **Benchmark:** Monocle Man SPA
 
-This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is pushed, and GitHub Actions has validated the control plane. Use `git rev-parse HEAD` and `git ls-remote origin refs/heads/main` for the current commit because this file may lag the newest push.
+The control plane is active in `grahama1970/chatgpt-lab`. Slice 001 benchmark CI has now been proven and hardened through a ChatGPT-authored branch and pull request in `grahama1970/snippets`.
 
 ## Readiness
 
 | Capability | State | Evidence / caveat |
 |---|---|---|
 | Persistent ChatGPT Project | `READY` | Project `ChatGPT-Lab` was created by the user and this conversation was moved into it. |
-| Dedicated control-plane repository | `READY` | Target: `grahama1970/chatgpt-lab`, branch `main`; current commit must be checked with Git before use. |
-| Control-plane source check | `PASS` | Workflow is active and runs on all pushes to `main`; latest run evidence is stored under `artifacts/github/`. |
-| Self-improvement requirements | `DRAFT_V0.2` | Slice 001 scope, benchmark evidence layout, local-subagent request contract, and schema stubs are recorded in `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`. |
-| GitHub source read/write | `READY` | File, branch, pull request, and CI-read operations are available after the repository is connected. |
-| `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Requirements plan-collab attempts wrote artifacts under `/mnt/storage12tb/skills/ask/outputs/chatgpt-lab-requirements/` but failed preflight because multiple ChatGPT tabs made tab identity ambiguous. |
-| Skill discovery | `READY` | Generated registry in `grahama1970/agent-skills` is accessible. |
-| Progressive skill loading | `READY_MANUAL` | ChatGPT can select and fetch skills; an automated router/loader is not yet committed here. |
-| Monocle Man source | `READY` | `grahama1970/snippets@preview-monocle-man-netlify:monocle-man-site/` |
-| Deterministic benchmark CI | `NOT_ESTABLISHED` | No verified Playwright/accessibility/screenshot review bundle is currently associated with the benchmark branch. |
+| Dedicated control-plane repository | `READY` | `grahama1970/chatgpt-lab`, branch `main`. |
+| Control-plane source check | `PASS` | Workflow is active and runs on pushes to `main`. |
+| Self-improvement requirements | `DRAFT_V0.2` | Slice 001 scope, benchmark evidence layout, local-subagent request contract, and schema stubs are recorded. |
+| GitHub source read/write | `READY` | ChatGPT Web has written to `grahama1970/chatgpt-lab` and `grahama1970/snippets`. |
+| Skill discovery | `READY` | `grahama1970/agent-skills` registry is accessible; latest observed content hash: `3ea46a27315ca9737b792fbab81446929c42b960bcf25803cfb3456bf972d492`. |
+| Monocle Man benchmark CI | `READY_HARDENED` | `grahama1970/snippets` PR #2 merged as `b033abdc2c9c730d84cbd45335201b44dce20066`. Final CI run `28192837648` passed and uploaded artifact `7887688922`. |
+| Monocle Man evidence record | `READY` | Superseding iteration record: `iterations/2026-06-25-slice-001-hardening/`. |
 | Netlify project | `READY` | Project `monocle-man-review`, site ID `df347395-47e5-4ed6-a1c7-57360a5735de`. |
-| Verified Netlify deployment | `NOT_ESTABLISHED` | Project exists, but a completed deployment has not been proven. |
-| Direct Netlify upload from this chat runtime | `BLOCKED` | The connector returns a local CLI command; the runtime could not complete the upload path. |
-| Local browser rendering | `READY` | Chromium/Playwright rendering and screenshot capture are available in the execution environment. |
-| GitHub Actions evidence retrieval | `READY` | Run status, jobs, logs, and artifacts can be read when a workflow run exists. |
-| ChatGPT Project source writing | `UNAVAILABLE` | No Project Sources write API is exposed in this session. GitHub is the external canonical-source workaround. |
-| Slice 001 schemas/templates | `DRAFT` | Schema stubs and iteration template exist under `schemas/` and `iterations/templates/`; benchmark CI and validators still need implementation. |
-| Bounded loop controller | `NOT_ESTABLISHED` | Contract exists; deterministic orchestration code remains to be implemented. |
+| Verified Netlify deployment | `NOT_ESTABLISHED` | No deployment metadata yet maps the live URL to the merged benchmark commit. |
+| `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Prior plan-collab attempts were blocked by ambiguous ChatGPT tab identity. |
+| Local subagent bridge | `NOT_ESTABLISHED` | Only schema/refusal examples exist. |
+| Bounded loop controller | `NOT_ESTABLISHED` | Manual ChatGPT-driven loop is proven for Slice 001; deterministic controller script still needs implementation. |
 
 ## Current source locations
 
-- Control plane target: `grahama1970/chatgpt-lab`, branch `main`, `sources/` plus root `README.md`
+- Control plane: `grahama1970/chatgpt-lab`, branch `main`
 - Requirements: `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`
-- Pushed commit: use `git rev-parse HEAD` and `git ls-remote origin refs/heads/main` for current local/remote proof
-- Skills: `grahama1970/agent-skills`, branch `main`
-- Website: `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/`
+- Benchmark source: `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/`
+- Hardened benchmark PR: `https://github.com/grahama1970/snippets/pull/2`
+- Final benchmark CI run: `https://github.com/grahama1970/snippets/actions/runs/28192837648`
+- Final benchmark artifact: `monocle-man-benchmark-evidence`, ID `7887688922`
 - Netlify: `https://monocle-man-review.netlify.app`
-- Source film: `https://youtu.be/NBxByrz5BRE`
-- Local package receipts: `artifacts/package/`
 
 ## Immediate blockers to a closed loop
 
-1. Review and accept or revise Slice 001 requirements.
-2. Commit benchmark CI that runs the site, tests interactions, checks accessibility and console errors, and uploads desktop/mobile screenshots.
-3. Implement validators for the new Slice 001 schema stubs.
-4. Establish an automatic deployment path from the benchmark branch to Netlify.
-5. Confirm that a deployment can be mapped to the exact tested commit.
-6. Implement a bounded loop controller that writes an iteration artifact after every phase.
-7. Add a machine-readable skill selection record and dependency expansion step.
+1. Establish Netlify deployment metadata that maps the live URL to the merged benchmark commit.
+2. Invoke `$ask webgpt` through a stable ChatGPT-Lab project binding and preserve artifacts.
+3. Implement the dry-run local-subagent refusal/receipt path for Slice 002.
+4. Implement a bounded loop controller script so ChatGPT invokes a deterministic loop rather than acting as the loop in prose.
+5. Add machine-readable skill selection and dependency expansion.
 
 ## Next admissible milestone
 
-`USABLE_WITH_GAPS` requires all of the following:
+`USABLE_WITH_GAPS` requires:
 
-- the control-plane source-check workflow passes in `grahama1970/chatgpt-lab`;
-- a benchmark pull request has a completed GitHub Actions run;
-- downloadable test and screenshot artifacts exist;
-- a live Netlify URL matches the tested revision;
-- one complete iteration record contains code review, visual review, changes, and verdict;
-- no unsupported success claims remain.
+- current control-plane source-check workflow passes;
+- benchmark CI evidence remains available or is copied into durable iteration evidence;
+- Netlify deployment metadata maps the live URL to the tested commit;
+- one `$ask webgpt` review or planning round has preserved artifacts;
+- no live-site claim is made without deployment proof.
