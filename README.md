@@ -1,5 +1,7 @@
 # ChatGPT-Lab
 
+![ChatGPT-Lab improvement cycle: observe, reason, verify, improve](artifacts/readme/chatgpt-lab-improvement-cycle.png)
+
 ChatGPT-Lab is a GitHub-backed control plane for proving that ChatGPT Web can build and improve software projects directly.
 
 The practical goal is to keep project requirements, instructions, operating contracts, current state, schemas, scripts, evidence records, exported chats, and iteration history in a repository that ChatGPT Web can read during future sessions. ChatGPT Project Sources are not currently writable from this environment, so this repository becomes the external source of truth that can be updated, reviewed, validated, and reloaded.
@@ -26,6 +28,15 @@ This repo gives future ChatGPT Web sessions a durable project source. It records
 The mission is to prove a reusable, evidence-driven project self-improvement system controlled from ChatGPT Web.
 
 The ultimate target is a loop where ChatGPT Web does not need a separate code agent as the default implementer. ChatGPT should be able to propose code changes, commit them through the available GitHub path, have GitHub CI test them, inspect CI artifacts and screenshots, collaborate through `$ask webgpt`, and continue the next iteration from recorded evidence.
+
+The working model is:
+
+1. observe the repository, CI results, screenshots, and prior iteration artifacts;
+2. reason from the current requirements, source state, and unresolved blockers;
+3. verify changes with deterministic local checks, GitHub Actions, deployment metadata, and rendered screenshots; and
+4. improve the project by committing the smallest evidence-backed change and recording the next iteration.
+
+The project bias is evidence over opinion: chats, reviews, and model judgments can guide the next action, but only concrete artifacts establish what happened.
 
 The two primary collaboration control-plane surfaces are:
 

@@ -13,3 +13,5 @@ artifacts/*
 !artifacts/github/*.json
 !artifacts/github/git-status.txt
 !artifacts/github/git-head-and-remote.txt
+!artifacts/readme/
+!artifacts/readme/chatgpt-lab-improvement-cycle.png
