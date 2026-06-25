@@ -1,0 +1,40 @@
+{
+  "schema": "chatgpt_lab.iteration.v1",
+  "iteration_id": "2026-06-25-monocle-man-react-contract",
+  "objective": "Convert the vague Monocle Man landing-page ask into a deterministic React benchmark implementation with CI evidence.",
+  "controller": "ChatGPT Web",
+  "benchmark": {
+    "repository": "grahama1970/snippets",
+    "base_branch": "preview-monocle-man-netlify",
+    "work_branch": "chatgpt-monocle-react-contract-20260625",
+    "path": "monocle-man-site/",
+    "pull_request": 3,
+    "pull_request_url": "https://github.com/grahama1970/snippets/pull/3",
+    "candidate_commit": "911052a2973a005021cdd9a41c4eefda72cc3b34",
+    "merge_commit": "043f1a7c807a30b221ddd56cd3ea744b34c1dfd8"
+  },
+  "implementation_summary": [
+    "Converted the static benchmark shell to a Vite React SPA.",
+    "Implemented the required Monocle Man components, qids, action ids, and a useRegisterAction registry shim.",
+    "Implemented modal behavior with focus movement, Escape close, iframe loading only while open, and focus return.",
+    "Replaced source-grep/static checks with live-DOM Playwright checks, screenshots, image status, accessibility, and evidence-derived verdict.",
+    "Fixed CI-discovered heading, keyboard sequencing, and contrast issues before merge."
+  ],
+  "ci_evidence": {
+    "repository": "grahama1970/snippets",
+    "run_id": 28198930713,
+    "job_id": 83533027973,
+    "artifact_name": "monocle-man-benchmark-evidence",
+    "artifact_id": 7890258305,
+    "artifact_digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
+    "head_sha": "911052a2973a005021cdd9a41c4eefda72cc3b34",
+    "conclusion": "success"
+  },
+  "verdict": {
+    "scope": "benchmark_ci_only",
+    "live_site_claim": false,
+    "result": "PASS",
+    "warnings": ["deployment_not_established_no_live_site_claim"]
+  },
+  "stop_condition": "One benchmark PR was merged after exact-commit CI and artifact inspection."
+}
