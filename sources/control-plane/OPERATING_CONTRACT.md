@@ -4,7 +4,7 @@
 
 Build and validate a reusable, evidence-driven website self-improvement system. The Monocle Man SPA is the first benchmark fixture; improvement of the fixture is a means of testing the system, not the final objective.
 
-ChatGPT is the controller, implementer, and evidence adjudicator. A separate coding agent is optional, not required. Builder and reviewer phases must remain logically separate even when performed by the same model.
+ChatGPT Web is the controller, implementer, and evidence adjudicator. A local project agent is a last-resort execution bridge only and is governed by `sources/control-plane/LOCAL_AGENT_POLICY.md`. Builder and reviewer phases must remain logically separate even when performed by the same model.
 
 ## Inner loop
 
@@ -16,6 +16,7 @@ Every website iteration follows this bounded sequence:
    - Select the smallest applicable skill chain.
    - Load each selected `SKILL.md` and required `composes` dependencies.
    - Record skill paths, refs, and hashes.
+   - Record selected connectors/plugins and why each is needed.
 
 2. **Establish the baseline**
    - Read the website at an exact Git commit.
@@ -29,12 +30,15 @@ Every website iteration follows this bounded sequence:
    - Define observable acceptance and rejection criteria.
    - Choose at most five prioritized changes.
    - Preserve accepted design decisions unless current evidence invalidates them.
+   - Commit or update the round plan before broad implementation.
 
 4. **Implement**
+   - Prefer ChatGPT Web direct implementation through GitHub branches and pull requests.
    - Work on an isolated branch.
    - Make the smallest coherent patch that addresses the selected findings.
    - Avoid unrelated refactors.
    - Update tests when behavior changes.
+   - Use a local project agent only when direct ChatGPT Web execution is blocked and a bounded local task contract exists.
 
 5. **Execute and prove**
    - Run GitHub Actions for the exact commit.
@@ -43,22 +47,23 @@ Every website iteration follows this bounded sequence:
    - Retrieve logs and artifacts rather than relying on status prose.
 
 6. **Deploy and inspect**
-   - Deploy the verified commit to Netlify.
-   - Confirm deployment metadata identifies that commit.
+   - Deploy the verified commit to the selected host for the round, such as GitHub Pages or Netlify.
+   - Confirm deployment metadata identifies that commit or ref.
    - Inspect the live site at desktop and mobile widths.
-   - Verify actual images, fonts, layout, navigation, modal/video behavior, focus behavior, and reduced motion.
+   - Verify actual images, fonts, layout, navigation, modal/video behavior, focus behavior, animation behavior, and reduced motion.
 
 7. **Review independently**
    - Run a code review against source and tests.
    - Run a visual review against fresh screenshots and the live deployment.
    - The reviewer must not accept the builder's rationale as evidence.
    - Findings must identify observable defects, exact locations, and a verifiable fix condition.
+   - Use `$ask` artifacts when local execution needs ChatGPT Web or WebGPT collaboration.
 
 8. **Gate**
    - `PASS`: all required evidence exists and all blocking criteria pass.
    - `NEEDS_CHANGES`: agent-fixable defects remain.
-   - `BLOCKED`: an external capability, permission, credential, or human decision is required.
-   - `INSUFFICIENT_EVIDENCE`: required tests, deployment proof, or screenshots are missing or stale.
+   - `BLOCKED`: an external capability, permission, credential, connector gap, local bridge, or human decision is required.
+   - `INSUFFICIENT_EVIDENCE`: required tests, deployment proof, screenshots, review receipts, or report artifacts are missing or stale.
 
 9. **Retry or stop**
    - Apply only evidence-backed fixes.
@@ -77,14 +82,23 @@ After each run, inspect the improvement process itself:
 - Did the reviewer produce false positives or false greens?
 - Did the deployment correspond to the tested commit?
 - Did the system stop too early, skip a phase, or require avoidable human intervention?
+- Was local project-agent involvement avoidable?
 
 Record system-level lessons separately from website findings. Update the router, skills, schemas, tests, or operating contract only when evidence shows the process should change.
 
 ## Role separation
 
+### Controller phase
+
+ChatGPT Web owns request interpretation, skill/tool selection, scope, plan, branch strategy, evidence reconciliation, verdict, and next-step selection.
+
 ### Builder phase
 
 May write source, tests, workflow files, and iteration artifacts. Must cite the finding or gate addressed by each material change.
+
+### Local execution bridge phase
+
+A local project agent, if unavoidable, may execute only the bounded task contract. It produces receipts and raw artifacts, not semantic closure. It cannot self-approve, broaden the task, or choose the next phase.
 
 ### Reviewer phase
 
@@ -92,7 +106,7 @@ Must be read-only with respect to the candidate revision until findings are fina
 
 ### Gate phase
 
-Consumes deterministic evidence and reviewer findings. It must distinguish test truth, deployment truth, visual judgment, and unresolved human preference.
+Consumes deterministic evidence and reviewer findings. It must distinguish test truth, deployment truth, visual judgment, review receipts, and unresolved human preference.
 
 ## Evidence contract
 
@@ -101,6 +115,7 @@ Each completed round should record:
 - control-plane ref;
 - skill-registry ref/hash;
 - selected skills;
+- selected connectors/plugins;
 - website branch and commit;
 - CI run and job identifiers;
 - test and accessibility results;
@@ -108,6 +123,8 @@ Each completed round should record:
 - desktop and mobile screenshot paths;
 - code-review findings;
 - design-review findings;
+- `$ask` artifacts when used;
+- local project-agent receipts when used;
 - changes applied;
 - unresolved issues;
 - verdict and stop reason.
@@ -125,6 +142,7 @@ Evidence must be produced after the candidate commit. Stale artifacts cannot pro
 - Do not modify historical iteration records to make later results appear cleaner.
 - Do not run an unbounded conversational retry loop.
 - Do not claim asynchronous or background work will complete later.
+- Do not involve a local project agent unless direct ChatGPT Web tools, GitHub, hosted CI, selected skills, deployment tooling, and `$ask` collaboration cannot produce the required proof.
 
 ## Source maintenance
 
