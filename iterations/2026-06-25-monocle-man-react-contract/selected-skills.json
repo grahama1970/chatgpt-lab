@@ -1,0 +1,24 @@
+{
+  "schema": "chatgpt_lab.selected_skills.v1",
+  "registry": {
+    "repository": "grahama1970/agent-skills",
+    "ref": "main",
+    "sources_sha": "3673f32bc5dcf5499242aab5d24d08d3e07700a1",
+    "registry_sha": "c50f01a0dabcd910296d87e04c662a211ec188e7",
+    "content_hash": "2cb9ea5b36cef21e7c2d69e52cfd36da7b2e4f54895b03cbc878b37a64a83025"
+  },
+  "selected": [
+    {
+      "id": "best-practices-react",
+      "path": "skills/best-practices-react/SKILL.md",
+      "sha": "33604c397ac3a518cbf6c7834748941c528bf912",
+      "reason": "Required by the Monocle Man React contract for qid/action/useRegisterAction instrumentation and React accessibility expectations."
+    }
+  ],
+  "not_loaded": [
+    "ui-coder",
+    "ui-reviewer",
+    "best-practices-design"
+  ],
+  "selection_rule": "Smallest applicable skill chain for a React implementation round."
+}
