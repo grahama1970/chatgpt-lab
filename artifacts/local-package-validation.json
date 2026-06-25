@@ -1,0 +1,20 @@
+{
+  "errors": [],
+  "required_files": [
+    "README.md",
+    "PROJECT_INSTRUCTIONS.md",
+    "SOURCE_INDEX.md",
+    "source-manifest.json",
+    "sources/README.md",
+    "sources/control-plane/OPERATING_CONTRACT.md",
+    "sources/control-plane/CURRENT_STATE.md",
+    "sources/control-plane/REVIEW_RUBRIC.md",
+    "sources/control-plane/DECISIONS.md",
+    "sources/control-plane/MIGRATION_NOTES.md",
+    "schemas/iteration.schema.json"
+  ],
+  "root": "/home/graham/workspace/experiments/chatgpt-lab",
+  "schema": "chatgpt_lab.control_plane_validation.v1",
+  "status": "PASS",
+  "target_repository": "grahama1970/chatgpt-lab"
+}

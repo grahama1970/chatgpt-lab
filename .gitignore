@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+local/
+artifacts/*
+!artifacts/.gitkeep
+!artifacts/local-package-validation.json

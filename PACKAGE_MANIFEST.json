@@ -1,0 +1,114 @@
+{
+  "files": [
+    {
+      "path": ".ask/browser-oracles.yaml",
+      "sha256": "bed60fe9a3d3afdbb1a7b443ad5bb92ef0ad3a5a7956f43dde145750e5a8a61b",
+      "size": 42
+    },
+    {
+      "path": ".github/workflows/source-check.yml",
+      "sha256": "2dc61d9083b6847d84f5038576a50e0d1908131f38f8610f2caa83c82eddf2d5",
+      "size": 1090
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "ae0a542be5c4b191e9685b7e95738861fdb817b49a1fc1c336c0656d2a785085",
+      "size": 113
+    },
+    {
+      "path": "PROJECT_INSTRUCTIONS.md",
+      "sha256": "c41d8f8f51a04f78d1ccd5461e6b3fc26c64a990341319272bd229addd998fe7",
+      "size": 1212
+    },
+    {
+      "path": "README.md",
+      "sha256": "49a61e24ce751bdef838d74f60ad73478fb41c9f2e325e3121a13f5955f8b9d1",
+      "size": 6060
+    },
+    {
+      "path": "SOURCE_INDEX.md",
+      "sha256": "89a3c608a2cf55509bcc8086005f16500885d2412cf52830e6a87838a75491db",
+      "size": 2934
+    },
+    {
+      "path": "artifacts/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "artifacts/local-package-validation.json",
+      "sha256": "2d601c785842eaced06ca697d86c5fd86ae549300de58c7358c5852a93534dfe",
+      "size": 624
+    },
+    {
+      "path": "chats/README.md",
+      "sha256": "796ace27456b8a0e971c408abb502f3f9899e139652dbda73afa2eaf0476b504",
+      "size": 508
+    },
+    {
+      "path": "chats/monocle-man-website-creation.md",
+      "sha256": "c2da3acfec18defe1dcbd2225aeeaf16b8c7472db0cfeb4b34cdb0d9e27986f4",
+      "size": 39602
+    },
+    {
+      "path": "docs/research/README.md",
+      "sha256": "8b8d37cec1167a919d4647833905202c8f4195a585b48288bc12835cca34d0aa",
+      "size": 240
+    },
+    {
+      "path": "iterations/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "schemas/iteration.schema.json",
+      "sha256": "f23e81d392f7dd4ba10e5891b26099ae71fbb5676bed34b7c0c71a8515d10e91",
+      "size": 2199
+    },
+    {
+      "path": "scripts/validate_control_plane.py",
+      "sha256": "231cdec9c6676467cc5eb90c62612278c9bcc57700734e6255133dbfa123d122",
+      "size": 4195
+    },
+    {
+      "path": "source-manifest.json",
+      "sha256": "9bc69cea79dc0c4d6b735b0f4238c91dc4f898666d0e8f41d07ac594822e000c",
+      "size": 3046
+    },
+    {
+      "path": "sources/README.md",
+      "sha256": "2cd9e2363b8aa9e24d05fc5b43be687b7347df733ed48746e4f26380f8792343",
+      "size": 1105
+    },
+    {
+      "path": "sources/control-plane/CURRENT_STATE.md",
+      "sha256": "1a2749f36eaf6c347f9c12475de43d3d79ca51a7b2a5d031dcb0bb5c627aebae",
+      "size": 4067
+    },
+    {
+      "path": "sources/control-plane/DECISIONS.md",
+      "sha256": "1dc54e26f89dd19ef1e3fff4119d4326311a9ade449401a9558b624fbc9181f7",
+      "size": 2799
+    },
+    {
+      "path": "sources/control-plane/MIGRATION_NOTES.md",
+      "sha256": "96bc672250cae423e68a7ac465e4a85b0e024684faf3b013cdd015d4aa2598a4",
+      "size": 1001
+    },
+    {
+      "path": "sources/control-plane/OPERATING_CONTRACT.md",
+      "sha256": "62068d0d8820922d99dda5764e376947ec69415604b16c3436cdc81614a9a81b",
+      "size": 6312
+    },
+    {
+      "path": "sources/control-plane/REVIEW_RUBRIC.md",
+      "sha256": "ef86851748b37eb5cfe0628632cd5d7da3d76aa3a42612d4d85b5d334f3c9b05",
+      "size": 1234
+    }
+  ],
+  "package_root": ".",
+  "schema": "chatgpt_lab.package_manifest.v1",
+  "target_ref": "main",
+  "target_repository": "grahama1970/chatgpt-lab",
+  "validation_status": "PASS"
+}

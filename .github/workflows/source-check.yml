@@ -1,0 +1,44 @@
+name: ChatGPT-Lab Source Check
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "*.md"
+      - "source-manifest.json"
+      - "schemas/**"
+      - "scripts/**"
+      - ".github/workflows/source-check.yml"
+  pull_request:
+    paths:
+      - "*.md"
+      - "source-manifest.json"
+      - "schemas/**"
+      - "scripts/**"
+      - ".github/workflows/source-check.yml"
+  workflow_dispatch:
+
+jobs:
+  validate-control-plane:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Validate control plane
+        run: |
+          mkdir -p artifacts
+          python3 scripts/validate_control_plane.py > artifacts/control-plane-validation.json
+          cat artifacts/control-plane-validation.json
+
+      - name: Upload validation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatgpt-lab-control-plane-validation
+          path: artifacts/control-plane-validation.json
+          if-no-files-found: error
+          retention-days: 14
