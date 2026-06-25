@@ -1,0 +1,30 @@
+{
+  "schema": "chatgpt_lab.deployment_proof.v1",
+  "provider": "netlify",
+  "site_id": "df347395-47e5-4ed6-a1c7-57360a5735de",
+  "project_name": "monocle-man-review",
+  "primary_url": "https://monocle-man-review.netlify.app",
+  "target_commit": "043f1a7c807a30b221ddd56cd3ea744b34c1dfd8",
+  "status": "BLOCKED",
+  "live_site_claim": false,
+  "observations": [
+    {
+      "source": "Netlify project reader",
+      "result": "Project is accessible, claimed, not password/SSO gated, and has primary URL. currentDeploy was returned as an empty object with no deploy id or commit metadata."
+    },
+    {
+      "source": "Netlify deploy reader",
+      "result": "Attempting to read deploy id 6a3d97c09c879e4099009af6 returned 404."
+    },
+    {
+      "source": "Netlify deploy updater",
+      "result": "Deploy action did not execute a deployment. It returned a local npx @netlify/mcp command that must be run from the source repository directory."
+    },
+    {
+      "source": "ChatGPT runtime live inspection",
+      "result": "Container DNS resolution for https://monocle-man-review.netlify.app failed with Temporary failure in name resolution; web tool could not open the URL because it was not a search result or user-provided URL in that tool context."
+    }
+  ],
+  "required_next_diagnostic": "Run the Netlify MCP deploy command from a checked-out grahama1970/snippets repository at commit 043f1a7c807a30b221ddd56cd3ea744b34c1dfd8, or use Netlify UI/API to trigger/inspect the deploy. Then record deploy id, URL, state, and commit/ref mapping before making a live-site or visual-delivery claim.",
+  "updated_at": "2026-06-25T16:50:00-04:00"
+}
