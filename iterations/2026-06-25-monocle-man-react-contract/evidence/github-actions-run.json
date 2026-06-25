@@ -1,0 +1,28 @@
+{
+  "schema": "chatgpt_lab.github_actions_run.v1",
+  "repository": "grahama1970/snippets",
+  "workflow": "Monocle Man Benchmark",
+  "run_id": 28198930713,
+  "job_id": 83533027973,
+  "run_number": 27,
+  "head_sha": "911052a2973a005021cdd9a41c4eefda72cc3b34",
+  "branch": "chatgpt-monocle-react-contract-20260625",
+  "pull_request": 3,
+  "conclusion": "success",
+  "steps": [
+    {"name": "Set up job", "conclusion": "success"},
+    {"name": "Check out source", "conclusion": "success"},
+    {"name": "Set up Node", "conclusion": "success"},
+    {"name": "Install dependencies", "conclusion": "success"},
+    {"name": "Install Playwright browser", "conclusion": "success"},
+    {"name": "React production build", "conclusion": "success"},
+    {"name": "Run benchmark and collect evidence", "conclusion": "success"},
+    {"name": "Upload benchmark evidence", "conclusion": "success"}
+  ],
+  "artifact": {
+    "name": "monocle-man-benchmark-evidence",
+    "id": 7890258305,
+    "digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
+    "expires_at": "2026-07-25T20:38:06Z"
+  }
+}
