@@ -6,7 +6,7 @@
     "repository": "grahama1970/chatgpt-lab",
     "ref": "main",
     "root": ".",
-    "status": "BOOTSTRAP_PACKAGE",
+    "status": "ACTIVE",
     "source_package": "chatgpt-lab-repo-ready.zip"
   },
   "sources": [

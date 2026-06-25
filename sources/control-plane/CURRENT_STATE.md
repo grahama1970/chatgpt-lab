@@ -5,15 +5,15 @@
 **Overall readiness:** `NOT_READY`  
 **Benchmark:** Monocle Man SPA
 
-This bundle targets `grahama1970/chatgpt-lab`. After it is pushed, GitHub Actions must validate the control plane before its repository state is promoted from bootstrap to active.
+This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is pushed, and GitHub Actions has validated the control plane.
 
 ## Readiness
 
 | Capability | State | Evidence / caveat |
 |---|---|---|
 | Persistent ChatGPT Project | `READY` | Project `ChatGPT-Lab` was created by the user and this conversation was moved into it. |
-| Dedicated control-plane repository | `BLOCKED_REPO_MISSING` | Target: `grahama1970/chatgpt-lab`, branch `main`; GitHub connector cannot see or create the repository, and `git push -u origin main` failed with `Repository not found`. |
-| Control-plane source check | `READY_TO_RUN` | `.github/workflows/source-check.yml` and `scripts/validate_control_plane.py` are included. |
+| Dedicated control-plane repository | `READY` | Target: `grahama1970/chatgpt-lab`, branch `main`; pushed commit `9a3d080151d341a80f164866160979b2c6d2c823`. |
+| Control-plane source check | `PASS` | GitHub Actions run `28180430889` completed successfully for the initial pushed cleanup commit. |
 | GitHub source read/write | `READY` | File, branch, pull request, and CI-read operations are available after the repository is connected. |
 | Skill discovery | `READY` | Generated registry in `grahama1970/agent-skills` is accessible. |
 | Progressive skill loading | `READY_MANUAL` | ChatGPT can select and fetch skills; an automated router/loader is not yet committed here. |
@@ -30,7 +30,7 @@ This bundle targets `grahama1970/chatgpt-lab`. After it is pushed, GitHub Action
 ## Current source locations
 
 - Control plane target: `grahama1970/chatgpt-lab`, branch `main`, `sources/` plus root `README.md`
-- Local bootstrap commit: prepared on branch `main`; not yet pushed because the remote repository is missing or inaccessible
+- Pushed commit: `9a3d080151d341a80f164866160979b2c6d2c823`
 - Skills: `grahama1970/agent-skills`, branch `main`
 - Website: `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/`
 - Netlify: `https://monocle-man-review.netlify.app`
@@ -39,12 +39,11 @@ This bundle targets `grahama1970/chatgpt-lab`. After it is pushed, GitHub Action
 
 ## Immediate blockers to a closed loop
 
-1. Create or expose `grahama1970/chatgpt-lab`, push this package to the target repository, and verify its source-check workflow.
-2. Commit benchmark CI that runs the site, tests interactions, checks accessibility and console errors, and uploads desktop/mobile screenshots.
-3. Establish an automatic deployment path from the benchmark branch to Netlify.
-4. Confirm that a deployment can be mapped to the exact tested commit.
-5. Implement a bounded loop controller that writes an iteration artifact after every phase.
-6. Add a machine-readable skill selection record and dependency expansion step.
+1. Commit benchmark CI that runs the site, tests interactions, checks accessibility and console errors, and uploads desktop/mobile screenshots.
+2. Establish an automatic deployment path from the benchmark branch to Netlify.
+3. Confirm that a deployment can be mapped to the exact tested commit.
+4. Implement a bounded loop controller that writes an iteration artifact after every phase.
+5. Add a machine-readable skill selection record and dependency expansion step.
 
 ## Next admissible milestone
 

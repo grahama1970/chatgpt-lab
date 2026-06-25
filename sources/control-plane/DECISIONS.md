@@ -42,7 +42,7 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 
 **Evidence:** The local project and ChatGPT Project are named ChatGPT-Lab, and the exported bootstrap chat requested a `chatgpt-lab` repository when direct Project Source updates were unavailable.
 
-**Blocker:** The GitHub connector cannot see `grahama1970/chatgpt-lab` and does not expose repository creation. A user-created or otherwise exposed repository is required before remote push and GitHub Actions proof.
+**Update:** The repository was created with the authenticated `gh` CLI, pushed to `main`, and validated by GitHub Actions run `28180430889`.
 
 **Local preparation:** The package has been initialized as a local git repository on branch `main` with `origin` set to `git@github.com:grahama1970/chatgpt-lab.git`.
 

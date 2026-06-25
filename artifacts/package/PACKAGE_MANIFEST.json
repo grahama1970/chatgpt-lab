@@ -77,18 +77,18 @@
     },
     {
       "path": "sources/source-manifest.json",
-      "sha256": "9bc69cea79dc0c4d6b735b0f4238c91dc4f898666d0e8f41d07ac594822e000c",
-      "size": 3046
+      "sha256": "2febfd9ba5a8a2be08f3e16cc5f7685853d9a279e31fcaebd95c3e8d6605ea9d",
+      "size": 3035
     },
     {
       "path": "sources/control-plane/CURRENT_STATE.md",
-      "sha256": "4a5173dd3f40b5eb7bc58e7edfcc5f5424edcf310539a9f7a38572ead1a1a668",
-      "size": 4131
+      "sha256": "2a0affd4646a5f6416101e8e7f4e884740a1d2750aba8f114b0c55bf76ba7d28",
+      "size": 3816
     },
     {
       "path": "sources/control-plane/DECISIONS.md",
-      "sha256": "3c6077004be5d5201d54a43d25ff9dfdf9e2f721b60685020eb913affd02150e",
-      "size": 3254
+      "sha256": "94e4492ccebfafce32ddc7e4ae91d2f8d8778e6e63836b014f97b297d4897367",
+      "size": 3179
     },
     {
       "path": "sources/control-plane/MIGRATION_NOTES.md",
