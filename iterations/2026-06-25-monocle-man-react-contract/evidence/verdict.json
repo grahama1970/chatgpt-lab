@@ -1,0 +1,21 @@
+{
+  "schema": "chatgpt_lab.benchmark_verdict.v1",
+  "generated_at": "2026-06-25T20:38:05.892Z",
+  "scope": "benchmark_ci_only",
+  "live_site_claim": false,
+  "verdict": "PASS",
+  "blocking_errors": [],
+  "warnings": ["deployment_not_established_no_live_site_claim"],
+  "required_artifacts_present": true,
+  "head_sha_matches_candidate": true,
+  "playwright_exit_code": 0,
+  "playwright_status": "passed",
+  "metrics": {
+    "unexpected_console_errors": 0,
+    "expected_static_transform_misses": 0,
+    "blocking_network_errors": 0,
+    "failed_interactions": 0,
+    "failed_images": 0,
+    "blocking_accessibility_violations": 0
+  }
+}
