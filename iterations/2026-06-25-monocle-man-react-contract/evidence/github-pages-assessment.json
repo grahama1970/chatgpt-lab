@@ -1,0 +1,15 @@
+{
+  "schema": "chatgpt_lab.github_pages_assessment.v1",
+  "status": "NEEDS_CHANGES",
+  "repository": "grahama1970/snippets",
+  "branch": "preview-monocle-man-netlify",
+  "findings": [
+    "No .github/workflows/pages.yml file exists on the benchmark branch.",
+    "No .github/workflows/deploy.yml file exists on the benchmark branch.",
+    "No gh-pages ref was found through direct file lookup.",
+    "No root index.html or committed monocle-man-site/dist/index.html exists on the benchmark branch.",
+    "The only checked-in deployment configuration currently found is monocle-man-site/netlify.toml."
+  ],
+  "decision": "Treat Netlify as stale or secondary until source proves it. Add a GitHub Pages workflow and verify delivery through GitHub Actions/Pages as the live-delivery authority for this experiment.",
+  "updated_at": "2026-06-25T16:55:00-04:00"
+}
