@@ -1,0 +1,22 @@
+{
+  "schema": "chatgpt_lab.post_merge_diagnostic.v1",
+  "iteration_id": "2026-06-25-monocle-man-react-contract",
+  "subject": "PR 6 post-merge Pages live proof diagnostic",
+  "repository": "grahama1970/snippets",
+  "delivery_branch": "preview-monocle-man-netlify",
+  "pull_request": "https://github.com/grahama1970/snippets/pull/6",
+  "merge_commit": "f156a50edcbd7fa039200cfdadb4c54ecca9dd8e",
+  "observations": {
+    "pr_merged": true,
+    "workflow_patch_present_on_delivery_branch": true,
+    "fetch_commit_workflow_runs_for_merge_commit": "workflow_runs: []",
+    "commit_combined_status_for_merge_commit": "statuses: []",
+    "repo_proof_file_path": "delivery-proof/monocle-man/latest/deployment-proof.json",
+    "repo_proof_file_state": "NOT_FOUND_AFTER_POLLING",
+    "direct_web_open_likely_pages_urls": "not available through current web tool constraints"
+  },
+  "local_project_agent_used": false,
+  "verdict": "BLOCKED_OBSERVABILITY",
+  "required_next_diagnostic": "Inspect the push-triggered Monocle Man GitHub Pages run for merge commit f156a50edcbd7fa039200cfdadb4c54ecca9dd8e using GitHub UI/API or an expanded connector. Determine whether deploy, live proof capture, artifact upload, or proof commit failed.",
+  "updated_at": "2026-06-25T18:57:00-04:00"
+}
