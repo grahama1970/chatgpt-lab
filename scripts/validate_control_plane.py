@@ -6,11 +6,16 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET_REPOSITORY = "grahama1970/chatgpt-lab"
+HEADER_PATH = "assets/chatgpt-lab-header.webp"
 REQUIRED_FILES = (
     "README.md",
+    "AGENTS.md",
+    HEADER_PATH,
+    "assets/README.md",
     "sources/PROJECT_INSTRUCTIONS.md",
     "sources/SOURCE_INDEX.md",
     "sources/source-manifest.json",
@@ -25,7 +30,7 @@ REQUIRED_FILES = (
 )
 
 
-def load_json(relative_path: str) -> dict:
+def load_json(relative_path: str) -> dict[str, Any]:
     path = ROOT / relative_path
     with path.open("r", encoding="utf-8") as handle:
         value = json.load(handle)
@@ -52,9 +57,7 @@ def main() -> int:
         if not isinstance(control_plane, dict):
             errors.append("sources/source-manifest.json is missing control_plane")
         elif control_plane.get("repository") != TARGET_REPOSITORY:
-            errors.append(
-                f"control_plane.repository must be {TARGET_REPOSITORY}"
-            )
+            errors.append(f"control_plane.repository must be {TARGET_REPOSITORY}")
         sources = manifest.get("sources")
         if not isinstance(sources, list) or not sources:
             errors.append("sources/source-manifest.json must contain at least one source")
@@ -70,7 +73,10 @@ def main() -> int:
             }
             missing = sorted(required_source_ids.difference(ids))
             if missing:
-                errors.append(f"sources/source-manifest.json is missing sources: {', '.join(missing)}")
+                errors.append(
+                    "sources/source-manifest.json is missing sources: "
+                    + ", ".join(missing)
+                )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         errors.append(f"invalid sources/source-manifest.json: {exc}")
 
@@ -90,7 +96,9 @@ def main() -> int:
         }
         missing = sorted(expected.difference(required))
         if missing:
-            errors.append(f"iteration schema is missing required fields: {', '.join(missing)}")
+            errors.append(
+                "iteration schema is missing required fields: " + ", ".join(missing)
+            )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         errors.append(f"invalid iteration schema: {exc}")
 
@@ -98,7 +106,21 @@ def main() -> int:
     if project_instructions.is_file():
         text = project_instructions.read_text(encoding="utf-8")
         if TARGET_REPOSITORY not in text:
-            errors.append("sources/PROJECT_INSTRUCTIONS.md does not point to the target repository")
+            errors.append(
+                "sources/PROJECT_INSTRUCTIONS.md does not point to the target repository"
+            )
+
+    readme = ROOT / "README.md"
+    if readme.is_file() and HEADER_PATH not in readme.read_text(encoding="utf-8"):
+        errors.append(f"README.md does not reference {HEADER_PATH}")
+
+    header = ROOT / HEADER_PATH
+    if header.is_file():
+        data = header.read_bytes()
+        if len(data) < 4096:
+            errors.append(f"{HEADER_PATH} is unexpectedly small")
+        elif data[:4] != b"RIFF" or data[8:12] != b"WEBP":
+            errors.append(f"{HEADER_PATH} is not a valid WebP file")
 
     result = {
         "schema": "chatgpt_lab.control_plane_validation.v1",
