@@ -7,18 +7,89 @@
     "registry_sha": "c50f01a0dabcd910296d87e04c662a211ec188e7",
     "content_hash": "2cb9ea5b36cef21e7c2d69e52cfd36da7b2e4f54895b03cbc878b37a64a83025"
   },
-  "selected": [
+  "selected_preflight": [
     {
       "id": "best-practices-react",
       "path": "skills/best-practices-react/SKILL.md",
       "sha": "33604c397ac3a518cbf6c7834748941c528bf912",
+      "required_when": "Any React/frontend deliverable.",
       "reason": "Required by the Monocle Man React contract for qid/action/useRegisterAction instrumentation and React accessibility expectations."
+    },
+    {
+      "id": "test-interactions",
+      "path": "skills/test-interactions/SKILL.md",
+      "sha": "1b1e30ed68b5d30c965a91d6604c50789a2b2553",
+      "required_when": "Any deliverable with a frontend or live DOM.",
+      "reason": "Required to prove live DOM interaction coverage, qid/COTS assertions, screenshots, keyboard flow, modal behavior, animation behavior, and deterministic pass/fail independent of model prose."
+    },
+    {
+      "id": "review-design",
+      "path": "skills/review-design/SKILL.md",
+      "sha": "3723eb2d1109744b7cd843bfa6be4afad4d8b758",
+      "required_when": "Any deliverable with visual UI/frontend surface.",
+      "reason": "Required to review screenshots and visual UX with persona-bound critique after deterministic interaction evidence exists."
+    },
+    {
+      "id": "review-code",
+      "path": "skills/review-code/SKILL.md",
+      "sha": "c7a456941369e11ef26d41911b50e88cb2a29690",
+      "required_when": "Any code deliverable, including frontend or API backend.",
+      "reason": "Required to review scoped code/diff/tests/contracts and ensure rendered verification is not replaced by source inspection."
+    },
+    {
+      "id": "best-practices-report",
+      "path": "skills/best-practices-report/SKILL.md",
+      "sha": "0797572f70f2e9091eda964b32c592a99bc0bb68",
+      "required_when": "Every bounded implementation/delivery round.",
+      "reason": "Required to write the mandatory evidence-bearing report covering source of truth, plan, evidence, findings, blockers, actions, acceptance checks, non-claims, and plan-iterate seed."
     }
   ],
-  "not_loaded": [
-    "ui-coder",
-    "ui-reviewer",
-    "best-practices-design"
+  "plugins_and_tools_selected_preflight": [
+    {
+      "id": "GitHub connector",
+      "required_when": "Repository source, branches, PRs, CI runs, artifacts, and durable records are required.",
+      "reason": "Primary source of truth and mutation surface for chatgpt-lab and snippets."
+    },
+    {
+      "id": "web.run",
+      "required_when": "Current external references, official docs, or live public URL inspection are required.",
+      "reason": "Required by the contract for current React/accessibility/deployment references and by live-delivery checks when available."
+    },
+    {
+      "id": "GitHub Actions",
+      "required_when": "Build/test/deployment evidence is required.",
+      "reason": "Deterministic execution, screenshot, interaction, accessibility, and Pages build/deploy evidence."
+    },
+    {
+      "id": "GitHub Pages",
+      "required_when": "The deliverable is a static-build frontend and GitHub is selected as delivery authority.",
+      "reason": "Hosts the Vite static build for live review without requiring Netlify."
+    }
   ],
-  "selection_rule": "Smallest applicable skill chain for a React implementation round."
+  "conditional_backend_rule": {
+    "when_deliverable_has_api_backend": [
+      "Select review-code preflight.",
+      "Select backend/API contract test tooling before implementation.",
+      "Define API endpoint contracts, request/response fixtures, auth/security assumptions, and failure-mode tests before coding.",
+      "Record API CI evidence and non-claims in REPORT.md."
+    ]
+  },
+  "missing_or_partial_execution": [
+    {
+      "id": "review-design",
+      "state": "INSUFFICIENT_EVIDENCE",
+      "reason": "No persona-bound visual review bundle has been produced for the live GitHub Pages URL yet. CI screenshots exist, but live URL visual inspection remains unproven."
+    },
+    {
+      "id": "review-code",
+      "state": "INSUFFICIENT_EVIDENCE",
+      "reason": "The code changes were not independently reviewed through a recorded review-code bundle. Deterministic CI passed, but review-code evidence is missing."
+    },
+    {
+      "id": "test-interactions",
+      "state": "PARTIALLY_EXECUTED",
+      "reason": "Playwright implements deterministic live-DOM interaction evidence with qid/action/keyboard/modal/animation checks, but a standalone test-interactions manifest/review bundle was not created."
+    }
+  ],
+  "selection_rule": "At round start, decide and record the smallest sufficient skills/plugins before implementation. For any frontend, include best-practices-react, test-interactions, review-design, review-code, and best-practices-report. For any API backend, include review-code plus API contract/testing evidence before coding."
 }
