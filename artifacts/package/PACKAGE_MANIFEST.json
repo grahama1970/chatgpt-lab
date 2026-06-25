@@ -12,8 +12,8 @@
     },
     {
       "path": ".gitignore",
-      "sha256": "649475a11eb7753924456a885ea91eb15a643e401822ef764bd725ae97ad8f92",
-      "size": 222
+      "sha256": "5b41816c13b8e28d232bffbd73f3cd1c8ba1b98baf53afea33e200ec6aecc2aa",
+      "size": 401
     },
     {
       "path": "README.md",
@@ -24,6 +24,26 @@
       "path": "artifacts/.gitkeep",
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "size": 0
+    },
+    {
+      "path": "artifacts/github/git-head-and-remote.txt",
+      "sha256": "dfe0bade24de5357e66d725dc5299234de96befefcdf60df343cc0e2887a060e",
+      "size": 98
+    },
+    {
+      "path": "artifacts/github/git-status.txt",
+      "sha256": "5fbcb2990ad25e368c12219bf3ddca36e464d044e7acac16696fa8cd54159185",
+      "size": 22
+    },
+    {
+      "path": "artifacts/github/repo-view.json",
+      "sha256": "bd10beeabca399151bf42aa6131870727f21fe481acdd0bd752e2ff8ecd36cf3",
+      "size": 147
+    },
+    {
+      "path": "artifacts/github/source-check-run-28180494724.json",
+      "sha256": "e2c3e1440e1e389ad187d729d05abaf454879d3a643a46735d6fc1abea417eee",
+      "size": 327
     },
     {
       "path": "artifacts/package/local-control-plane-validation.json",

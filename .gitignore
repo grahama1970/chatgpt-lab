@@ -8,3 +8,8 @@ artifacts/*
 !artifacts/package/PACKAGE_MANIFEST.json
 !artifacts/package/SHA256SUMS.txt
 !artifacts/package/local-control-plane-validation.json
+!artifacts/github/
+!artifacts/github/repo-view.json
+!artifacts/github/source-check-run-28180494724.json
+!artifacts/github/git-status.txt
+!artifacts/github/git-head-and-remote.txt
