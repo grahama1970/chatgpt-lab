@@ -2,11 +2,11 @@
 
 ## Summary
 
-Overall finding: **Partially Verified / Live Delivery Not Yet Accepted**.
+Overall finding: **Blocked Live Delivery Proof / React CI Still Proven**.
 
 The vague request was a Monocle Man video link plus a request for a designed landing page. The bounded deliverable selected for this round was a React/Vite landing page with deterministic evidence. Slides were not included in this round.
 
-The React implementation is CI-proven. GitHub Pages delivery support is merged and the PR build passed. The remaining missing proof is post-merge GitHub Pages deployment metadata, the live `page_url`, and live desktop/mobile visual inspection.
+The React implementation is CI-proven. GitHub Pages delivery support is merged and repeated PR build checks passed. A fresh non-code delivery-proof PR was created and merged to trigger the delivery branch. The remaining missing proof is still post-merge GitHub Pages deployment metadata, the live `page_url`, and live desktop/mobile visual inspection because the exposed connector cannot retrieve push-triggered Pages runs or Pages deployment metadata, and the assistant runtime cannot resolve likely GitHub Pages URLs.
 
 ## Scope
 
@@ -25,8 +25,10 @@ The React implementation is CI-proven. GitHub Pages delivery support is merged a
 | `selected-skills.json` | Skill/plugin preflight record. |
 | `grahama1970/snippets` PR #3 | React implementation. |
 | `grahama1970/snippets` PR #4 | GitHub Pages delivery path and animation proof. |
+| `grahama1970/snippets` PR #5 | Fresh non-code delivery-proof trigger. |
 | GitHub Actions runs | CI, screenshot, interaction, and build evidence. |
 | `best-practices-report` | Report structure and evidence rules. |
+| `evidence/live-delivery-proof-attempt-pr5.json` | Latest live-delivery proof attempt and blocker record. |
 
 ## Skills and tools selected
 
@@ -65,7 +67,8 @@ Rule for future work: any frontend deliverable must select interaction, design r
 6. Add Playwright CI evidence.
 7. Add GitHub Pages workflow for static Vite delivery.
 8. Merge only after PR evidence passed.
-9. Record evidence and this report.
+9. Create and merge PR #5 as a fresh non-code delivery-proof trigger because workflow dispatch was not exposed by the connector.
+10. Record evidence and this report.
 
 Deviation: the first pass did not record the complete skill/plugin preflight or this report before implementation. That process error has now been corrected in `selected-skills.json`, `PLAN.md`, this report, and the Monocle contract.
 
@@ -75,6 +78,8 @@ PR #3 converted the benchmark to React/Vite and merged as `043f1a7c807a30b221ddd
 
 PR #4 added GitHub Pages delivery and normal-motion animation proof. It merged as `aa30c43cbbb61d40ae7b22625e8dee24bb35c511`. Candidate commit `bc37d7be7419077d946e443678224d421fb0324d` passed Pages PR build run `28200836938` and benchmark run `28200837231`. Benchmark artifact `7891035281` has digest `sha256:dc470f692016d680cb991faf6d20d08b8da3ad66fb6448283f3af8f53b32ed96`.
 
+PR #5 added `monocle-man-site/DELIVERY_PROOF.md` as a non-code delivery proof trigger. It merged as `e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e`. Candidate commit `2ab8efa75c8394afe63266d4851de6e593a41fe0` passed Pages PR build run `28203526971` and benchmark run `28203526868`. Benchmark artifact `7892100656` has digest `sha256:66793ccf37659226e5bbdbfbe813d7aface53260bc8d1a55f69e49860263d8f9`.
+
 ## Deliverable analysis
 
 The deliverable is a React/Vite frontend that builds to static files. GitHub Pages can host this because the app has no server routes and no React Router deep links. Vite `base: "./"` was added so asset URLs are relative.
@@ -82,6 +87,18 @@ The deliverable is a React/Vite frontend that builds to static files. GitHub Pag
 The benchmark proves qids, actions, keyboard flow, modal behavior, focus behavior, mobile menu behavior, image loading, axe checks, console/network checks, reduced-motion behavior, and normal-motion animation behavior.
 
 The normal-motion animation test verifies that `.round-play::before` uses `animationName: spin`, has nonzero duration, and repeats infinitely under `prefers-reduced-motion: no-preference`.
+
+## Live delivery proof attempt
+
+A fresh PR #5 was created and merged to produce a traceable delivery branch commit because the available GitHub connector does not expose `workflow_dispatch` or a general push-run listing endpoint.
+
+Post-merge proof attempts:
+
+- `GitHub.fetch_commit_workflow_runs` for merge commit `e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e` returned `workflow_runs: []`.
+- Connector discovery found no exposed GitHub Pages settings endpoint, deployments endpoint, or workflow-dispatch endpoint.
+- Runtime fetch attempts for likely GitHub Pages URLs failed with DNS resolution errors.
+
+Interpretation: this proves a tool-access blocker, not live delivery failure. The current assistant tool surface cannot retrieve the needed post-merge Pages deployment metadata or live screenshots.
 
 ## Findings
 
@@ -95,11 +112,11 @@ Non-claim: this does not prove live GitHub Pages delivery.
 
 ### F2 — GitHub Pages delivery path exists but live deploy is unverified
 
-Evidence: PR #4 merged; Pages PR build run `28200836938` passed build steps; workflow is present on the delivery branch.
+Evidence: PR #4 merged; Pages PR build run `28200836938` passed build steps; workflow is present on the delivery branch. PR #5 also passed a fresh Pages PR build before merge.
 
 Impact: the site cannot yet be called live-accepted.
 
-Acceptance check: a post-merge `deploy-pages` job succeeds and records `page_url` for merge commit `aa30c43cbbb61d40ae7b22625e8dee24bb35c511`.
+Acceptance check: a post-merge `deploy-pages` job succeeds and records `page_url` for merge commit `e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e` or a later delivery commit.
 
 ### F3 — Review evidence is incomplete
 
@@ -109,13 +126,13 @@ Impact: final visual/design/code acceptance is not complete.
 
 Acceptance check: record persona-bound `review-design`, scoped `review-code`, and live interaction evidence from the deployed URL.
 
-### F4 — Planning/reporting process was incomplete at first
+### F4 — Live proof is blocked by tool access
 
-Evidence: the first pass did not include a complete skill/plugin preflight or report artifact.
+Evidence: the connector does not expose workflow dispatch, GitHub Pages settings/deployment metadata, or push-triggered workflow run listing. Runtime DNS resolution failed for likely Pages URLs.
 
-Impact: the process could falsely appear complete.
+Impact: ChatGPT Web cannot finish the live proof from the current tool surface.
 
-Acceptance check: future rounds must commit plan, selected skills/tools, and report before final answer.
+Acceptance check: use GitHub UI, gh CLI, or a connector/API surface that can list push-triggered workflow runs and Pages deployments.
 
 ## Outstanding items
 
@@ -128,9 +145,9 @@ Acceptance check: future rounds must commit plan, selected skills/tools, and rep
 
 ## Final assessment
 
-The React landing page is **CI-proven**. The GitHub Pages delivery path is **merged and PR-build-proven**. The live hosted deliverable is **not yet accepted** because post-merge Pages deployment metadata and live visual inspection are missing.
+The React landing page is **CI-proven**. The GitHub Pages delivery path is **merged and PR-build-proven**. A fresh delivery-proof PR was merged, but live hosted acceptance remains **blocked** because the current tools cannot retrieve post-merge Pages deployment metadata or live visual screenshots.
 
-Final status: `PARTIAL_READY_DEPLOYMENT_UNVERIFIED`.
+Final status: `BLOCKED_LIVE_DELIVERY_PROOF`.
 
 ## Non-claims
 
@@ -158,7 +175,7 @@ Acceptance contract:
 4. Capture desktop and mobile screenshots.
 5. Check normal animation and reduced-motion behavior on the live URL.
 6. Run persona-bound design review over live screenshots.
-7. Run scoped code review over PR #3 and PR #4.
+7. Run scoped code review over PR #3, PR #4, and PR #5.
 8. Update `REPORT.md`, `status.json`, and source manifest.
 
 Stop conditions: PASS only when live deployment metadata, live screenshots, deterministic checks, design review, code review, and report updates all exist. BLOCKED if the available tools cannot access or trigger Pages deployment evidence.
