@@ -1,0 +1,44 @@
+{
+  "schema": "chatgpt_lab.webgpt_local_task_request.v1",
+  "task_id": "webgpt-local-20260625-001",
+  "requested_by": "webgpt",
+  "objective": "Run read-only validation for the benchmark evidence bundle.",
+  "mode": "read_only",
+  "target": {
+    "repository": "grahama1970/snippets",
+    "branch": "preview-monocle-man-netlify",
+    "path": "monocle-man-site/",
+    "commit": null
+  },
+  "allowed_commands": [
+    "npm install",
+    "npm run build",
+    "npx playwright test --config=playwright.config.ts"
+  ],
+  "allowed_paths": [
+    "monocle-man-site/**",
+    "benchmark-evidence/**"
+  ],
+  "forbidden_paths": [
+    "~/.ssh/**",
+    ".env",
+    "**/.env",
+    "**/secrets/**"
+  ],
+  "timeout_seconds": 600,
+  "network_policy": "default_ci_only",
+  "write_policy": "artifacts_only",
+  "required_outputs": [
+    "subagent-receipt.json",
+    "stdout.txt",
+    "stderr.txt",
+    "artifact-manifest.json"
+  ],
+  "refusal_conditions": [
+    "target_commit_missing",
+    "command_not_allowlisted",
+    "path_outside_allowlist",
+    "secrets_requested",
+    "timeout_exceeded"
+  ]
+}

@@ -26,7 +26,17 @@ REQUIRED_FILES = (
     "sources/control-plane/MIGRATION_NOTES.md",
     "docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md",
     "docs/requirements/CONTROL_AUTHORITY.md",
+    "docs/requirements/BENCHMARK_SLICE_001.md",
+    "docs/architecture/COLLABORATION_LOOP_V0.md",
     "schemas/iteration.schema.json",
+    "schemas/iteration-status.schema.json",
+    "iterations/templates/iteration.slice-001.template.json",
+    "iterations/templates/status.slice-001.template.json",
+    "iterations/templates/webgpt-local-task-request.example.json",
+    "iterations/templates/local-subagent-refusal.example.json",
+    "scripts/validate_iteration.py",
+    "scripts/validate_benchmark_evidence.py",
+    "scripts/validate_local_subagent_contract.py",
     ".github/workflows/source-check.yml",
 )
 

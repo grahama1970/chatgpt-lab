@@ -1,0 +1,13 @@
+{
+  "schema": "chatgpt_lab.iteration_status.v1",
+  "iteration_id": "2026-06-25-slice-001-monocle-man",
+  "state": "PASS",
+  "phase": "benchmark-ci",
+  "candidate_commit": "d03c9ff69e9b11dc26b436724db4d4619484d8dd",
+  "required_next_evidence": [
+    "deployment_metadata_mapping_live_url_to_candidate_commit",
+    "live_site_screenshot_if_making_live_site_claim"
+  ],
+  "blockers": [],
+  "updated_at": "2026-06-25T16:51:17Z"
+}

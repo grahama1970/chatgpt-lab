@@ -1,0 +1,11 @@
+{
+  "schema": "chatgpt_lab.local_subagent_receipt.v1",
+  "task_id": "webgpt-local-20260625-001",
+  "status": "REFUSED",
+  "reason": "target_commit_missing",
+  "commands_run": [],
+  "files_touched": [],
+  "artifacts": [],
+  "started_at": null,
+  "completed_at": null
+}

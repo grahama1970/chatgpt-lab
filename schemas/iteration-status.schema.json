@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/iteration-status.schema.json",
+  "title": "ChatGPT-Lab Iteration Status",
+  "type": "object",
+  "required": [
+    "schema",
+    "iteration_id",
+    "state",
+    "phase",
+    "candidate_commit",
+    "required_next_evidence",
+    "blockers",
+    "updated_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "chatgpt_lab.iteration_status.v1"
+    },
+    "iteration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "READY",
+        "RUNNING",
+        "PASS",
+        "NEEDS_CHANGES",
+        "BLOCKED",
+        "INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate_commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "required_next_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

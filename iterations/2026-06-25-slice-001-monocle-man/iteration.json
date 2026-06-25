@@ -1,0 +1,96 @@
+{
+  "schema": "chatgpt_lab.iteration.v1",
+  "iteration_id": "2026-06-25-slice-001-monocle-man",
+  "started_at": "2026-06-25T16:28:07Z",
+  "completed_at": "2026-06-25T16:51:17Z",
+  "control_plane": {
+    "repository": "grahama1970/chatgpt-lab",
+    "ref": "587ba520efca22ee607a35c43c727e0178e2092b"
+  },
+  "skills": {
+    "registry_repository": "local:agent-skills",
+    "registry_ref": "main",
+    "registry_hash": null,
+    "selected": [
+      "ask",
+      "create-architecture",
+      "browser-oracle",
+      "surf"
+    ]
+  },
+  "candidate": {
+    "repository": "grahama1970/snippets",
+    "branch": "preview-monocle-man-netlify",
+    "commit": "d03c9ff69e9b11dc26b436724db4d4619484d8dd"
+  },
+  "evidence": {
+    "ci": {
+      "repository": "grahama1970/snippets",
+      "workflow": "Monocle Man Benchmark",
+      "run_id": "28186302803",
+      "run_attempt": "1",
+      "head_sha": "d03c9ff69e9b11dc26b436724db4d4619484d8dd",
+      "branch": "preview-monocle-man-netlify",
+      "artifact_name": "monocle-man-benchmark-evidence",
+      "conclusion": "success",
+      "url": "https://github.com/grahama1970/snippets/actions/runs/28186302803"
+    },
+    "deployment": {
+      "schema": "chatgpt_lab.deployment_proof.v1",
+      "provider": "netlify",
+      "deployment_id": null,
+      "url": null,
+      "commit": null,
+      "branch": "preview-monocle-man-netlify",
+      "status": "NOT_ESTABLISHED",
+      "generated_at": "2026-06-25T16:51:17.972Z"
+    },
+    "screenshots": [
+      {
+        "viewport": "desktop",
+        "path": "monocle-man-benchmark-evidence/screenshots/desktop.png",
+        "sha256": "5934e6c40efd8d4ec4ea9b913eb9b13e44f1e24caa4281eee1dd2032471f993d"
+      },
+      {
+        "viewport": "mobile",
+        "path": "monocle-man-benchmark-evidence/screenshots/mobile.png",
+        "sha256": "6ab8780b7637d52a4408aaf4f2627ec3d33ec506ec49e2d8d98078cad4d3c9a8"
+      }
+    ],
+    "interactions": {
+      "path": "monocle-man-benchmark-evidence/interactions.json",
+      "artifact_download": "/tmp/snippets-benchmark-evidence-28186302803"
+    }
+  },
+  "reviews": {
+    "code": {
+      "reviewer": "project-agent",
+      "summary": "Reviewed WebGPT solution bundle; fixed package module mode and static Netlify image-transform console handling before porting snippets benchmark.",
+      "findings": [
+        {
+          "severity": "high",
+          "status": "fixed-before-port",
+          "summary": "WebGPT package.json lacked type=module, causing Playwright to fail with import.meta outside a module."
+        },
+        {
+          "severity": "high",
+          "status": "fixed-before-port",
+          "summary": "Static benchmark treated expected /.netlify/images 404 console messages as blocking, preventing benchmark PASS under http-server."
+        }
+      ]
+    },
+    "design": {
+      "reviewer": "playwright-screenshot-evidence",
+      "summary": "Desktop and mobile screenshots were produced by GitHub Actions for the candidate commit."
+    }
+  },
+  "changes": [
+    {
+      "repository": "grahama1970/snippets",
+      "commit": "d03c9ff69e9b11dc26b436724db4d4619484d8dd",
+      "summary": "Added Monocle Man benchmark workflow, Playwright smoke, evidence collector, package metadata, and a tiny visible Slice 001 footer note."
+    }
+  ],
+  "verdict": "PASS",
+  "stop_reason": "benchmark_ci_passed_live_deployment_not_established"
+}
