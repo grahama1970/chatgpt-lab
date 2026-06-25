@@ -1,6 +1,6 @@
 # Artwork provenance
 
-`chatgpt-lab-header.png` was generated specifically for this repository on
+`chatgpt-lab-header.webp` was generated specifically for this repository on
 2026-06-25 using OpenAI image generation and then cropped to a 2:1 README banner.
 
 ## Concept
@@ -18,6 +18,10 @@ The brain represents reasoning. The glass makes the reasoning inspectable rather
 than mystical. The walnut plinth and brass plaque turn the system into a durable
 laboratory instrument. The archival setting connects iteration to disciplined
 experimentation and recorded evidence.
+
+The repository copy is an optimized 600 × 300 WebP so the README loads quickly.
+The higher-resolution source remains available in the originating ChatGPT-Lab
+conversation and can be re-exported when a larger marketing asset is required.
 
 Do not replace this image with a generic AI gradient, glowing circuit brain, or
 unverifiable status/dashboard artwork without recording a new design decision in
