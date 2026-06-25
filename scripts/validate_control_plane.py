@@ -9,8 +9,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET_REPOSITORY = "grahama1970/chatgpt-lab"
+HEADER_PATH = "assets/chatgpt-lab-header.webp"
 REQUIRED_FILES = (
     "README.md",
+    "AGENTS.md",
+    HEADER_PATH,
+    "assets/README.md",
     "sources/PROJECT_INSTRUCTIONS.md",
     "sources/SOURCE_INDEX.md",
     "sources/source-manifest.json",
@@ -116,6 +120,24 @@ def main() -> int:
         text = source_index.read_text(encoding="utf-8")
         if "docs/requirements/CONTROL_AUTHORITY.md" not in text:
             errors.append("sources/SOURCE_INDEX.md does not load CONTROL_AUTHORITY.md")
+
+    readme = ROOT / "README.md"
+    if readme.is_file() and HEADER_PATH not in readme.read_text(encoding="utf-8"):
+        errors.append(f"README.md does not reference {HEADER_PATH}")
+
+    agents = ROOT / "AGENTS.md"
+    if agents.is_file():
+        text = agents.read_text(encoding="utf-8")
+        if "ChatGPT Web is the primary controller" not in text:
+            errors.append("AGENTS.md does not state controller authority")
+
+    header = ROOT / HEADER_PATH
+    if header.is_file():
+        data = header.read_bytes()
+        if len(data) < 4096:
+            errors.append(f"{HEADER_PATH} is unexpectedly small")
+        elif data[:4] != b"RIFF" or data[8:12] != b"WEBP":
+            errors.append(f"{HEADER_PATH} is not a valid WebP file")
 
     result = {
         "schema": "chatgpt_lab.control_plane_validation.v1",
