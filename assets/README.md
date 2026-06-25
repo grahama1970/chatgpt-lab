@@ -14,6 +14,6 @@
 
 The brain represents reasoning. The glass makes the reasoning inspectable rather than mystical. The walnut plinth and brass plaque turn the system into a durable laboratory instrument. The archival setting connects iteration to disciplined experimentation and recorded evidence.
 
-The repository copy is a Pillow-compressed 1774 × 887 WebP exported from the original generated PNG so the README keeps the full banner composition while loading faster than the source image.
+The repository copy is a Pillow-compressed 1672 × 941 WebP exported from the original generated PNG so the README keeps the full banner composition while loading faster than the source image.
 
 Do not replace the image with a generic AI gradient, glowing circuit brain, or unsupported dashboard artwork without recording a new design decision in `sources/control-plane/DECISIONS.md`.
