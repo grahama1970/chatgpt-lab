@@ -1,0 +1,31 @@
+{
+  "schema": "chatgpt_lab.no_local_agent_live_proof_workflow.v1",
+  "phase_id": "monocle-man-live-delivery-proof",
+  "repository": "grahama1970/snippets",
+  "delivery_branch": "preview-monocle-man-netlify",
+  "pull_request": "https://github.com/grahama1970/snippets/pull/6",
+  "head_commit": "96eb68149f54b7f794d794c5d96871c15185105d",
+  "merge_commit": "f156a50edcbd7fa039200cfdadb4c54ecca9dd8e",
+  "pre_merge_evidence": {
+    "pages_pr_build_run_id": 28205007037,
+    "pages_pr_build_conclusion": "success",
+    "benchmark_run_id": 28205007019,
+    "benchmark_conclusion": "success",
+    "benchmark_artifact_id": 7892681611,
+    "benchmark_artifact_digest": "sha256:fefa2d1cabe5ffc6d8f303e8fde0719371d68284f722411c3ecf17e8baab69ec"
+  },
+  "workflow_branch_sha_after_merge": "62b3c3e56edc29f9cea21c8a438b460e271620af",
+  "post_merge_observation": {
+    "fetch_commit_workflow_runs_for_merge_commit": "workflow_runs: []",
+    "delivery_proof_file": "NOT_FOUND at delivery-proof/monocle-man/latest/deployment-proof.json after polling"
+  },
+  "local_project_agent_used": false,
+  "status": "MECHANISM_MERGED_PROOF_NOT_OBSERVED_YET",
+  "missing_evidence": [
+    "delivery proof JSON",
+    "post-merge live proof artifact id",
+    "live desktop/mobile screenshots"
+  ],
+  "required_next_diagnostic": "Poll delivery-proof/monocle-man/latest/deployment-proof.json. If it remains absent, inspect the Monocle Man GitHub Pages push run for merge commit f156a50edcbd7fa039200cfdadb4c54ecca9dd8e through GitHub UI/API or an expanded connector.",
+  "updated_at": "2026-06-25T18:47:00-04:00"
+}
