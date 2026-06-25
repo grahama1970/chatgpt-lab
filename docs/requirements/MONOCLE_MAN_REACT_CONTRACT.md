@@ -7,7 +7,41 @@
 
 ChatGPT must not begin another Monocle Man coding round from prose alone. If a complete implementation plan is not supplied, ChatGPT must create and commit one first.
 
-The page is simple. The hard part is preventing vague execution, false-green screenshots, and untestable UI. This contract defines the exact React components, stable selectors, actions, and CI checks that must exist before a pass can be claimed.
+The page is simple. The hard part is preventing vague execution, false-green screenshots, untestable UI, and missing delivery reports. This contract defines the exact React components, stable selectors, actions, selected skills/plugins, review gates, CI checks, delivery checks, and report artifacts that must exist before a pass can be claimed.
+
+## Mandatory preflight before implementation
+
+A Monocle Man implementation round must create or update a repo-resident plan before coding. The plan must include:
+
+1. The original vague human request and the interpreted deliverable.
+2. The selected skills from `grahama1970/agent-skills`, including exact paths and refs/hashes.
+3. The selected plugins/connectors/tools, including why each is needed and what evidence it must produce.
+4. Current external web references that affect implementation or delivery.
+5. The implementation scope, non-goals, acceptance checks, stop conditions, and blockers.
+6. The required report artifact path and report-quality skill.
+
+The plan is not optional. If it is missing or incomplete, ChatGPT must patch the plan before broad implementation.
+
+## Mandatory skills/plugins selection
+
+At round start, ChatGPT must decide and record the smallest sufficient skill/plugin chain before implementation.
+
+For this React/frontend deliverable, the minimum chain is:
+
+1. `skills/best-practices-react/SKILL.md` — component structure, qids, actions, `useRegisterAction`, React accessibility behavior.
+2. `skills/test-interactions/SKILL.md` — deterministic live-DOM interactions, qid/COTS assertions, keyboard paths, screenshots, and pass/fail evidence.
+3. `skills/review-design/SKILL.md` — persona-bound screenshot-backed visual/UX review after deterministic interaction evidence exists.
+4. `skills/review-code/SKILL.md` — scoped code/diff/test review. This does not replace rendered verification.
+5. `skills/best-practices-report/SKILL.md` — final evidence-bearing report with findings, rationale, blockers, actions, acceptance checks, non-claims, and `$plan-iterate` seed.
+
+Required plugins/tools for this round are:
+
+1. GitHub connector — source, branches, PRs, CI, artifacts, and durable control-plane records.
+2. Web search/browser reference checks — current official React, WAI-ARIA, Vite/static deploy, and GitHub Pages/Actions references.
+3. GitHub Actions — deterministic build/test/artifact evidence.
+4. GitHub Pages — delivery authority when the deliverable is a static-build frontend.
+
+For any future deliverable with a frontend, `test-interactions`, `review-design`, `review-code`, and `best-practices-report` are mandatory unless explicitly scoped away in the committed plan with a reason. For any future deliverable with an API backend, the plan must select backend/API contract testing and `review-code`, define endpoint contracts and fixtures before coding, and record API CI evidence and non-claims in the report.
 
 ## External references to check before implementation
 
@@ -15,7 +49,9 @@ A Monocle Man implementation round must use current web references before patchi
 
 1. React documentation for component, event, and accessibility behavior.
 2. W3C WAI-ARIA Authoring Practices for the modal dialog pattern.
-3. The current `grahama1970/agent-skills` `best-practices-react` skill.
+3. Vite build/deploy guidance for static output and relative asset bases.
+4. GitHub Pages and deploy-pages documentation when GitHub Pages is selected as the delivery authority.
+5. The current `grahama1970/agent-skills` `best-practices-react`, `test-interactions`, `review-design`, `review-code`, and `best-practices-report` skills.
 
 The WAI-ARIA modal dialog pattern requires focus to move inside the dialog when it opens, Tab and Shift+Tab to stay inside the dialog, Escape to close it, a visible close button in the tab sequence, and a dialog container labelled by visible title or aria-label. Those requirements are part of this contract.
 
@@ -150,29 +186,71 @@ The GitHub Actions benchmark must fail unless all of the following pass in the l
 13. Keyboard tab can reach every interactive element.
 14. Focus-visible style is present on keyboard focus.
 15. Reduced-motion mode disables decorative looping animations.
-16. External YouTube links include the expected video id, `target="_blank"`, and `rel` containing `noopener`.
-17. Axe has no critical or serious violations with color contrast enabled.
-18. No unexpected console errors remain.
-19. No same-origin network failures remain.
-20. The artifact contains desktop, mobile, hero, modal/menu, full-page, and section screenshots.
-21. The artifact contains `source/index.html`, `interactions.json`, `image-status.json`, `accessibility.json`, and `verdict.json`.
-22. `verdict.json` is computed from the evidence and cannot report `PASS` when any of the above fails.
+16. Normal-motion mode allows decorative animation to run where intended.
+17. External YouTube links include the expected video id, `target="_blank"`, and `rel` containing `noopener`.
+18. Axe has no critical or serious violations with color contrast enabled.
+19. No unexpected console errors remain.
+20. No same-origin network failures remain.
+21. The artifact contains desktop, mobile, hero, modal/menu, full-page, and section screenshots.
+22. The artifact contains `source/index.html`, `interactions.json`, `image-status.json`, `accessibility.json`, and `verdict.json`.
+23. `verdict.json` is computed from the evidence and cannot report `PASS` when any of the above fails.
+
+## Delivery and review gates
+
+A frontend deliverable is not complete until all applicable gates below are recorded:
+
+1. Source PR merged to the selected delivery branch.
+2. GitHub Actions benchmark passed for the candidate commit.
+3. Delivery workflow passed for the delivery commit.
+4. Live URL and deployed commit/ref are recorded.
+5. Live desktop and mobile screenshots are captured from the deployed URL.
+6. `test-interactions` coverage or equivalent deterministic Playwright evidence covers every interactive `[data-qid]` element.
+7. `review-design` produces a persona-bound screenshot review or the report marks it `INSUFFICIENT_EVIDENCE`.
+8. `review-code` produces a scoped review bundle or the report marks it `INSUFFICIENT_EVIDENCE`.
+9. `REPORT.md` is committed and follows `best-practices-report`.
+
+For API/backend deliverables, replace the live-DOM gates with API contract, fixture, auth/security, error-path, and backend CI gates, while keeping `review-code` and `best-practices-report` mandatory.
+
+## Required report artifact
+
+Every Monocle Man implementation round must write a complete report to the iteration directory before final response. The report must follow `skills/best-practices-report/SKILL.md` and include:
+
+1. The original vague request.
+2. Scope and interpretation.
+3. Source-of-truth inventory.
+4. Skill/plugin preflight selection.
+5. Web/reference research.
+6. Comprehensive plan.
+7. Implementation summary.
+8. GitHub PR/CI/artifact evidence.
+9. Delivery analysis, including GitHub Pages or another selected host.
+10. Visual/design review evidence or explicit `INSUFFICIENT_EVIDENCE`.
+11. Code review evidence or explicit `INSUFFICIENT_EVIDENCE`.
+12. Final assessment.
+13. Blockers, non-claims, and `$plan-iterate` seed.
+
+A final answer is not allowed to claim completion if this report is missing.
 
 ## Implementation order
 
-1. Create React scaffold only if the benchmark branch does not already have one.
-2. Implement components and data contract before visual refinements.
-3. Add `useRegisterAction` shim or real hook before adding interactions.
-4. Port the existing editorial design into React components.
-5. Update Playwright to assert this contract from the live DOM, not source grep.
-6. Capture screenshots and rendered source from the same built artifact.
-7. Record the iteration in `chatgpt-lab` only after CI evidence exists.
-8. Stop after one merge or one blocker.
+1. Create or update the implementation plan and selected-skills artifact.
+2. Check current source and external references.
+3. Create React scaffold only if the benchmark branch does not already have one.
+4. Implement components and data contract before visual refinements.
+5. Add `useRegisterAction` shim or real hook before adding interactions.
+6. Port the existing editorial design into React components.
+7. Update Playwright to assert this contract from the live DOM, not source grep.
+8. Capture screenshots and rendered source from the same built artifact.
+9. Run frontend delivery workflow when applicable.
+10. Run or record `test-interactions`, `review-design`, and `review-code` evidence.
+11. Write `REPORT.md` using `best-practices-report`.
+12. Record the iteration in `chatgpt-lab` only after CI/report evidence exists.
+13. Stop after one merge, a complete pass, or one concrete blocker.
 
 ## Non-goals
 
 - Do not add chat, login, database, personalization, or agent UI.
 - Do not broaden into the full PhatGPT controller.
-- Do not claim a live website without Netlify deployment metadata.
+- Do not claim a live website without deployment metadata and live visual inspection.
 - Do not accept screenshot presence as visual proof.
 - Do not start another coding round without this contract or a stricter replacement.
