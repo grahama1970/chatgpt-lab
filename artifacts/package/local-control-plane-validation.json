@@ -11,7 +11,8 @@
     "sources/control-plane/REVIEW_RUBRIC.md",
     "sources/control-plane/DECISIONS.md",
     "sources/control-plane/MIGRATION_NOTES.md",
-    "schemas/iteration.schema.json"
+    "schemas/iteration.schema.json",
+    ".github/workflows/source-check.yml"
   ],
   "root": "/home/graham/workspace/experiments/chatgpt-lab",
   "schema": "chatgpt_lab.control_plane_validation.v1",

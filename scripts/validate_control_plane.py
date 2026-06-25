@@ -21,6 +21,7 @@ REQUIRED_FILES = (
     "sources/control-plane/DECISIONS.md",
     "sources/control-plane/MIGRATION_NOTES.md",
     "schemas/iteration.schema.json",
+    ".github/workflows/source-check.yml",
 )
 
 

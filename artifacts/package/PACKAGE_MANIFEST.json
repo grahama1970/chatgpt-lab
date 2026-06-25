@@ -7,8 +7,8 @@
     },
     {
       "path": ".github/workflows/source-check.yml",
-      "sha256": "86463292a7c337f761fcf768d665365fbdbc70c61dc8967276848ce37f5d3eae",
-      "size": 1070
+      "sha256": "4918f88ba4ab81aa06468d10f2edd1634886dd299b18807e5f58564bf9653db9",
+      "size": 802
     },
     {
       "path": ".gitignore",
@@ -47,8 +47,8 @@
     },
     {
       "path": "artifacts/package/local-control-plane-validation.json",
-      "sha256": "cc55d0de0bd99df51f52222f9e9b9fdadab654cc7b10e9ae287c768b2da02879",
-      "size": 648
+      "sha256": "0d5c007645c3474842dfe5b2f7b679fcc804817a12bbcfde48a997f6f80c7a5c",
+      "size": 690
     },
     {
       "path": "chats/README.md",
@@ -77,8 +77,8 @@
     },
     {
       "path": "scripts/validate_control_plane.py",
-      "sha256": "765deb7eefe09f72bf53cba23272b1b8ed45442444bfede160ee28cba4347d77",
-      "size": 4291
+      "sha256": "fffe7b417e17ecd7f097ef7c2c2988382a0303fe116b355acd1331bf623a7ab1",
+      "size": 4333
     },
     {
       "path": "sources/PROJECT_INSTRUCTIONS.md",
