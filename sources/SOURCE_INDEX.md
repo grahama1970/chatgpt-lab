@@ -1,6 +1,6 @@
 ---
 project: ChatGPT-Lab
-source_version: 0.3.0
+source_version: 0.4.0
 updated: 2026-06-25
 canonical_manifest: sources/source-manifest.json
 ---
@@ -16,13 +16,21 @@ Before changing code, reviewing design, delegating work, or claiming system stat
 1. Read `sources/source-manifest.json`.
 2. Read `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`.
 3. Read `docs/requirements/CONTROL_AUTHORITY.md`.
-4. Read `sources/control-plane/OPERATING_CONTRACT.md` and `sources/control-plane/CURRENT_STATE.md`.
-5. Read `sources/control-plane/DECISIONS.md` for superseding architecture decisions.
-6. Fetch the current `grahama1970/agent-skills` registry.
-7. Select the smallest applicable skill chain.
-8. Record the control-plane ref, registry ref/hash, selected skills, controller, and any delegates in the iteration artifact.
-9. Inspect the benchmark repository at the exact recorded branch or commit.
-10. Treat missing CI, deployment, screenshot, or interaction evidence as `INSUFFICIENT_EVIDENCE` rather than success.
+4. For Monocle Man work, read `docs/requirements/MONOCLE_MAN_REACT_CONTRACT.md` before touching product code.
+5. Read `sources/control-plane/OPERATING_CONTRACT.md` and `sources/control-plane/CURRENT_STATE.md`.
+6. Read `sources/control-plane/DECISIONS.md` for superseding architecture decisions.
+7. Fetch the current `grahama1970/agent-skills` registry.
+8. Select the smallest applicable skill chain.
+9. Use web search for current external references when the task depends on browser, React, accessibility, deployment, API, or standards behavior.
+10. Record the control-plane ref, registry ref/hash, selected skills, controller, and any delegates in the iteration artifact.
+11. Inspect the benchmark repository at the exact recorded branch or commit.
+12. Treat missing CI, deployment, screenshot, or interaction evidence as `INSUFFICIENT_EVIDENCE` rather than success.
+
+## Plan-first rule
+
+If the user does not provide a comprehensive implementation plan, ChatGPT must create one before editing product code. The plan must define the product goal, file boundaries, React components or files, selectors, action IDs, accessibility obligations, GitHub Actions checks, screenshots, deployment proof, and stop condition.
+
+For the Monocle Man SPA, `docs/requirements/MONOCLE_MAN_REACT_CONTRACT.md` is the required deterministic plan unless a stricter replacement is committed first.
 
 ## Control authority
 
@@ -37,6 +45,7 @@ The ChatGPT-Lab project agent is a bounded local execution adapter for capabilit
 | Lab control plane | `grahama1970/chatgpt-lab`, branch `main`, `sources/`, `schemas/`, `scripts/`, `docs/requirements/`, and repository root `README.md` | Requirements, operating contract, state, decisions, schemas, and iteration records |
 | Core requirements | `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md` | Testable requirements and Slice 001 evidence contract |
 | Control authority | `docs/requirements/CONTROL_AUTHORITY.md` | Normative controller, delegate, concurrency, and default write-path rules |
+| Monocle Man React contract | `docs/requirements/MONOCLE_MAN_REACT_CONTRACT.md` | Required React components, selectors, action IDs, and deterministic CI checks for the SPA |
 | Skill registry | `grahama1970/agent-skills`, branch `main`, `SOURCES.md` and `sources/agent-skills-registry.json` | Skill discovery and progressive loading |
 | Benchmark source | `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/` | Monocle Man SPA source code |
 | Execution evidence | GitHub Actions associated with the benchmark commit or pull request | Tests, logs, reports, and screenshot artifacts |
@@ -48,7 +57,7 @@ The ChatGPT-Lab project agent is a bounded local execution adapter for capabilit
 
 When sources disagree, use this order:
 
-1. approved requirements, control-authority rules, and append-only architecture decisions at the recorded control-plane commit;
+1. approved requirements, control-authority rules, the Monocle Man React contract, and append-only architecture decisions at the recorded control-plane commit;
 2. exact GitHub benchmark file content at the recorded candidate commit;
 3. GitHub Actions output for that commit;
 4. Netlify deployment metadata and rendered page;
@@ -61,7 +70,7 @@ Requirements define what must be proven. Evidence determines whether it was prov
 ## Refresh rules
 
 - Refresh the control-plane branch before every new run.
-- Refresh both requirements files before expanding system capabilities.
+- Refresh requirements and the Monocle Man React contract before expanding system capabilities.
 - Refresh the skill registry before each new task family or when its recorded hash changes.
 - Refresh benchmark source before every patch.
 - Refresh CI and deployment evidence after every commit.
