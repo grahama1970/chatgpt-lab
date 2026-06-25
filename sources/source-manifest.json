@@ -53,20 +53,23 @@
       "repository": "grahama1970/snippets",
       "ref": "preview-monocle-man-netlify",
       "root": "monocle-man-site/",
-      "last_known_commit": "043f1a7c807a30b221ddd56cd3ea744b34c1dfd8",
-      "last_candidate_commit": "911052a2973a005021cdd9a41c4eefda72cc3b34",
-      "purpose": "Benchmark React SPA source code.",
-      "refresh": "before every implementation round"
+      "last_known_commit": "e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e",
+      "last_candidate_commit": "2ab8efa75c8394afe63266d4851de6e593a41fe0",
+      "purpose": "Benchmark React SPA source code and GitHub Pages delivery proof trigger.",
+      "refresh": "before every implementation or delivery proof round"
     },
     {
       "id": "monocle-man-ci",
       "kind": "github-actions",
       "repository": "grahama1970/snippets",
       "ref": "preview-monocle-man-netlify",
-      "status": "READY_REACT_CONTRACT",
-      "latest_proven_run_id": 28198930713,
-      "latest_proven_artifact_id": 7890258305,
-      "latest_proven_artifact_digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
+      "status": "READY_REACT_CONTRACT_LIVE_DELIVERY_BLOCKED_BY_TOOL_ACCESS",
+      "latest_proven_run_id": 28203526868,
+      "latest_proven_artifact_id": 7892100656,
+      "latest_proven_artifact_digest": "sha256:66793ccf37659226e5bbdbfbe813d7aface53260bc8d1a55f69e49860263d8f9",
+      "latest_pages_pr_build_run_id": 28203526971,
+      "latest_delivery_proof_pr": "https://github.com/grahama1970/snippets/pull/5",
+      "latest_delivery_proof_merge_commit": "e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e",
       "required_artifacts": [
         "run-metadata.json",
         "source-metadata.json",
@@ -90,7 +93,24 @@
         "artifact-manifest.json",
         "verdict.json"
       ],
-      "purpose": "Deterministic execution and rendered evidence."
+      "purpose": "Deterministic execution and rendered evidence. Does not replace live Pages deployment proof."
+    },
+    {
+      "id": "monocle-man-github-pages",
+      "kind": "github-pages",
+      "repository": "grahama1970/snippets",
+      "workflow": ".github/workflows/monocle-man-pages.yml",
+      "delivery_branch": "preview-monocle-man-netlify",
+      "status": "BLOCKED_TOOL_ACCESS",
+      "latest_pages_pr_build_run_id": 28203526971,
+      "latest_delivery_proof_merge_commit": "e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e",
+      "missing": [
+        "post_merge_pages_deploy_run",
+        "deploy_pages_page_url",
+        "live_desktop_screenshot",
+        "live_mobile_screenshot"
+      ],
+      "purpose": "Selected live delivery authority for the static React/Vite frontend."
     },
     {
       "id": "monocle-man-netlify",
@@ -98,8 +118,8 @@
       "site_id": "df347395-47e5-4ed6-a1c7-57360a5735de",
       "project_name": "monocle-man-review",
       "primary_url": "https://monocle-man-review.netlify.app",
-      "status": "PROJECT_CREATED_DEPLOYMENT_UNVERIFIED",
-      "purpose": "Rendered source of truth for live review."
+      "status": "SECONDARY_STALE_OR_HISTORICAL",
+      "purpose": "Historical rendered target. Current GitHub-first delivery path is GitHub Pages unless reselected by a future plan."
     },
     {
       "id": "monocle-man-film",
@@ -111,7 +131,7 @@
   "source_precedence": [
     "github-source-at-recorded-commit",
     "github-actions-output-for-that-commit",
-    "netlify-deployment-metadata-and-render",
+    "github-pages-deployment-metadata-and-render",
     "fresh-screenshots-and-interaction-results",
     "selected-skill-guidance",
     "project-decision-ledger",
@@ -125,10 +145,13 @@
     "github_actions_read": true,
     "github_actions_rerun": true,
     "github_repository_creation": true,
+    "github_pages_deployment_read_current_connector": false,
+    "github_workflow_dispatch_current_connector": false,
+    "github_push_run_listing_current_connector": false,
     "netlify_project_read": true,
     "netlify_project_create": true,
     "netlify_direct_file_upload_from_chat_runtime": false,
     "chatgpt_project_source_write": false,
-    "local_browser_render_and_screenshot": true
+    "local_browser_render_and_screenshot": false
   }
 }
