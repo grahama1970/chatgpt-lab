@@ -1,4 +1,4 @@
-# ChatGPT-Lab — Verified Self-Improvement for Web Interfaces
+# PhatGPT-LAB — Verified Self-Improvement for Web Interfaces
 
 <p align="center">
   <img
@@ -8,7 +8,7 @@
   />
 </p>
 
-ChatGPT-Lab is a GitHub-backed control plane designed to prove that ChatGPT Web can build, verify, and improve software projects directly.
+PhatGPT-LAB is a GitHub-backed control plane designed to prove that ChatGPT Web can build, verify, and improve software projects directly.
 
 The repo stores everything ChatGPT needs to pick up where it left off: requirements, instructions, operating contracts, current state, schemas, scripts, evidence records, exported chats, and iteration history. ChatGPT Project Sources are read-only from the Web UI, so this repository acts as the writable external source of truth that ChatGPT can reload, change, review, and validate across sessions.
 
@@ -37,7 +37,7 @@ ChatGPT Web is the primary controller and default implementer. It selects the bo
 
 The working model is simple:
 
-![ChatGPT-Lab improvement cycle: observe, reason, verify, improve](artifacts/readme/chatgpt-lab-improvement-cycle.png)
+![PhatGPT-LAB improvement cycle: observe, reason, verify, improve](artifacts/readme/chatgpt-lab-improvement-cycle.png)
 
 1. **Observe** the repository, CI results, screenshots, and prior iteration artifacts.
 2. **Reason** from current requirements, source state, and unresolved blockers.
@@ -82,7 +82,7 @@ sed -n '1,220p' docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md
 sed -n '1,220p' docs/requirements/CONTROL_AUTHORITY.md
 ```
 
-At the beginning of a new ChatGPT-Lab session, follow the bootstrap order in [`sources/SOURCE_INDEX.md`](sources/SOURCE_INDEX.md). Project agents should also read [`AGENTS.md`](AGENTS.md). Stable ChatGPT Project instructions live in [`sources/PROJECT_INSTRUCTIONS.md`](sources/PROJECT_INSTRUCTIONS.md).
+At the beginning of a new PhatGPT-LAB session, follow the bootstrap order in [`sources/SOURCE_INDEX.md`](sources/SOURCE_INDEX.md). Project agents should also read [`AGENTS.md`](AGENTS.md). Stable ChatGPT Project instructions live in [`sources/PROJECT_INSTRUCTIONS.md`](sources/PROJECT_INSTRUCTIONS.md).
 
 ## First Benchmark: Monocle Man
 
@@ -165,4 +165,4 @@ That check proves the control-plane structure is internally consistent. It does 
 
 ## Header Artwork
 
-The photorealistic retro laboratory header was created specifically for ChatGPT-Lab. The brain represents reasoning; the glass makes it inspectable; the walnut plinth and etched brass plaque turn the system into a durable laboratory instrument rather than a generic cloud-AI metaphor. Artwork provenance and usage guidance live in [`assets/README.md`](assets/README.md).
+The photorealistic retro laboratory header was created specifically for PhatGPT-LAB. The brain represents reasoning; the glass makes it inspectable; the walnut plinth and etched brass plaque turn the system into a durable laboratory instrument rather than a generic cloud-AI metaphor. Artwork provenance and usage guidance live in [`assets/README.md`](assets/README.md).
