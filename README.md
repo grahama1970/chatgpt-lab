@@ -2,7 +2,7 @@
 
 <p align="center">
   <img
-    src="assets/chatgpt-lab-header.png"
+    src="assets/chatgpt-lab-header.webp"
     alt="Retro-futurist laboratory header showing a human brain beneath a glass bell jar on a dark walnut plinth with an etched brass CHATGPT-LAB plaque"
     width="100%"
   />
