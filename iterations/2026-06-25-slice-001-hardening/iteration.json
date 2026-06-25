@@ -1,0 +1,77 @@
+{
+  "schema": "chatgpt_lab.iteration.v1",
+  "iteration_id": "2026-06-25-slice-001-hardening",
+  "started_at": "2026-06-25T18:16:27Z",
+  "completed_at": "2026-06-25T18:54:00Z",
+  "control_plane": {
+    "repository": "grahama1970/chatgpt-lab",
+    "ref": "main"
+  },
+  "skills": {
+    "registry_repository": "grahama1970/agent-skills",
+    "registry_ref": "main",
+    "registry_hash": "3ea46a27315ca9737b792fbab81446929c42b960bcf25803cfb3456bf972d492",
+    "selected": [
+      "best-practices-self-improvement-loop",
+      "review-page",
+      "test-interactions"
+    ]
+  },
+  "candidate": {
+    "repository": "grahama1970/snippets",
+    "branch": "chatgpt-slice-001-evidence-hardening",
+    "commit": "dfb58504fdf5e315c353dcc7c7c8fba1bac54b3d"
+  },
+  "evidence": {
+    "ci": {
+      "repository": "grahama1970/snippets",
+      "workflow": "Monocle Man Benchmark",
+      "run_id": "28192837648",
+      "job_id": "83511670117",
+      "head_sha": "dfb58504fdf5e315c353dcc7c7c8fba1bac54b3d",
+      "branch": "chatgpt-slice-001-evidence-hardening",
+      "artifact_name": "monocle-man-benchmark-evidence",
+      "artifact_id": "7887688922",
+      "artifact_digest": "sha256:1d0100f66a3f0d4d2c5862ddd1aa1a08661fe57d88b26855d4aaf42b7c9443a4",
+      "conclusion": "success",
+      "url": "https://github.com/grahama1970/snippets/actions/runs/28192837648"
+    },
+    "deployment": {
+      "schema": "chatgpt_lab.deployment_proof.v1",
+      "provider": "netlify",
+      "status": "NOT_ESTABLISHED",
+      "url": null,
+      "commit": null
+    },
+    "screenshots": [
+      {"viewport": "desktop", "path": "screenshots/desktop.png", "sha256": "9f0295ce2bf6b9be920ea1ac177c694c4ce17927299c99c78415529b6784dc28"},
+      {"viewport": "mobile", "path": "screenshots/mobile.png", "sha256": "f062ca94bda055a15f60e8cd30f1a2a9abe381bd1b93071905d666d58ed93021"},
+      {"viewport": "desktop-hero", "path": "screenshots/desktop-hero.png", "sha256": "bd3630f897114440449a6b642272f665b25aa3079fe61155402df13c80a40545"},
+      {"viewport": "mobile-hero", "path": "screenshots/mobile-hero.png", "sha256": "1c796299e2383b4f4387ccd448b83fd677ba8a924df192557929f22a0a6a9c48"}
+    ],
+    "interactions": {
+      "path": "interactions.json",
+      "failed_interactions": 0
+    }
+  },
+  "reviews": {
+    "code": {
+      "reviewer": "ChatGPT Web",
+      "summary": "Changed the Monocle Man benchmark harness so the verdict consumes image rendering, accessibility, interaction, source snapshot, screenshot, console, and network evidence."
+    },
+    "design": {
+      "reviewer": "ChatGPT Web over GitHub Actions screenshots",
+      "summary": "The first hardened run reproduced the missing-image false green. The final run produced desktop and mobile hero screenshots with the monocle subject rendered."
+    }
+  },
+  "changes": [
+    {
+      "repository": "grahama1970/snippets",
+      "pull_request": 2,
+      "merged_commit": "b033abdc2c9c730d84cbd45335201b44dce20066",
+      "summary": "Hardened the Slice 001 Monocle Man benchmark against image, interaction, screenshot, source-snapshot, and accessibility false-green passes."
+    }
+  ],
+  "verdict": "PASS",
+  "stop_reason": "benchmark_ci_hardened_and_merged_no_live_netlify_claim"
+}
