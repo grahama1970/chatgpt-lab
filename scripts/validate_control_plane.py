@@ -21,6 +21,7 @@ REQUIRED_FILES = (
     "sources/control-plane/DECISIONS.md",
     "sources/control-plane/MIGRATION_NOTES.md",
     "docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md",
+    "docs/requirements/CONTROL_AUTHORITY.md",
     "schemas/iteration.schema.json",
     ".github/workflows/source-check.yml",
 )
@@ -53,9 +54,7 @@ def main() -> int:
         if not isinstance(control_plane, dict):
             errors.append("sources/source-manifest.json is missing control_plane")
         elif control_plane.get("repository") != TARGET_REPOSITORY:
-            errors.append(
-                f"control_plane.repository must be {TARGET_REPOSITORY}"
-            )
+            errors.append(f"control_plane.repository must be {TARGET_REPOSITORY}")
         sources = manifest.get("sources")
         if not isinstance(sources, list) or not sources:
             errors.append("sources/source-manifest.json must contain at least one source")
@@ -71,7 +70,10 @@ def main() -> int:
             }
             missing = sorted(required_source_ids.difference(ids))
             if missing:
-                errors.append(f"sources/source-manifest.json is missing sources: {', '.join(missing)}")
+                errors.append(
+                    "sources/source-manifest.json is missing sources: "
+                    + ", ".join(missing)
+                )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         errors.append(f"invalid sources/source-manifest.json: {exc}")
 
@@ -91,7 +93,9 @@ def main() -> int:
         }
         missing = sorted(expected.difference(required))
         if missing:
-            errors.append(f"iteration schema is missing required fields: {', '.join(missing)}")
+            errors.append(
+                "iteration schema is missing required fields: " + ", ".join(missing)
+            )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         errors.append(f"invalid iteration schema: {exc}")
 
@@ -99,7 +103,19 @@ def main() -> int:
     if project_instructions.is_file():
         text = project_instructions.read_text(encoding="utf-8")
         if TARGET_REPOSITORY not in text:
-            errors.append("sources/PROJECT_INSTRUCTIONS.md does not point to the target repository")
+            errors.append(
+                "sources/PROJECT_INSTRUCTIONS.md does not point to the target repository"
+            )
+        if "ChatGPT Web is the primary controller" not in text:
+            errors.append(
+                "sources/PROJECT_INSTRUCTIONS.md does not state controller authority"
+            )
+
+    source_index = ROOT / "sources/SOURCE_INDEX.md"
+    if source_index.is_file():
+        text = source_index.read_text(encoding="utf-8")
+        if "docs/requirements/CONTROL_AUTHORITY.md" not in text:
+            errors.append("sources/SOURCE_INDEX.md does not load CONTROL_AUTHORITY.md")
 
     result = {
         "schema": "chatgpt_lab.control_plane_validation.v1",

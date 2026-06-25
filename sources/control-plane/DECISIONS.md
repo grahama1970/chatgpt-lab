@@ -57,3 +57,11 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 **Decision:** Capture the ChatGPT self-improvement loop as explicit requirements before building benchmark CI, WebGPT delegation, local subagent bridges, or iteration automation.
 
 **Consequence:** `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md` is now part of the canonical bootstrap path. New loop capabilities should update that requirements artifact before implementation broadens the system.
+
+## 2026-06-25 — D-011: ChatGPT Web owns the loop
+
+**Decision:** ChatGPT Web is the primary controller and default implementer. It owns requirements, the next bounded objective, GitHub branches and pull requests, evidence inspection, reviewer reconciliation, merge decisions, and final gate verdicts.
+
+**Project-agent boundary:** The ChatGPT-Lab project agent is a delegated local execution adapter for capabilities unavailable to ChatGPT Web. It may perform explicitly bounded local work and return raw artifacts, but it is not a co-equal planning authority, may not broaden scope, and may not self-approve or choose the next round.
+
+**Consequence:** The default benchmark write path is a ChatGPT-authored branch and pull request. Project-agent-mediated changes are fallback only and require a structured task contract plus raw execution receipts.
