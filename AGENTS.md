@@ -20,6 +20,12 @@ ChatGPT Web is the primary controller and default implementer. It owns the bound
 
 The ChatGPT-Lab project agent is a bounded local execution adapter. Use it only for an explicit local-only operation unavailable through current ChatGPT tools. Delegated work must return raw command output and artifacts and may not broaden scope or self-approve.
 
+## Commit attribution
+
+Do not author commits under third-party model names, vendor names, or bot-like identities that imply a different controller made the change. This repository uses ChatGPT Web as the controller and PhatGPT-LAB as the lab identity.
+
+Before committing locally in this repository, set repo-local Git identity to the lab identity or to the human maintainer's approved GitHub identity. Do not rely on global Git configuration.
+
 ## Role discipline
 
 - Builder phase may edit code, tests, workflows, and iteration artifacts.

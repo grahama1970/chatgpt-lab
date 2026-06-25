@@ -4,12 +4,15 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET_REPOSITORY = "grahama1970/chatgpt-lab"
 HEADER_PATH = "assets/chatgpt-lab-header.webp"
+COMMIT_ATTRIBUTION_POLICY = "Do not author commits under third-party model names"
+FORBIDDEN_LATEST_AUTHOR_TOKENS = ("claude", "anthropic")
 REQUIRED_FILES = (
     "README.md",
     "AGENTS.md",
@@ -48,6 +51,19 @@ def load_json(relative_path: str) -> dict:
     if not isinstance(value, dict):
         raise ValueError(f"{relative_path} must contain a JSON object")
     return value
+
+
+def current_commit_author() -> str | None:
+    result = subprocess.run(
+        ["git", "log", "-1", "--format=%an <%ae>"],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        return None
+    return result.stdout.strip()
 
 
 def main() -> int:
@@ -140,6 +156,24 @@ def main() -> int:
         text = agents.read_text(encoding="utf-8")
         if "ChatGPT Web is the primary controller" not in text:
             errors.append("AGENTS.md does not state controller authority")
+        if COMMIT_ATTRIBUTION_POLICY not in text:
+            errors.append("AGENTS.md does not state commit attribution policy")
+
+    control_authority = ROOT / "docs/requirements/CONTROL_AUTHORITY.md"
+    if control_authority.is_file():
+        text = control_authority.read_text(encoding="utf-8")
+        if COMMIT_ATTRIBUTION_POLICY not in text:
+            errors.append(
+                "docs/requirements/CONTROL_AUTHORITY.md does not state commit attribution policy"
+            )
+
+    author = current_commit_author()
+    if author is None:
+        errors.append("could not read latest commit author")
+    elif any(token in author.lower() for token in FORBIDDEN_LATEST_AUTHOR_TOKENS):
+        errors.append(
+            "latest commit author uses forbidden third-party attribution: " + author
+        )
 
     header = ROOT / HEADER_PATH
     if header.is_file():

@@ -83,3 +83,9 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 **Ownership bar:** A scoped milestone may say ChatGPT owns the benchmark CI loop when exact-commit CI, artifacts, screenshots, `$ask webgpt` artifacts, and a valid iteration record exist. Project-level ownership requires all of: exact-commit benchmark CI, live Netlify deployment mapped to that commit, preserved `$ask webgpt` artifacts, and one valid iteration record.
 
 **Verdict rule:** Netlify proof is not required before every scoped benchmark `PASS` when the iteration explicitly avoids a live-site claim. Netlify proof is required before `USABLE_WITH_GAPS`, live-site improvement claims, or project-ownership `PASS`.
+
+## 2026-06-25 — D-013: Commit attribution follows the controller
+
+**Decision:** Do not author project commits under third-party model names, vendor names, or bot-like identities that imply a controller other than ChatGPT Web or the lab identity made the change.
+
+**Consequence:** Local project-agent commits must set repo-local Git identity before committing. The source-check workflow validates the latest commit author and core authority docs so accidental global Git identity leakage is treated as a control-plane error.

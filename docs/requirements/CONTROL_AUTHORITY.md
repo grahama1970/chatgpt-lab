@@ -38,6 +38,8 @@ ChatGPT Web
 
 A project-agent-mediated commit is permitted only when the required action depends on local-only state or is unavailable through ChatGPT's connected tools.
 
+Do not author commits under third-party model names, vendor names, or bot-like identities that imply another controller made the change. ChatGPT Web remains the controller, and repo-local Git configuration must use the lab identity or the human maintainer's approved GitHub identity before local project-agent commits.
+
 ## Project Agent Boundary
 
 The project agent may:
