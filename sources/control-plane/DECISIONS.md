@@ -6,7 +6,7 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 
 **Decision:** Use a versioned GitHub control plane because this ChatGPT session cannot add or update Project Sources directly.
 
-**Consequence:** Every session must bootstrap from `SOURCE_INDEX.md`; conversational memory is not the source of truth.
+**Consequence:** Every session must bootstrap from `sources/SOURCE_INDEX.md`; conversational memory is not the source of truth.
 
 ## 2026-06-25 — D-002: Use a dedicated control-plane repository
 
@@ -45,3 +45,9 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 **Blocker:** The GitHub connector cannot see `grahama1970/chatgpt-lab` and does not expose repository creation. A user-created or otherwise exposed repository is required before remote push and GitHub Actions proof.
 
 **Local preparation:** The package has been initialized as a local git repository on branch `main` with `origin` set to `git@github.com:grahama1970/chatgpt-lab.git`.
+
+## 2026-06-25 — D-009: Keep root minimal
+
+**Decision:** Keep root limited to `README.md`, repository infrastructure, and top-level directories. Move ChatGPT source-loading files into `sources/` and package receipts into `artifacts/package/`.
+
+**Consequence:** Future sessions bootstrap from `sources/SOURCE_INDEX.md` and `sources/source-manifest.json`. Local package checksums are verified with `sha256sum -c artifacts/package/SHA256SUMS.txt`.

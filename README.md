@@ -42,14 +42,18 @@ The first benchmark fixture is the Monocle Man single-page website. Improving th
 The repository mirrors the two main information areas in a ChatGPT Web project:
 
 - `chats/`: exported or summarized project conversations. These explain intent, decisions, and historical context, but they are not execution proof.
-- `sources/`: guidance for the canonical project sources ChatGPT should load. The root control-plane files remain at the repository root for discoverability and validation.
+- `sources/`: guidance for the canonical project sources ChatGPT should load.
 
 Supporting directories:
 
+- `sources/PROJECT_INSTRUCTIONS.md`: stable instructions to load this repository as the project source.
+- `sources/SOURCE_INDEX.md`: source index and bootstrap order.
+- `sources/source-manifest.json`: machine-readable source and capability manifest.
 - `sources/control-plane/`: operating contract, current state, review rubric, decisions, and migration notes.
 - `docs/research/`: non-canonical background material and research notes.
 - `iterations/`: future per-run iteration records.
 - `artifacts/`: validation receipts, screenshots, CI outputs, and other evidence artifacts.
+- `artifacts/package/`: local package manifest, checksum file, and local validation receipt.
 - `schemas/`: machine-readable schemas.
 - `scripts/`: local validation and maintenance scripts.
 
@@ -57,8 +61,8 @@ Supporting directories:
 
 Start every new ChatGPT Web session by reading:
 
-1. `SOURCE_INDEX.md`
-2. `source-manifest.json`
+1. `sources/SOURCE_INDEX.md`
+2. `sources/source-manifest.json`
 3. `sources/control-plane/OPERATING_CONTRACT.md`
 4. `sources/control-plane/CURRENT_STATE.md`
 5. `sources/control-plane/REVIEW_RUBRIC.md`
@@ -68,10 +72,11 @@ Start every new ChatGPT Web session by reading:
 
 Other key paths:
 
-- `PROJECT_INSTRUCTIONS.md`: stable instructions to load this repository as the project source.
+- `sources/PROJECT_INSTRUCTIONS.md`: stable instructions to load this repository as the project source.
 - `sources/control-plane/`: detailed control-plane policy and state.
 - `schemas/iteration.schema.json`: expected shape of iteration evidence records.
 - `scripts/validate_control_plane.py`: local and CI validation for the control-plane files.
+- `artifacts/package/`: package integrity and local validation evidence.
 - `.github/workflows/source-check.yml`: GitHub Actions workflow for repository validation.
 - `chats/monocle-man-website-creation.md`: initial exported project chat.
 
@@ -133,7 +138,7 @@ python3 scripts/validate_control_plane.py
 For packaged files, verify checksums with:
 
 ```bash
-sha256sum -c SHA256SUMS.txt
+sha256sum -c artifacts/package/SHA256SUMS.txt
 ```
 
 These checks confirm repository structure and file integrity. They do not prove the benchmark website, CI loop, Netlify deployment, or visual review workflow.

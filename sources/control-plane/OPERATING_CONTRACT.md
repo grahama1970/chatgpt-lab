@@ -130,7 +130,7 @@ Evidence must be produced after the candidate commit. Stale artifacts cannot pro
 
 After a material capability, repository, deployment, or policy change:
 
-1. update `source-manifest.json`;
+1. update `sources/source-manifest.json`;
 2. update `sources/control-plane/CURRENT_STATE.md`;
 3. append a dated entry to `sources/control-plane/DECISIONS.md` when the change affects architecture or policy;
 4. preserve prior iteration evidence;

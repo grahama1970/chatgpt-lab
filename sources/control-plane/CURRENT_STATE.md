@@ -29,12 +29,13 @@ This bundle targets `grahama1970/chatgpt-lab`. After it is pushed, GitHub Action
 
 ## Current source locations
 
-- Control plane target: `grahama1970/chatgpt-lab`, branch `main`, repository root
+- Control plane target: `grahama1970/chatgpt-lab`, branch `main`, `sources/` plus root `README.md`
 - Local bootstrap commit: prepared on branch `main`; not yet pushed because the remote repository is missing or inaccessible
 - Skills: `grahama1970/agent-skills`, branch `main`
 - Website: `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/`
 - Netlify: `https://monocle-man-review.netlify.app`
 - Source film: `https://youtu.be/NBxByrz5BRE`
+- Local package receipts: `artifacts/package/`
 
 ## Immediate blockers to a closed loop
 

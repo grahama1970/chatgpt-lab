@@ -11,9 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 TARGET_REPOSITORY = "grahama1970/chatgpt-lab"
 REQUIRED_FILES = (
     "README.md",
-    "PROJECT_INSTRUCTIONS.md",
-    "SOURCE_INDEX.md",
-    "source-manifest.json",
+    "sources/PROJECT_INSTRUCTIONS.md",
+    "sources/SOURCE_INDEX.md",
+    "sources/source-manifest.json",
     "sources/README.md",
     "sources/control-plane/OPERATING_CONTRACT.md",
     "sources/control-plane/CURRENT_STATE.md",
@@ -44,23 +44,23 @@ def main() -> int:
             errors.append(f"empty required file: {relative_path}")
 
     try:
-        manifest = load_json("source-manifest.json")
+        manifest = load_json("sources/source-manifest.json")
         if manifest.get("schema") != "chatgpt_lab.source_manifest.v1":
-            errors.append("source-manifest.json has an unexpected schema")
+            errors.append("sources/source-manifest.json has an unexpected schema")
         control_plane = manifest.get("control_plane")
         if not isinstance(control_plane, dict):
-            errors.append("source-manifest.json is missing control_plane")
+            errors.append("sources/source-manifest.json is missing control_plane")
         elif control_plane.get("repository") != TARGET_REPOSITORY:
             errors.append(
                 f"control_plane.repository must be {TARGET_REPOSITORY}"
             )
         sources = manifest.get("sources")
         if not isinstance(sources, list) or not sources:
-            errors.append("source-manifest.json must contain at least one source")
+            errors.append("sources/source-manifest.json must contain at least one source")
         else:
             ids = [source.get("id") for source in sources if isinstance(source, dict)]
             if len(ids) != len(set(ids)):
-                errors.append("source-manifest.json contains duplicate source ids")
+                errors.append("sources/source-manifest.json contains duplicate source ids")
             required_source_ids = {
                 "agent-skills-registry",
                 "monocle-man-source",
@@ -69,9 +69,9 @@ def main() -> int:
             }
             missing = sorted(required_source_ids.difference(ids))
             if missing:
-                errors.append(f"source-manifest.json is missing sources: {', '.join(missing)}")
+                errors.append(f"sources/source-manifest.json is missing sources: {', '.join(missing)}")
     except (OSError, ValueError, json.JSONDecodeError) as exc:
-        errors.append(f"invalid source-manifest.json: {exc}")
+        errors.append(f"invalid sources/source-manifest.json: {exc}")
 
     try:
         iteration_schema = load_json("schemas/iteration.schema.json")
@@ -93,11 +93,11 @@ def main() -> int:
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         errors.append(f"invalid iteration schema: {exc}")
 
-    project_instructions = ROOT / "PROJECT_INSTRUCTIONS.md"
+    project_instructions = ROOT / "sources/PROJECT_INSTRUCTIONS.md"
     if project_instructions.is_file():
         text = project_instructions.read_text(encoding="utf-8")
         if TARGET_REPOSITORY not in text:
-            errors.append("PROJECT_INSTRUCTIONS.md does not point to the target repository")
+            errors.append("sources/PROJECT_INSTRUCTIONS.md does not point to the target repository")
 
     result = {
         "schema": "chatgpt_lab.control_plane_validation.v1",

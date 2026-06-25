@@ -2,9 +2,9 @@
   "errors": [],
   "required_files": [
     "README.md",
-    "PROJECT_INSTRUCTIONS.md",
-    "SOURCE_INDEX.md",
-    "source-manifest.json",
+    "sources/PROJECT_INSTRUCTIONS.md",
+    "sources/SOURCE_INDEX.md",
+    "sources/source-manifest.json",
     "sources/README.md",
     "sources/control-plane/OPERATING_CONTRACT.md",
     "sources/control-plane/CURRENT_STATE.md",

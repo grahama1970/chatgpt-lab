@@ -2,9 +2,9 @@
 
 At the start of every implementation, review, or planning task:
 
-1. Fetch `grahama1970/chatgpt-lab`, branch `main`, path `SOURCE_INDEX.md` through the GitHub connection.
+1. Fetch `grahama1970/chatgpt-lab`, branch `main`, path `sources/SOURCE_INDEX.md` through the GitHub connection.
 2. Follow its bootstrap order and source-precedence rules.
-3. Treat `source-manifest.json` and `sources/control-plane/CURRENT_STATE.md` as the current capability and readiness record.
+3. Treat `sources/source-manifest.json` and `sources/control-plane/CURRENT_STATE.md` as the current capability and readiness record.
 4. Refresh the `grahama1970/agent-skills` registry before selecting skills.
 5. Load only the smallest applicable skill chain and record the selected skills.
 6. Use GitHub source as code truth, GitHub Actions as execution truth, Netlify as deployment truth, and fresh screenshots plus interaction results as rendered truth.

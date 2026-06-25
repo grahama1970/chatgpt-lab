@@ -7,28 +7,18 @@
     },
     {
       "path": ".github/workflows/source-check.yml",
-      "sha256": "2dc61d9083b6847d84f5038576a50e0d1908131f38f8610f2caa83c82eddf2d5",
-      "size": 1090
+      "sha256": "86463292a7c337f761fcf768d665365fbdbc70c61dc8967276848ce37f5d3eae",
+      "size": 1070
     },
     {
       "path": ".gitignore",
-      "sha256": "ae0a542be5c4b191e9685b7e95738861fdb817b49a1fc1c336c0656d2a785085",
-      "size": 113
-    },
-    {
-      "path": "PROJECT_INSTRUCTIONS.md",
-      "sha256": "c41d8f8f51a04f78d1ccd5461e6b3fc26c64a990341319272bd229addd998fe7",
-      "size": 1212
+      "sha256": "649475a11eb7753924456a885ea91eb15a643e401822ef764bd725ae97ad8f92",
+      "size": 222
     },
     {
       "path": "README.md",
-      "sha256": "49a61e24ce751bdef838d74f60ad73478fb41c9f2e325e3121a13f5955f8b9d1",
-      "size": 6060
-    },
-    {
-      "path": "SOURCE_INDEX.md",
-      "sha256": "89a3c608a2cf55509bcc8086005f16500885d2412cf52830e6a87838a75491db",
-      "size": 2934
+      "sha256": "485f8e276900f6dd80680d4a5d44d8c256e764f0614e0399a634893f23f263c4",
+      "size": 6423
     },
     {
       "path": "artifacts/.gitkeep",
@@ -36,9 +26,9 @@
       "size": 0
     },
     {
-      "path": "artifacts/local-package-validation.json",
-      "sha256": "2d601c785842eaced06ca697d86c5fd86ae549300de58c7358c5852a93534dfe",
-      "size": 624
+      "path": "artifacts/package/local-control-plane-validation.json",
+      "sha256": "cc55d0de0bd99df51f52222f9e9b9fdadab654cc7b10e9ae287c768b2da02879",
+      "size": 648
     },
     {
       "path": "chats/README.md",
@@ -67,38 +57,48 @@
     },
     {
       "path": "scripts/validate_control_plane.py",
-      "sha256": "231cdec9c6676467cc5eb90c62612278c9bcc57700734e6255133dbfa123d122",
-      "size": 4195
+      "sha256": "765deb7eefe09f72bf53cba23272b1b8ed45442444bfede160ee28cba4347d77",
+      "size": 4291
     },
     {
-      "path": "source-manifest.json",
+      "path": "sources/PROJECT_INSTRUCTIONS.md",
+      "sha256": "01ce0d8d818c2c33b14ff0ddae2e85491d4cf9513506b6520cec6012f8925f61",
+      "size": 1228
+    },
+    {
+      "path": "sources/README.md",
+      "sha256": "9e71eeedea990bb3f3b87aadc9dceaf8e707abc137c7e8497209e185e6d9b2c0",
+      "size": 1012
+    },
+    {
+      "path": "sources/SOURCE_INDEX.md",
+      "sha256": "ed43bb3e8eb4d42b21dee86a6c5bf08b82ac759837466711190e323901a4b2ba",
+      "size": 2981
+    },
+    {
+      "path": "sources/source-manifest.json",
       "sha256": "9bc69cea79dc0c4d6b735b0f4238c91dc4f898666d0e8f41d07ac594822e000c",
       "size": 3046
     },
     {
-      "path": "sources/README.md",
-      "sha256": "2cd9e2363b8aa9e24d05fc5b43be687b7347df733ed48746e4f26380f8792343",
-      "size": 1105
-    },
-    {
       "path": "sources/control-plane/CURRENT_STATE.md",
-      "sha256": "1a2749f36eaf6c347f9c12475de43d3d79ca51a7b2a5d031dcb0bb5c627aebae",
-      "size": 4067
+      "sha256": "4a5173dd3f40b5eb7bc58e7edfcc5f5424edcf310539a9f7a38572ead1a1a668",
+      "size": 4131
     },
     {
       "path": "sources/control-plane/DECISIONS.md",
-      "sha256": "1dc54e26f89dd19ef1e3fff4119d4326311a9ade449401a9558b624fbc9181f7",
-      "size": 2799
+      "sha256": "3c6077004be5d5201d54a43d25ff9dfdf9e2f721b60685020eb913affd02150e",
+      "size": 3254
     },
     {
       "path": "sources/control-plane/MIGRATION_NOTES.md",
-      "sha256": "96bc672250cae423e68a7ac465e4a85b0e024684faf3b013cdd015d4aa2598a4",
-      "size": 1001
+      "sha256": "dc34cf0ab4f6eb22f158e4e7f366e9d9f721913bbfcd6024e4327fd881c65817",
+      "size": 1101
     },
     {
       "path": "sources/control-plane/OPERATING_CONTRACT.md",
-      "sha256": "62068d0d8820922d99dda5764e376947ec69415604b16c3436cdc81614a9a81b",
-      "size": 6312
+      "sha256": "ced68e3ce97f91453be191e9d49730c66e11fab3cda29fc47ec8fc6717a96500",
+      "size": 6320
     },
     {
       "path": "sources/control-plane/REVIEW_RUBRIC.md",

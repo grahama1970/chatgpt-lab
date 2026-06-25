@@ -4,4 +4,7 @@ __pycache__/
 local/
 artifacts/*
 !artifacts/.gitkeep
-!artifacts/local-package-validation.json
+!artifacts/package/
+!artifacts/package/PACKAGE_MANIFEST.json
+!artifacts/package/SHA256SUMS.txt
+!artifacts/package/local-control-plane-validation.json

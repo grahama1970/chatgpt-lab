@@ -2,7 +2,7 @@
 project: ChatGPT-Lab
 source_version: 0.2.0
 updated: 2026-06-25
-canonical_manifest: source-manifest.json
+canonical_manifest: sources/source-manifest.json
 ---
 
 # Source Index
@@ -13,7 +13,7 @@ This file is the entry point for every ChatGPT-Lab session.
 
 Before changing code, reviewing design, or claiming system status:
 
-1. Read `source-manifest.json`.
+1. Read `sources/source-manifest.json`.
 2. Read `sources/control-plane/OPERATING_CONTRACT.md` and `sources/control-plane/CURRENT_STATE.md`.
 3. Fetch the current `grahama1970/agent-skills` registry.
 4. Select the smallest applicable skill chain.
@@ -25,7 +25,7 @@ Before changing code, reviewing design, or claiming system status:
 
 | Source | Location | Purpose |
 |---|---|---|
-| Lab control plane | `grahama1970/chatgpt-lab`, branch `main`, repository root and `sources/control-plane/` | Operating contract, state, decisions, schemas, and iteration records |
+| Lab control plane | `grahama1970/chatgpt-lab`, branch `main`, `sources/`, `schemas/`, `scripts/`, and repository root `README.md` | Operating contract, state, decisions, schemas, and iteration records |
 | Skill registry | `grahama1970/agent-skills`, branch `main`, `SOURCES.md` and `sources/agent-skills-registry.json` | Skill discovery and progressive loading |
 | Benchmark source | `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/` | Monocle Man SPA source code |
 | Execution evidence | GitHub Actions associated with the benchmark commit or pull request | Tests, logs, reports, and screenshot artifacts |
@@ -56,4 +56,4 @@ When sources disagree, use this order:
 
 ## Project-source strategy
 
-ChatGPT Project Sources cannot currently be updated by the tools exposed in this session. This GitHub repository is therefore the writable, versioned external source. `PROJECT_INSTRUCTIONS.md` is the stable pointer that tells future sessions how to load it.
+ChatGPT Project Sources cannot currently be updated by the tools exposed in this session. This GitHub repository is therefore the writable, versioned external source. `sources/PROJECT_INSTRUCTIONS.md` is the stable pointer that tells future sessions how to load it.
