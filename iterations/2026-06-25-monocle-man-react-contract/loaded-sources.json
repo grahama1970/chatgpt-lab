@@ -1,0 +1,54 @@
+{
+  "schema": "chatgpt_lab.loaded_sources.v1",
+  "loaded_at": "2026-06-25T16:39:00-04:00",
+  "sources": [
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "ref": "main",
+      "path": "sources/SOURCE_INDEX.md",
+      "sha": "a35cce3d352e71e95a82bd717d68dca546d3b05c"
+    },
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "ref": "main",
+      "path": "sources/PROJECT_INSTRUCTIONS.md",
+      "sha": "9016ecf2fde88987be95ddab93ce166cdb392c32"
+    },
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "ref": "main",
+      "path": "sources/source-manifest.json",
+      "sha": "3d5a6d3a90b5f2484f15d0a1ca0822598259e98f"
+    },
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "ref": "main",
+      "path": "docs/requirements/MONOCLE_MAN_REACT_CONTRACT.md",
+      "sha": "520a6acc950965dfd38400b9b466c7b72b471604"
+    },
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "ref": "main",
+      "path": "docs/requirements/CONTROL_AUTHORITY.md",
+      "sha": "75ad4829c11362c9dcdc9eb1dc249d7d600079e2"
+    },
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "ref": "main",
+      "path": "sources/control-plane/OPERATING_CONTRACT.md",
+      "sha": "7e3bf46ef6814f8b1906d4e24b84c04f6f990cd6"
+    },
+    {
+      "repository": "grahama1970/agent-skills",
+      "ref": "main",
+      "path": "skills/best-practices-react/SKILL.md",
+      "sha": "33604c397ac3a518cbf6c7834748941c528bf912"
+    }
+  ],
+  "external_references": [
+    "https://react.dev/reference/rules/rules-of-hooks",
+    "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/",
+    "https://vite.dev/guide/build",
+    "https://docs.netlify.com/build/configure-builds/file-based-configuration/"
+  ]
+}
