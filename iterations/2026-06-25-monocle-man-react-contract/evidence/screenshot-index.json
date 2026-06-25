@@ -3,16 +3,16 @@
   "source_artifact_id": 7890258305,
   "source_artifact_digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
   "screenshots": [
-    {"path": "screenshots/desktop.png", "width": 1440, "height": 1100, "sha256": "1d4e62c80fda438d5ab0c43d442191969b86a8271de72d12b6d6fff51ad9b4eb"},
-    {"path": "screenshots/mobile.png", "width": 390, "height": 844, "sha256": "6c86b77d0913c8a4a7aa33d1e2ca158ffcc840147cbfa42af819d510ed1af513"},
-    {"path": "screenshots/desktop-hero.png", "width": 1440, "height": 1100, "sha256": "1d4e62c80fda438d5ab0c43d442191969b86a8271de72d12b6d6fff51ad9b4eb"},
-    {"path": "screenshots/mobile-hero.png", "width": 390, "height": 1046, "sha256": "85b77d98d5240834c845c26d0ebd22916782802476c5f0fec3952eb475b596c0"},
-    {"path": "screenshots/desktop-modal.png", "width": 1440, "height": 1100, "sha256": "d29bb5f0830cd3bfdc00ce89739c7e857526d6a1a76c3e610f02ae9b0a2f2850"},
-    {"path": "screenshots/mobile-menu.png", "width": 390, "height": 844, "sha256": "1c7a4fe9cc76e455602014b4e7d4acb679af08d11b64f7181b5179cd81c361a7"},
-    {"path": "screenshots/desktop-full.png", "width": 1440, "height": 5166, "sha256": "76eb55a0ad113d660026acdf48b40b8c71af159d06f569331c243e87139d6dd9"},
-    {"path": "screenshots/mobile-full.png", "width": 390, "height": 5508, "sha256": "57fb7a7b3a60434fdb43d3c8ad5bfc9f1327ffb6cebba3e65fca25a7c94c0906"},
-    {"path": "screenshots/desktop-lines.png", "width": 1326, "height": 689, "sha256": "51edc372614585c0e5d822c79f7af51f8391aa1e5bd190d80e3f0a7c2b7707e0"},
-    {"path": "screenshots/mobile-lines.png", "width": 358, "height": 1355, "sha256": "31881c29601eb16e5dd38fd7dc1768addd26f55d379490f6c7290f270493cd67"}
+    {"path": "screenshots/desktop.png", "width": 1440, "height": 1100, "sha256": "50fa7667ef1685ebe35d9640c7d93306479beaf093d399bdeebf99c0dd89156e"},
+    {"path": "screenshots/mobile.png", "width": 390, "height": 844, "sha256": "31baebfe4dbb29074f7bb64e6bb567a28a95f172f50e9a157c7dba92ca5ba0bc"},
+    {"path": "screenshots/desktop-hero.png", "width": 1440, "height": 1100, "sha256": "50fa7667ef1685ebe35d9640c7d93306479beaf093d399bdeebf99c0dd89156e"},
+    {"path": "screenshots/mobile-hero.png", "width": 390, "height": 1046, "sha256": "dcd84a1acd32c0967170318f082642b208d9ba95afe37871e87d71766ec9ca2a"},
+    {"path": "screenshots/desktop-modal.png", "width": 1440, "height": 1100, "sha256": "2b5fe964dee831d5754c3e9032414826105f70ce6760f88c800515720cc9192d"},
+    {"path": "screenshots/mobile-menu.png", "width": 390, "height": 844, "sha256": "6b8e60a9b72b6ba51284eb5407f17b1ab7578fac3a3e1a08bd98056ce5f19bdf"},
+    {"path": "screenshots/desktop-full.png", "width": 1440, "height": 5242, "sha256": "1813cfe98bc1037e4508112e6c0a98e3330fea73d53885359701b23cf161a40c"},
+    {"path": "screenshots/mobile-full.png", "width": 390, "height": 5508, "sha256": "1633e82105218cbe3f09695768f0d18372092a920f42aa6711b600c2ae698e51"},
+    {"path": "screenshots/desktop-lines.png", "width": 1326, "height": 689, "sha256": "d3459575b3a13895eeb5035a319684519196629ce83f7dda5a0ce13c930ff282"},
+    {"path": "screenshots/mobile-lines.png", "width": 358, "height": 1355, "sha256": "c4489bda8792c591831085653fd399fa6c81d34e1b3c6fb0b35155bf81bb9e0d"}
   ],
-  "inspection_summary": "Desktop, mobile, hero, modal, mobile menu, lines, and full-page screenshots were present in the passing artifact."
+  "inspection_summary": "Desktop, mobile, hero, modal, mobile menu, lines, and full-page screenshots were present in the passing artifact. Hashes and dimensions come from artifact-manifest.json in artifact 7890258305."
 }
