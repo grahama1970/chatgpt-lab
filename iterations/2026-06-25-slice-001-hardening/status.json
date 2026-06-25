@@ -1,0 +1,15 @@
+{
+  "schema": "chatgpt_lab.iteration_status.v1",
+  "iteration_id": "2026-06-25-slice-001-hardening",
+  "state": "PASS",
+  "phase": "benchmark-ci-hardening",
+  "candidate_commit": "dfb58504fdf5e315c353dcc7c7c8fba1bac54b3d",
+  "merged_commit": "b033abdc2c9c730d84cbd45335201b44dce20066",
+  "required_next_evidence": [
+    "netlify_deployment_metadata_mapping_live_url_to_merged_commit",
+    "live_site_screenshot_if_making_live_site_claim",
+    "webgpt_artifacts_if_claiming_webgpt_review"
+  ],
+  "blockers": [],
+  "updated_at": "2026-06-25T18:54:00Z"
+}
