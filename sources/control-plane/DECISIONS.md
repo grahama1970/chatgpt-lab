@@ -51,3 +51,9 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 **Decision:** Keep root limited to `README.md`, repository infrastructure, and top-level directories. Move ChatGPT source-loading files into `sources/` and package receipts into `artifacts/package/`.
 
 **Consequence:** Future sessions bootstrap from `sources/SOURCE_INDEX.md` and `sources/source-manifest.json`. Local package checksums are verified with `sha256sum -c artifacts/package/SHA256SUMS.txt`.
+
+## 2026-06-25 — D-010: Requirements lead implementation
+
+**Decision:** Capture the ChatGPT self-improvement loop as explicit requirements before building benchmark CI, WebGPT delegation, local subagent bridges, or iteration automation.
+
+**Consequence:** `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md` is now part of the canonical bootstrap path. New loop capabilities should update that requirements artifact before implementation broadens the system.

@@ -13,8 +13,10 @@ This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is 
 |---|---|---|
 | Persistent ChatGPT Project | `READY` | Project `ChatGPT-Lab` was created by the user and this conversation was moved into it. |
 | Dedicated control-plane repository | `READY` | Target: `grahama1970/chatgpt-lab`, branch `main`; pushed commit `9a3d080151d341a80f164866160979b2c6d2c823`. |
-| Control-plane source check | `PASS` | GitHub Actions run `28180430889` completed successfully for the initial pushed cleanup commit. |
+| Control-plane source check | `PASS` | Workflow is active and runs on all pushes to `main`; latest run evidence is stored under `artifacts/github/`. |
+| Self-improvement requirements | `DRAFT` | First requirements artifact: `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`. |
 | GitHub source read/write | `READY` | File, branch, pull request, and CI-read operations are available after the repository is connected. |
+| `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Requirements plan-collab attempts wrote artifacts under `/mnt/storage12tb/skills/ask/outputs/chatgpt-lab-requirements/` but failed preflight because multiple ChatGPT tabs made tab identity ambiguous. |
 | Skill discovery | `READY` | Generated registry in `grahama1970/agent-skills` is accessible. |
 | Progressive skill loading | `READY_MANUAL` | ChatGPT can select and fetch skills; an automated router/loader is not yet committed here. |
 | Monocle Man source | `READY` | `grahama1970/snippets@preview-monocle-man-netlify:monocle-man-site/` |
@@ -30,7 +32,8 @@ This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is 
 ## Current source locations
 
 - Control plane target: `grahama1970/chatgpt-lab`, branch `main`, `sources/` plus root `README.md`
-- Pushed commit: `9a3d080151d341a80f164866160979b2c6d2c823`
+- Requirements: `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`
+- Pushed commit: use `git rev-parse HEAD` and `git ls-remote origin refs/heads/main` for current local/remote proof
 - Skills: `grahama1970/agent-skills`, branch `main`
 - Website: `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/`
 - Netlify: `https://monocle-man-review.netlify.app`
@@ -39,11 +42,12 @@ This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is 
 
 ## Immediate blockers to a closed loop
 
-1. Commit benchmark CI that runs the site, tests interactions, checks accessibility and console errors, and uploads desktop/mobile screenshots.
-2. Establish an automatic deployment path from the benchmark branch to Netlify.
-3. Confirm that a deployment can be mapped to the exact tested commit.
-4. Implement a bounded loop controller that writes an iteration artifact after every phase.
-5. Add a machine-readable skill selection record and dependency expansion step.
+1. Review and accept or revise the self-improvement requirements.
+2. Commit benchmark CI that runs the site, tests interactions, checks accessibility and console errors, and uploads desktop/mobile screenshots.
+3. Establish an automatic deployment path from the benchmark branch to Netlify.
+4. Confirm that a deployment can be mapped to the exact tested commit.
+5. Implement a bounded loop controller that writes an iteration artifact after every phase.
+6. Add a machine-readable skill selection record and dependency expansion step.
 
 ## Next admissible milestone
 

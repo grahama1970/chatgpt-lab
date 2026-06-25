@@ -20,6 +20,7 @@ REQUIRED_FILES = (
     "sources/control-plane/REVIEW_RUBRIC.md",
     "sources/control-plane/DECISIONS.md",
     "sources/control-plane/MIGRATION_NOTES.md",
+    "docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md",
     "schemas/iteration.schema.json",
     ".github/workflows/source-check.yml",
 )

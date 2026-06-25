@@ -25,6 +25,13 @@
       "refresh": "before each new task family and whenever the registry hash changes"
     },
     {
+      "id": "self-improvement-requirements",
+      "kind": "file",
+      "path": "docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md",
+      "status": "DRAFT",
+      "purpose": "Testable requirements for proving the ChatGPT self-improvement loop."
+    },
+    {
       "id": "monocle-man-source",
       "kind": "github",
       "repository": "grahama1970/snippets",
@@ -82,7 +89,7 @@
     "github_pull_requests": true,
     "github_actions_read": true,
     "github_actions_rerun": true,
-    "github_repository_creation": false,
+    "github_repository_creation": true,
     "netlify_project_read": true,
     "netlify_project_create": true,
     "netlify_direct_file_upload_from_chat_runtime": false,

@@ -17,8 +17,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "485f8e276900f6dd80680d4a5d44d8c256e764f0614e0399a634893f23f263c4",
-      "size": 6423
+      "sha256": "0ddcf46b775bdce2776c9d26986714575649375229ee1969b4c31f0b03e10be6",
+      "size": 8053
     },
     {
       "path": "artifacts/.gitkeep",
@@ -52,8 +52,8 @@
     },
     {
       "path": "artifacts/package/local-control-plane-validation.json",
-      "sha256": "0d5c007645c3474842dfe5b2f7b679fcc804817a12bbcfde48a997f6f80c7a5c",
-      "size": 690
+      "sha256": "a69c1a07f133e297b91cc77f7e8cf6c3983a7ec5deaad5cbe9aabb0713f191e9",
+      "size": 748
     },
     {
       "path": "chats/README.md",
@@ -64,6 +64,11 @@
       "path": "chats/monocle-man-website-creation.md",
       "sha256": "c2da3acfec18defe1dcbd2225aeeaf16b8c7472db0cfeb4b34cdb0d9e27986f4",
       "size": 39602
+    },
+    {
+      "path": "docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md",
+      "sha256": "542b13e9d84180c69af7ca6f109e10d6a63453d3f4c2a197dc9d5f9da0a08315",
+      "size": 11773
     },
     {
       "path": "docs/research/README.md",
@@ -82,8 +87,8 @@
     },
     {
       "path": "scripts/validate_control_plane.py",
-      "sha256": "fffe7b417e17ecd7f097ef7c2c2988382a0303fe116b355acd1331bf623a7ab1",
-      "size": 4333
+      "sha256": "a26bc6909c8335bd880509b53240372a1d924338a58a231797c362afffe0bc33",
+      "size": 4391
     },
     {
       "path": "sources/PROJECT_INSTRUCTIONS.md",
@@ -97,23 +102,23 @@
     },
     {
       "path": "sources/SOURCE_INDEX.md",
-      "sha256": "ed43bb3e8eb4d42b21dee86a6c5bf08b82ac759837466711190e323901a4b2ba",
-      "size": 2981
+      "sha256": "8e528995c43984b84c2b0ac76076db4792cc03746deab9e5768517107505efda",
+      "size": 3185
     },
     {
       "path": "sources/source-manifest.json",
-      "sha256": "2febfd9ba5a8a2be08f3e16cc5f7685853d9a279e31fcaebd95c3e8d6605ea9d",
-      "size": 3035
+      "sha256": "d4121fbdd0f37838103e11621b35d0dcc12fc8100aed07716fe0bc86e6e0e3c8",
+      "size": 3295
     },
     {
       "path": "sources/control-plane/CURRENT_STATE.md",
-      "sha256": "2a0affd4646a5f6416101e8e7f4e884740a1d2750aba8f114b0c55bf76ba7d28",
-      "size": 3816
+      "sha256": "b909e1a50b5647f1b548fe27b33b55fc0d10d3a8bdc987e1d3fec91b8b78a1a2",
+      "size": 4405
     },
     {
       "path": "sources/control-plane/DECISIONS.md",
-      "sha256": "94e4492ccebfafce32ddc7e4ae91d2f8d8778e6e63836b014f97b297d4897367",
-      "size": 3179
+      "sha256": "20006dabb99dbd0ee24c08b713936be00941d10a6823f56ddb921382fef7292a",
+      "size": 3640
     },
     {
       "path": "sources/control-plane/MIGRATION_NOTES.md",

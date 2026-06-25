@@ -14,18 +14,20 @@ This file is the entry point for every ChatGPT-Lab session.
 Before changing code, reviewing design, or claiming system status:
 
 1. Read `sources/source-manifest.json`.
-2. Read `sources/control-plane/OPERATING_CONTRACT.md` and `sources/control-plane/CURRENT_STATE.md`.
-3. Fetch the current `grahama1970/agent-skills` registry.
-4. Select the smallest applicable skill chain.
-5. Record the registry reference and selected skills in the iteration artifact.
-6. Inspect the benchmark repository at the exact recorded branch or commit.
-7. Treat missing CI, deployment, screenshot, or interaction evidence as `INSUFFICIENT_EVIDENCE` rather than success.
+2. Read `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`.
+3. Read `sources/control-plane/OPERATING_CONTRACT.md` and `sources/control-plane/CURRENT_STATE.md`.
+4. Fetch the current `grahama1970/agent-skills` registry.
+5. Select the smallest applicable skill chain.
+6. Record the registry reference and selected skills in the iteration artifact.
+7. Inspect the benchmark repository at the exact recorded branch or commit.
+8. Treat missing CI, deployment, screenshot, or interaction evidence as `INSUFFICIENT_EVIDENCE` rather than success.
 
 ## Canonical sources
 
 | Source | Location | Purpose |
 |---|---|---|
 | Lab control plane | `grahama1970/chatgpt-lab`, branch `main`, `sources/`, `schemas/`, `scripts/`, and repository root `README.md` | Operating contract, state, decisions, schemas, and iteration records |
+| Requirements | `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md` | Testable requirements for proving the ChatGPT self-improvement loop |
 | Skill registry | `grahama1970/agent-skills`, branch `main`, `SOURCES.md` and `sources/agent-skills-registry.json` | Skill discovery and progressive loading |
 | Benchmark source | `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/` | Monocle Man SPA source code |
 | Execution evidence | GitHub Actions associated with the benchmark commit or pull request | Tests, logs, reports, and screenshot artifacts |
