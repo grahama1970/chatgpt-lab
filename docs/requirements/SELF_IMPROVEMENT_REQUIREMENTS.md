@@ -1,7 +1,7 @@
 # ChatGPT-Lab Self-Improvement Requirements
 
-**Status:** Draft v0.1  
-**Updated:** 2026-06-25  
+**Status:** Draft v0.2
+**Updated:** 2026-06-25
 **Purpose:** Define the minimum requirements for proving that ChatGPT Web can build and improve software projects without requiring a separate code agent as the default implementer.
 
 ## Goal
@@ -17,6 +17,201 @@ ChatGPT-Lab must prove a repeatable loop where ChatGPT Web can:
 7. record each iteration so the next ChatGPT session can continue from evidence rather than memory.
 
 The benchmark target is the Monocle Man SPA. The larger product is the self-improvement loop, not that website.
+
+## Slice 001 Scope
+
+Do not ask WebGPT to design the whole autonomous loop first. The first
+implementation request is **Slice 001: a narrow, implementation-ready
+GitHub/CI/WebGPT evidence loop for the Monocle Man SPA**, plus schemas and stubs
+that make future local-subagent delegation safe.
+
+Slice 001 proves only this vertical path:
+
+1. target repo: `grahama1970/snippets`;
+2. target branch: `preview-monocle-man-netlify`;
+3. target path: `monocle-man-site/`;
+4. benchmark CI builds or statically serves the site;
+5. Playwright smoke test runs;
+6. desktop screenshot is captured;
+7. mobile screenshot is captured;
+8. console errors are captured;
+9. accessibility report is captured;
+10. interaction result JSON is captured;
+11. final `verdict.json` is emitted;
+12. one tiny visible ChatGPT-authored website change is tested;
+13. GitHub Actions runs on the exact candidate commit;
+14. evidence artifacts are uploaded and referenced from ChatGPT-Lab; and
+15. one iteration record is written under `iterations/`.
+
+Slice 001 must not implement a full live local-subagent bridge. It may add the
+task-request schema, receipt schema, refusal rules, and one dry-run/read-only
+example. Live WebGPT-to-local-subagent execution remains `NOT_ESTABLISHED` until
+a later slice proves transport, identity, authorization, and receipts.
+
+## Benchmark Evidence Bundle
+
+The first benchmark workflow must upload an artifact with this minimum layout:
+
+```text
+benchmark-evidence/
+  run-metadata.json
+  source-metadata.json
+  test-results.json
+  console-errors.json
+  network-errors.json
+  accessibility.json
+  interactions.json
+  screenshots/
+    desktop.png
+    mobile.png
+  deployment-metadata.json
+  artifact-manifest.json
+  verdict.json
+```
+
+`deployment-metadata.json` may be nullable until Netlify deployment proof exists.
+Any live-site claim still requires deployment metadata that maps the live URL to
+the exact tested commit.
+
+`run-metadata.json` must include:
+
+```json
+{
+  "schema": "chatgpt_lab.github_actions_run.v1",
+  "repository": "grahama1970/snippets",
+  "workflow": "monocle-man-benchmark",
+  "run_id": null,
+  "run_attempt": null,
+  "head_sha": null,
+  "branch": "preview-monocle-man-netlify",
+  "artifact_name": "monocle-man-benchmark-evidence",
+  "generated_at": null
+}
+```
+
+The critical invariant is: workflow `head_sha` must equal the candidate commit.
+A passing GitHub Actions status without that equality is `INSUFFICIENT_EVIDENCE`.
+
+## Iteration File Layout
+
+Slice 001 iteration records should use this layout:
+
+```text
+iterations/
+  2026-06-25-slice-001-monocle-man/
+    iteration.json
+    status.json
+    loaded-sources.json
+    selected-skills.json
+    candidate.json
+    evidence/
+      github-actions-run.json
+      benchmark-artifact-manifest.json
+      deployment-proof.json
+      screenshot-index.json
+    reviews/
+      code-review.json
+      visual-review.json
+      webgpt-review.json
+    webgpt/
+      ask-run-reference.json
+      request.md
+      response.parsed.json
+    subagents/
+      requests/
+      receipts/
+```
+
+`status.json` is the fast-readable state file:
+
+```json
+{
+  "schema": "chatgpt_lab.iteration_status.v1",
+  "iteration_id": "2026-06-25-slice-001-monocle-man",
+  "state": "INSUFFICIENT_EVIDENCE",
+  "phase": "benchmark-ci",
+  "candidate_commit": null,
+  "required_next_evidence": [
+    "github_actions_run_matching_candidate_commit",
+    "desktop_screenshot",
+    "mobile_screenshot",
+    "verdict_json"
+  ],
+  "blockers": [],
+  "updated_at": "2026-06-25T00:00:00-04:00"
+}
+```
+
+## Local Subagent Request Contract
+
+WebGPT must never emit free-form instructions such as "run whatever is needed
+locally." Local work requests must be structured JSON and validated before any
+cron-launched local subagent acts.
+
+Minimum request shape:
+
+```json
+{
+  "schema": "chatgpt_lab.webgpt_local_task_request.v1",
+  "task_id": "webgpt-local-20260625-001",
+  "requested_by": "webgpt",
+  "objective": "Run read-only validation for the benchmark evidence bundle.",
+  "mode": "read_only",
+  "target": {
+    "repository": "grahama1970/snippets",
+    "branch": "preview-monocle-man-netlify",
+    "path": "monocle-man-site/",
+    "commit": null
+  },
+  "allowed_commands": [
+    "npm ci",
+    "npm run build",
+    "npx playwright test"
+  ],
+  "allowed_paths": [
+    "monocle-man-site/**",
+    "artifacts/**"
+  ],
+  "forbidden_paths": [
+    "~/.ssh/**",
+    ".env",
+    "**/.env",
+    "**/secrets/**"
+  ],
+  "timeout_seconds": 600,
+  "network_policy": "default_ci_only",
+  "write_policy": "artifacts_only",
+  "required_outputs": [
+    "subagent-receipt.json",
+    "stdout.txt",
+    "stderr.txt",
+    "artifact-manifest.json"
+  ],
+  "refusal_conditions": [
+    "target_commit_missing",
+    "command_not_allowlisted",
+    "path_outside_allowlist",
+    "secrets_requested",
+    "timeout_exceeded"
+  ]
+}
+```
+
+Invalid requests produce receipts, not silent skips. Minimum refusal receipt:
+
+```json
+{
+  "schema": "chatgpt_lab.local_subagent_receipt.v1",
+  "task_id": "webgpt-local-20260625-001",
+  "status": "REFUSED",
+  "reason": "target_commit_missing",
+  "commands_run": [],
+  "files_touched": [],
+  "artifacts": [],
+  "started_at": null,
+  "completed_at": null
+}
+```
 
 ## Collaboration Control-Plane Surfaces
 
@@ -112,19 +307,36 @@ The cron-launched local subagent is not a third planning authority. It is a boun
 7. one complete iteration record validates against schema; and
 8. unsupported success claims are absent.
 
-## Open Questions
+## Resolved Slice 001 Decisions
 
-1. What is the exact write path for ChatGPT Web into the benchmark repo: direct commit, branch plus PR, or project-agent-mediated commit?
-2. What bridge protocol should WebGPT use to request local subagent work through the cron-launched local subagent?
-3. What is the canonical screenshot capture path: GitHub Actions artifact, local Playwright artifact, Netlify visual check, or all three?
-4. How should ChatGPT Web ingest CI artifacts back into project context without relying on memory?
-5. What is the first benchmark change small enough to prove the loop without expanding scope?
-6. Which ChatGPT tab should be the canonical `$ask webgpt` project binding for ChatGPT-Lab?
+1. The first slice is Monocle Man CI plus screenshot evidence plus one tiny
+   visible ChatGPT-authored benchmark change plus one iteration record.
+2. ChatGPT-Lab owns contracts, schemas, iteration records, source references, and
+   evidence references.
+3. `grahama1970/snippets@preview-monocle-man-netlify:monocle-man-site/` owns
+   the benchmark source, benchmark workflow, Playwright smoke, screenshot
+   capture, and generated benchmark artifacts.
+4. `$ask webgpt` owns WebGPT orchestration artifacts. `$surf` owns browser
+   transport proof when the lower layer is used directly.
+5. Local subagent work is allowed only through versioned JSON task requests with
+   allowlisted commands, path bounds, timeouts, required outputs, and
+   receipt-backed refusal.
+6. Missing CI, screenshots, deployment metadata, WebGPT artifacts, or local
+   receipts fail closed as `INSUFFICIENT_EVIDENCE`, `NEEDS_ATTENTION`, or
+   `BLOCKED`; they never imply success.
+
+## Remaining Open Questions
+
+1. Which exact ChatGPT conversation URL or browser-oracle project binding should
+   be canonical for `$ask webgpt` work on ChatGPT-Lab?
+2. Should Slice 001 land directly on `preview-monocle-man-netlify`, or through a
+   branch plus pull request before merge?
+3. What is the first tiny visible Monocle Man change ChatGPT should make once
+   benchmark CI exists?
 
 ## Parking Lot
 
-- Tailscale/WebGPT/cron-subagent bridge protocol.
-- Benchmark CI implementation.
-- Screenshot artifact schema.
-- Iteration record generator.
+- Live Tailscale/WebGPT/cron-subagent bridge execution.
+- Bounded loop controller implementation.
 - Netlify deployment proof collector.
+- Artifact ingestion back into ChatGPT Project context without manual upload.

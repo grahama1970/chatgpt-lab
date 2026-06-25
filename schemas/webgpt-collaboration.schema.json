@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/webgpt-collaboration.schema.json",
+  "title": "ChatGPT-Lab WebGPT Collaboration",
+  "type": "object",
+  "required": [
+    "schema",
+    "mode",
+    "ask_artifacts",
+    "closure_proof"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.webgpt_collaboration.v1"},
+    "mode": {
+      "enum": ["creation", "plan_collaboration", "review", "oracle"]
+    },
+    "ask_artifacts": {
+      "type": "object",
+      "required": ["request", "status", "events"],
+      "properties": {
+        "request": {"type": "string"},
+        "status": {"type": "string"},
+        "events": {"type": "string"},
+        "raw_response": {"type": ["string", "null"]},
+        "parsed_response": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    },
+    "closure_proof": {"const": "not_closure_proof"}
+  },
+  "additionalProperties": false
+}

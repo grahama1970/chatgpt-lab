@@ -1,0 +1,34 @@
+{
+  "schema": "chatgpt_lab.iteration.v1",
+  "iteration_id": "2026-06-25-slice-001-monocle-man",
+  "started_at": null,
+  "completed_at": null,
+  "control_plane": {
+    "repository": "grahama1970/chatgpt-lab",
+    "ref": "main"
+  },
+  "skills": {
+    "registry_repository": "grahama1970/agent-skills",
+    "registry_ref": "main",
+    "registry_hash": null,
+    "selected": []
+  },
+  "candidate": {
+    "repository": "grahama1970/snippets",
+    "branch": "preview-monocle-man-netlify",
+    "commit": null
+  },
+  "evidence": {
+    "ci": null,
+    "deployment": null,
+    "screenshots": [],
+    "interactions": null
+  },
+  "reviews": {
+    "code": null,
+    "design": null
+  },
+  "changes": [],
+  "verdict": "INSUFFICIENT_EVIDENCE",
+  "stop_reason": "missing_github_actions_run_matching_candidate_commit"
+}

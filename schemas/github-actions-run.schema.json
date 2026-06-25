@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/github-actions-run.schema.json",
+  "title": "ChatGPT-Lab GitHub Actions Run",
+  "type": "object",
+  "required": [
+    "schema",
+    "repository",
+    "workflow",
+    "run_id",
+    "run_attempt",
+    "head_sha",
+    "branch",
+    "artifact_name",
+    "generated_at"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.github_actions_run.v1"},
+    "repository": {"type": "string", "minLength": 1},
+    "workflow": {"type": "string", "minLength": 1},
+    "run_id": {"type": ["integer", "string", "null"]},
+    "run_attempt": {"type": ["integer", "string", "null"]},
+    "head_sha": {"type": ["string", "null"]},
+    "branch": {"type": "string", "minLength": 1},
+    "artifact_name": {"type": "string", "minLength": 1},
+    "generated_at": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

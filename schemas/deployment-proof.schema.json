@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/deployment-proof.schema.json",
+  "title": "ChatGPT-Lab Deployment Proof",
+  "type": "object",
+  "required": [
+    "schema",
+    "provider",
+    "url",
+    "commit",
+    "status"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.deployment_proof.v1"},
+    "provider": {"enum": ["netlify"]},
+    "deployment_id": {"type": ["string", "null"]},
+    "url": {"type": ["string", "null"]},
+    "commit": {"type": ["string", "null"]},
+    "branch": {"type": ["string", "null"]},
+    "status": {
+      "enum": ["PROVEN", "NOT_ESTABLISHED", "BLOCKED", "INSUFFICIENT_EVIDENCE"]
+    },
+    "generated_at": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

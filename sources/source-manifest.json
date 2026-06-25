@@ -32,6 +32,22 @@
       "purpose": "Testable requirements for proving the ChatGPT self-improvement loop."
     },
     {
+      "id": "slice-001-contracts",
+      "kind": "file-set",
+      "status": "DRAFT",
+      "paths": [
+        "schemas/benchmark-evidence.schema.json",
+        "schemas/github-actions-run.schema.json",
+        "schemas/webgpt-collaboration.schema.json",
+        "schemas/webgpt-local-task-request.schema.json",
+        "schemas/local-subagent-receipt.schema.json",
+        "schemas/deployment-proof.schema.json",
+        "schemas/screenshot-evidence.schema.json",
+        "iterations/templates/iteration.slice-001.template.json"
+      ],
+      "purpose": "Machine-readable contracts and starter iteration record for Slice 001."
+    },
+    {
       "id": "monocle-man-source",
       "kind": "github",
       "repository": "grahama1970/snippets",

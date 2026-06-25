@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/local-subagent-receipt.schema.json",
+  "title": "ChatGPT-Lab Local Subagent Receipt",
+  "type": "object",
+  "required": [
+    "schema",
+    "task_id",
+    "status",
+    "commands_run",
+    "files_touched",
+    "artifacts",
+    "started_at",
+    "completed_at"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.local_subagent_receipt.v1"},
+    "task_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["REFUSED", "COMPLETED", "FAILED"]},
+    "reason": {"type": ["string", "null"]},
+    "commands_run": {"type": "array", "items": {"type": "object"}},
+    "files_touched": {"type": "array", "items": {"type": "string"}},
+    "artifacts": {"type": "array", "items": {"type": "string"}},
+    "started_at": {"type": ["string", "null"]},
+    "completed_at": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

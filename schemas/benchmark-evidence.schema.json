@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/benchmark-evidence.schema.json",
+  "title": "ChatGPT-Lab Benchmark Evidence Bundle",
+  "type": "object",
+  "required": [
+    "schema",
+    "run_metadata",
+    "source_metadata",
+    "artifact_manifest",
+    "verdict"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.benchmark_evidence.v1"},
+    "run_metadata": {"type": "object"},
+    "source_metadata": {"type": "object"},
+    "test_results": {"type": ["object", "null"]},
+    "console_errors": {"type": ["object", "array", "null"]},
+    "network_errors": {"type": ["object", "array", "null"]},
+    "accessibility": {"type": ["object", "null"]},
+    "interactions": {"type": ["object", "array", "null"]},
+    "screenshots": {
+      "type": "object",
+      "required": ["desktop", "mobile"],
+      "properties": {
+        "desktop": {"type": "string"},
+        "mobile": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "deployment_metadata": {"type": ["object", "null"]},
+    "artifact_manifest": {"type": "object"},
+    "verdict": {
+      "enum": ["PASS", "NEEDS_CHANGES", "BLOCKED", "INSUFFICIENT_EVIDENCE"]
+    }
+  },
+  "additionalProperties": false
+}

@@ -5,16 +5,16 @@
 **Overall readiness:** `NOT_READY`  
 **Benchmark:** Monocle Man SPA
 
-This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is pushed, and GitHub Actions has validated the control plane.
+This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is pushed, and GitHub Actions has validated the control plane. Use `git rev-parse HEAD` and `git ls-remote origin refs/heads/main` for the current commit because this file may lag the newest push.
 
 ## Readiness
 
 | Capability | State | Evidence / caveat |
 |---|---|---|
 | Persistent ChatGPT Project | `READY` | Project `ChatGPT-Lab` was created by the user and this conversation was moved into it. |
-| Dedicated control-plane repository | `READY` | Target: `grahama1970/chatgpt-lab`, branch `main`; pushed commit `9a3d080151d341a80f164866160979b2c6d2c823`. |
+| Dedicated control-plane repository | `READY` | Target: `grahama1970/chatgpt-lab`, branch `main`; current commit must be checked with Git before use. |
 | Control-plane source check | `PASS` | Workflow is active and runs on all pushes to `main`; latest run evidence is stored under `artifacts/github/`. |
-| Self-improvement requirements | `DRAFT` | First requirements artifact: `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`. |
+| Self-improvement requirements | `DRAFT_V0.2` | Slice 001 scope, benchmark evidence layout, local-subagent request contract, and schema stubs are recorded in `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`. |
 | GitHub source read/write | `READY` | File, branch, pull request, and CI-read operations are available after the repository is connected. |
 | `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Requirements plan-collab attempts wrote artifacts under `/mnt/storage12tb/skills/ask/outputs/chatgpt-lab-requirements/` but failed preflight because multiple ChatGPT tabs made tab identity ambiguous. |
 | Skill discovery | `READY` | Generated registry in `grahama1970/agent-skills` is accessible. |
@@ -27,6 +27,7 @@ This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is 
 | Local browser rendering | `READY` | Chromium/Playwright rendering and screenshot capture are available in the execution environment. |
 | GitHub Actions evidence retrieval | `READY` | Run status, jobs, logs, and artifacts can be read when a workflow run exists. |
 | ChatGPT Project source writing | `UNAVAILABLE` | No Project Sources write API is exposed in this session. GitHub is the external canonical-source workaround. |
+| Slice 001 schemas/templates | `DRAFT` | Schema stubs and iteration template exist under `schemas/` and `iterations/templates/`; benchmark CI and validators still need implementation. |
 | Bounded loop controller | `NOT_ESTABLISHED` | Contract exists; deterministic orchestration code remains to be implemented. |
 
 ## Current source locations
@@ -42,12 +43,13 @@ This bundle targets `grahama1970/chatgpt-lab`. The repository exists, `main` is 
 
 ## Immediate blockers to a closed loop
 
-1. Review and accept or revise the self-improvement requirements.
+1. Review and accept or revise Slice 001 requirements.
 2. Commit benchmark CI that runs the site, tests interactions, checks accessibility and console errors, and uploads desktop/mobile screenshots.
-3. Establish an automatic deployment path from the benchmark branch to Netlify.
-4. Confirm that a deployment can be mapped to the exact tested commit.
-5. Implement a bounded loop controller that writes an iteration artifact after every phase.
-6. Add a machine-readable skill selection record and dependency expansion step.
+3. Implement validators for the new Slice 001 schema stubs.
+4. Establish an automatic deployment path from the benchmark branch to Netlify.
+5. Confirm that a deployment can be mapped to the exact tested commit.
+6. Implement a bounded loop controller that writes an iteration artifact after every phase.
+7. Add a machine-readable skill selection record and dependency expansion step.
 
 ## Next admissible milestone
 

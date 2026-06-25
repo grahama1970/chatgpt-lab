@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/screenshot-evidence.schema.json",
+  "title": "ChatGPT-Lab Screenshot Evidence",
+  "type": "object",
+  "required": [
+    "schema",
+    "commit",
+    "viewport",
+    "path",
+    "captured_at"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.screenshot_evidence.v1"},
+    "commit": {"type": ["string", "null"]},
+    "deployment_url": {"type": ["string", "null"]},
+    "viewport": {"enum": ["desktop", "mobile"]},
+    "path": {"type": "string", "minLength": 1},
+    "width": {"type": ["integer", "null"]},
+    "height": {"type": ["integer", "null"]},
+    "captured_at": {"type": "string"}
+  },
+  "additionalProperties": false
+}
