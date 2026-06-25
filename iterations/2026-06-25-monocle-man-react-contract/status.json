@@ -1,17 +1,51 @@
 {
   "schema": "chatgpt_lab.iteration_status.v1",
   "iteration_id": "2026-06-25-monocle-man-react-contract",
-  "state": "PASS",
-  "phase": "merged",
-  "scope": "benchmark_ci_only_no_live_site_claim",
-  "candidate_commit": "911052a2973a005021cdd9a41c4eefda72cc3b34",
-  "merged_commit": "043f1a7c807a30b221ddd56cd3ea744b34c1dfd8",
-  "pull_request": "https://github.com/grahama1970/snippets/pull/3",
-  "github_actions_run": "28198930713",
-  "artifact_id": "7890258305",
-  "artifact_digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
-  "verdict": "PASS",
-  "blockers": [],
-  "warnings": ["deployment_not_established_no_live_site_claim"],
-  "updated_at": "2026-06-25T16:39:00-04:00"
+  "state": "PARTIAL_READY_DEPLOYMENT_UNVERIFIED",
+  "phase": "react_and_pages_workflow_merged_live_delivery_unverified",
+  "scope": "frontend_react_ci_and_github_pages_delivery_path",
+  "react_pr": {
+    "pull_request": "https://github.com/grahama1970/snippets/pull/3",
+    "candidate_commit": "911052a2973a005021cdd9a41c4eefda72cc3b34",
+    "merged_commit": "043f1a7c807a30b221ddd56cd3ea744b34c1dfd8",
+    "github_actions_run": "28198930713",
+    "artifact_id": "7890258305",
+    "artifact_digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
+    "verdict": "PASS"
+  },
+  "pages_pr": {
+    "pull_request": "https://github.com/grahama1970/snippets/pull/4",
+    "candidate_commit": "bc37d7be7419077d946e443678224d421fb0324d",
+    "merged_commit": "aa30c43cbbb61d40ae7b22625e8dee24bb35c511",
+    "pages_pr_build_run": "28200836938",
+    "benchmark_run": "28200837231",
+    "artifact_id": "7891035281",
+    "artifact_digest": "sha256:dc470f692016d680cb991faf6d20d08b8da3ad66fb6448283f3af8f53b32ed96",
+    "verdict": "PASS_FOR_PR_BUILD_AND_BENCHMARK"
+  },
+  "live_delivery": {
+    "state": "NOT_ESTABLISHED",
+    "missing": [
+      "post_merge_pages_deploy_run",
+      "deploy_pages_page_url",
+      "live_desktop_screenshot",
+      "live_mobile_screenshot",
+      "persona_bound_review_design",
+      "scoped_review_code"
+    ]
+  },
+  "report": {
+    "path": "iterations/2026-06-25-monocle-man-react-contract/REPORT.md",
+    "state": "WRITTEN"
+  },
+  "blockers": [
+    "post_merge_github_pages_deployment_metadata_not_retrieved_by_available_connector",
+    "live_visual_inspection_not_yet_recorded",
+    "review_design_bundle_missing",
+    "review_code_bundle_missing"
+  ],
+  "warnings": [
+    "playwright_provides_deterministic_interaction_evidence_but_standalone_test_interactions_manifest_missing"
+  ],
+  "updated_at": "2026-06-25T17:35:00-04:00"
 }
