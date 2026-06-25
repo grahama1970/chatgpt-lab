@@ -1,0 +1,18 @@
+{
+  "schema": "chatgpt_lab.screenshot_index.v1",
+  "source_artifact_id": 7890258305,
+  "source_artifact_digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
+  "screenshots": [
+    {"path": "screenshots/desktop.png", "width": 1440, "height": 1100, "sha256": "1d4e62c80fda438d5ab0c43d442191969b86a8271de72d12b6d6fff51ad9b4eb"},
+    {"path": "screenshots/mobile.png", "width": 390, "height": 844, "sha256": "6c86b77d0913c8a4a7aa33d1e2ca158ffcc840147cbfa42af819d510ed1af513"},
+    {"path": "screenshots/desktop-hero.png", "width": 1440, "height": 1100, "sha256": "1d4e62c80fda438d5ab0c43d442191969b86a8271de72d12b6d6fff51ad9b4eb"},
+    {"path": "screenshots/mobile-hero.png", "width": 390, "height": 1046, "sha256": "85b77d98d5240834c845c26d0ebd22916782802476c5f0fec3952eb475b596c0"},
+    {"path": "screenshots/desktop-modal.png", "width": 1440, "height": 1100, "sha256": "d29bb5f0830cd3bfdc00ce89739c7e857526d6a1a76c3e610f02ae9b0a2f2850"},
+    {"path": "screenshots/mobile-menu.png", "width": 390, "height": 844, "sha256": "1c7a4fe9cc76e455602014b4e7d4acb679af08d11b64f7181b5179cd81c361a7"},
+    {"path": "screenshots/desktop-full.png", "width": 1440, "height": 5166, "sha256": "76eb55a0ad113d660026acdf48b40b8c71af159d06f569331c243e87139d6dd9"},
+    {"path": "screenshots/mobile-full.png", "width": 390, "height": 5508, "sha256": "57fb7a7b3a60434fdb43d3c8ad5bfc9f1327ffb6cebba3e65fca25a7c94c0906"},
+    {"path": "screenshots/desktop-lines.png", "width": 1326, "height": 689, "sha256": "51edc372614585c0e5d822c79f7af51f8391aa1e5bd190d80e3f0a7c2b7707e0"},
+    {"path": "screenshots/mobile-lines.png", "width": 358, "height": 1355, "sha256": "31881c29601eb16e5dd38fd7dc1768addd26f55d379490f6c7290f270493cd67"}
+  ],
+  "inspection_summary": "Desktop, mobile, hero, modal, mobile menu, lines, and full-page screenshots were present in the passing artifact."
+}
