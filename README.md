@@ -1,144 +1,171 @@
-# ChatGPT-Lab
+# ChatGPT-Lab — Verified Self-Improvement for Web Interfaces
 
-ChatGPT-Lab is a GitHub-backed control plane for a ChatGPT Web project.
+<p align="center">
+  <img
+    src="assets/chatgpt-lab-header.png"
+    alt="Retro-futurist laboratory header showing a human brain beneath a glass bell jar on a dark walnut plinth with an etched brass CHATGPT-LAB plaque"
+    width="100%"
+  />
+</p>
 
-The practical goal is to keep the project instructions, operating contract, current state, schemas, scripts, evidence records, exported chats, and iteration history in a repository that ChatGPT Web can read during future sessions. ChatGPT Project Sources are not currently writable from this environment, so this repository becomes the external source of truth that can be updated, reviewed, validated, and reloaded.
+ChatGPT-Lab is a GitHub-backed control plane for running **bounded,
+evidence-driven software improvement loops** from ChatGPT Web. It keeps project
+instructions, operating rules, source references, schemas, exported chats,
+iteration receipts, and verification evidence in a place that can be read,
+updated, reviewed, and validated across sessions.
 
-The local project directory is `chatgpt-lab`. The intended GitHub repository target is `grahama1970/chatgpt-lab`.
+The Monocle Man SPA is the first benchmark fixture. Improving that site is not
+the whole project; it is the test case for proving a reusable loop that selects
+skills, writes code, runs CI, deploys the tested revision, inspects real renders,
+reviews code and design independently, applies validated fixes, and records what
+the process learned.
 
-## Why This Exists
+**The golden rule:** a model may propose an improvement; only current evidence
+may approve it.
 
-ChatGPT can help improve websites, but a reliable improvement loop needs more than conversation memory. It needs stable files, exact source references, deterministic checks, and evidence artifacts that survive across sessions.
+## The Loop
 
-This repo gives future ChatGPT Web sessions a durable project source. It records:
+```text
+human objective or detected defect
+    ↓
+load current project sources + select the smallest useful skill chain
+    ↓
+baseline the exact Git commit and rendered site
+    ↓
+write a coherent patch on an isolated branch
+    ↓
+GitHub Actions: build + interactions + accessibility + screenshots
+    ↓
+Netlify: deploy the tested commit
+    ↓
+independent code review + visual review of fresh evidence
+    ↓
+PASS | NEEDS_CHANGES | BLOCKED | INSUFFICIENT_EVIDENCE
+    ↓
+retry within a fixed round limit, then preserve the lesson
+```
 
-1. what the project is trying to build;
-2. which sources are canonical;
-3. which skills and repositories should be loaded;
-4. which prior chats explain intent and decisions;
-5. what the current blockers are;
-6. what evidence is required before a result can be accepted; and
-7. how each iteration should be recorded.
+The **inner loop** improves the website. The **outer loop** improves the skill
+selection, tests, evidence gates, reviewer quality, and stopping rules that
+produced the result.
 
-## Project Mission
+## Try This First
 
-The mission is to build a reusable, evidence-driven website self-improvement system controlled from ChatGPT Web.
+You do not need to memorize the entire control plane. Start by validating it and
+reading the canonical source map:
 
-The first benchmark fixture is the Monocle Man single-page website. Improving that site is not the whole project; it is the test case for proving the larger loop:
+```bash
+git clone https://github.com/grahama1970/chatgpt-lab.git
+cd chatgpt-lab
 
-1. bootstrap project context from this repository;
-2. select and load the smallest useful skill chain;
-3. inspect the target website source at an exact commit;
-4. establish a tested and screenshot-backed baseline;
-5. implement a small, coherent change;
-6. run deterministic checks in GitHub Actions;
-7. deploy the tested revision;
-8. inspect the rendered site at desktop and mobile sizes;
-9. separate builder, reviewer, and gate decisions; and
-10. write an iteration artifact that records what happened.
+python3 scripts/validate_control_plane.py
+sed -n '1,220p' sources/SOURCE_INDEX.md
+sed -n '1,220p' sources/control-plane/CURRENT_STATE.md
+```
 
-## ChatGPT Project Shape
+At the beginning of a new ChatGPT-Lab session, read these files in order:
 
-The repository mirrors the two main information areas in a ChatGPT Web project:
+1. [`sources/SOURCE_INDEX.md`](sources/SOURCE_INDEX.md)
+2. [`sources/source-manifest.json`](sources/source-manifest.json)
+3. [`sources/control-plane/OPERATING_CONTRACT.md`](sources/control-plane/OPERATING_CONTRACT.md)
+4. [`sources/control-plane/CURRENT_STATE.md`](sources/control-plane/CURRENT_STATE.md)
+5. [`sources/control-plane/REVIEW_RUBRIC.md`](sources/control-plane/REVIEW_RUBRIC.md)
+6. [`sources/control-plane/DECISIONS.md`](sources/control-plane/DECISIONS.md)
+7. [`sources/README.md`](sources/README.md)
+8. relevant context under [`chats/`](chats/)
 
-- `chats/`: exported or summarized project conversations. These explain intent, decisions, and historical context, but they are not execution proof.
-- `sources/`: guidance for the canonical project sources ChatGPT should load.
+Project agents should also read [`AGENTS.md`](AGENTS.md). Stable instructions for
+the ChatGPT Project live in
+[`sources/PROJECT_INSTRUCTIONS.md`](sources/PROJECT_INSTRUCTIONS.md).
 
-Supporting directories:
+## Evidence Hierarchy
 
-- `sources/PROJECT_INSTRUCTIONS.md`: stable instructions to load this repository as the project source.
-- `sources/SOURCE_INDEX.md`: source index and bootstrap order.
-- `sources/source-manifest.json`: machine-readable source and capability manifest.
-- `sources/control-plane/`: operating contract, current state, review rubric, decisions, and migration notes.
-- `docs/research/`: non-canonical background material and research notes.
-- `iterations/`: future per-run iteration records.
-- `artifacts/`: validation receipts, screenshots, CI outputs, and other evidence artifacts.
-- `artifacts/package/`: local package manifest, checksum file, and local validation receipt.
-- `schemas/`: machine-readable schemas.
-- `scripts/`: local validation and maintenance scripts.
+| Evidence | What it proves |
+| --- | --- |
+| GitHub source at an exact commit SHA | What code and configuration existed |
+| GitHub Actions logs and artifacts | What executed and what passed or failed |
+| Netlify deployment metadata | What revision is live |
+| Fresh desktop/mobile screenshots | What the rendered interface looked like |
+| Deterministic interaction results | What users could actually do |
+| Independent code and design reviews | What should change next |
+| Exported chats and conversation memory | Context only — never execution proof |
 
-## Important Files
+A screenshot cannot prove keyboard behavior. A passing test cannot prove a layout
+is visually coherent. Source inspection cannot prove that images loaded. The
+loop requires the right evidence for each claim.
 
-Start every new ChatGPT Web session by reading:
+## Current Benchmark
 
-1. `sources/SOURCE_INDEX.md`
-2. `sources/source-manifest.json`
-3. `sources/control-plane/OPERATING_CONTRACT.md`
-4. `sources/control-plane/CURRENT_STATE.md`
-5. `sources/control-plane/REVIEW_RUBRIC.md`
-6. `sources/control-plane/DECISIONS.md`
-7. `sources/README.md`
-8. relevant files under `chats/`
+The Monocle Man SPA is intentionally small enough for fast iteration while still
+exercising typography, imagery, responsive composition, embedded video,
+keyboard interaction, accessibility, deployment, and subjective visual review.
 
-Other key paths:
+- Benchmark source: `grahama1970/snippets`, branch
+  `preview-monocle-man-netlify`, path `monocle-man-site/`
+- Render target: Netlify project `monocle-man-review`
+- Skills source: `grahama1970/agent-skills`
+- Current readiness and blockers:
+  [`sources/control-plane/CURRENT_STATE.md`](sources/control-plane/CURRENT_STATE.md)
 
-- `sources/PROJECT_INSTRUCTIONS.md`: stable instructions to load this repository as the project source.
-- `sources/control-plane/`: detailed control-plane policy and state.
-- `schemas/iteration.schema.json`: expected shape of iteration evidence records.
-- `scripts/validate_control_plane.py`: local and CI validation for the control-plane files.
-- `artifacts/package/`: package integrity and local validation evidence.
-- `.github/workflows/source-check.yml`: GitHub Actions workflow for repository validation.
-- `chats/monocle-man-website-creation.md`: initial exported project chat.
+## Repository Shape
 
-## Repository Role
+The repository mirrors the durable information a ChatGPT Project needs:
 
-This repository is the ChatGPT Web-accessible control plane. It is not just documentation and it is not the benchmark website source.
+```text
+README.md                              human entry point
+AGENTS.md                              agent bootstrap and role constraints
+assets/                                repository identity and provenance
+chats/                                 exported or summarized project context
+sources/PROJECT_INSTRUCTIONS.md        persistent ChatGPT Project bootstrap
+sources/SOURCE_INDEX.md                source map and bootstrap order
+sources/source-manifest.json           machine-readable sources and capabilities
+sources/control-plane/                 operating contract, state, rubric, decisions
+schemas/iteration.schema.json          iteration evidence contract
+scripts/validate_control_plane.py      local and CI source validation
+iterations/                            durable per-run evidence records
+artifacts/                             CI receipts, screenshots, and reports
+.github/workflows/source-check.yml     deterministic repository validation
+```
 
-It owns:
+`chats/` explains intent and history, but it is not execution proof. Generated
+artifacts may be retained elsewhere, but every accepted iteration must preserve
+durable identifiers, revision identity, findings, and verdict.
 
-- project instructions for future ChatGPT sessions;
-- the operating contract for the improvement loop;
-- the current readiness and blocker state;
-- source precedence rules;
-- review and gate criteria;
-- schemas for iteration records;
-- validation scripts;
-- local and CI validation receipts;
-- exported chat context;
-- historical decisions and migration notes.
+## Operating Principles
 
-The benchmark website source currently lives separately in `grahama1970/snippets`, branch `preview-monocle-man-netlify`, under `monocle-man-site/`.
-
-## Evidence Standard
-
-This project treats claims as unproven until backed by concrete artifacts.
-
-The evidence hierarchy is:
-
-1. GitHub source and commit SHA for what code exists.
-2. GitHub Actions logs and artifacts for what executed.
-3. Netlify deployment metadata for what is live.
-4. Fresh screenshots and interaction results for what users can see and do.
-5. Independent review findings for judgment and fix prioritization.
-6. Exported chats and conversation memory as context only, never proof.
-
-Missing CI, deployment, screenshot, or interaction evidence should be recorded as `INSUFFICIENT_EVIDENCE`, not treated as success.
+- **Evidence before confidence.** Missing proof becomes
+  `INSUFFICIENT_EVIDENCE`, not an optimistic pass.
+- **Progressive skill loading.** Read the registry first; load only the smallest
+  applicable skill chain and its declared dependencies.
+- **Builder/reviewer separation.** ChatGPT may perform both roles, but the review
+  phase remains read-only until findings are finalized.
+- **Bounded retries.** The current default is three rounds and no more than five
+  prioritized fixes per round.
+- **Exact revision identity.** CI, deployment, screenshots, and review must all
+  refer to the same candidate commit.
+- **Durable learning.** Historical iteration and decision records are appended,
+  not rewritten to make later results look cleaner.
 
 ## Current Status
 
-The repository is in bootstrap state. The control-plane files and validation script are present locally, but the system is not yet a closed improvement loop.
+The control-plane repository and source-check workflow are established. The full
+system is not yet a closed loop: benchmark Playwright/accessibility/screenshot CI,
+a commit-linked Netlify deployment, a coded loop controller, and automated skill
+routing remain the principal engineering milestones.
 
-Immediate milestones are:
-
-1. create or expose `grahama1970/chatgpt-lab`, then push this repository there;
-2. confirm the source-check GitHub Actions workflow passes;
-3. establish benchmark CI for tests, accessibility, console checks, and screenshots;
-4. connect a deployment path to Netlify;
-5. prove deployments map to exact tested commits; and
-6. write the first complete iteration record.
-
-## Validation
-
-Run the local control-plane check with:
+Run the current validator with:
 
 ```bash
 python3 scripts/validate_control_plane.py
 ```
 
-For packaged files, verify checksums with:
+That check proves the control-plane structure is internally consistent. It does
+not, by itself, prove the benchmark website, deployment, or design review loop.
 
-```bash
-sha256sum -c artifacts/package/SHA256SUMS.txt
-```
+## Header Artwork
 
-These checks confirm repository structure and file integrity. They do not prove the benchmark website, CI loop, Netlify deployment, or visual review workflow.
+The photorealistic retro laboratory header was created specifically for
+ChatGPT-Lab. The brain represents reasoning; the glass makes it inspectable; the
+walnut plinth and etched brass plaque turn the system into a durable laboratory
+instrument rather than a generic cloud-AI metaphor. Artwork provenance and
+usage guidance live in [`assets/README.md`](assets/README.md).
