@@ -27,7 +27,7 @@
 - The PR #10 post-merge proof run is `28265880104`; `delivery-proof/monocle-man/latest/deployment-proof.json` records `status: PASS`, `blocking_network_errors_count: 0`, `expected_third_party_network_warnings_count: 4`, and screenshots for desktop, modal, mobile, and mobile menu. The tracked release receipt is `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
 - WebGPT-created PRs must use `.github/pull_request_template.md`. The `target.pr` field can be `null` when the task block lives in the PR being processed, which avoids requiring WebGPT to know the PR number before opening the PR.
 - The OpenCode GitHub event workflow model is configured through repository variables. Current smoke configuration uses `PHATGPT_OPENCODE_MODEL=opencode/deepseek-v4-flash-free` and `PHATGPT_OPENCODE_VARIANT=medium`; earlier `opencode/gpt-5.5` attempts were blocked by account balance, and unqualified `gpt-5.5` failed CLI validation because OpenCode requires `provider/model`.
-- The local `opencode serve` broker surface is reachable through the scillm-managed Docker service. `docker-opencode-serve-1` was rebuilt/recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, returns `401 Unauthorized` without Basic auth, and `http://127.0.0.1:4001/v1/scillm/opencode/health` returns `status: ok`, `health.healthy: true`, OpenCode `1.17.12`.
+- The local `opencode serve` broker surface is reachable through the scillm-managed Docker service. `docker-opencode-serve-1` was rebuilt/recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, returns `401 Unauthorized` without Basic auth, and `http://127.0.0.1:4001/v1/scillm/opencode/health` returns `status: ok`, `health.healthy: true`, OpenCode `1.17.12`. Tailscale is active at `100.102.12.64`, but `opencode serve` and scillm are bound to localhost, so remote Tailscale broker access is intentionally not proven or exposed for this MVP.
 
 ## Recent Decisions
 
@@ -45,7 +45,7 @@
 | 2026-06-26 | Make `best-practices-github-ticket` mandatory for PhatGPT event agents | PRs/issues are the queue contract; agents must lease one ticket, honor route metadata, preserve proof, comment verdicts in the PR, and keep repair and review separate. |
 | 2026-06-26 | Use OpenCode OAuth `opencode/gpt-5.5` medium as the default event agent model | Repository secret `OPENCODE_API_KEY` is required; run `28257657868` showed unqualified `gpt-5.5` fails CLI validation, while local `opencode models opencode` lists `opencode/gpt-5.5`. |
 | 2026-06-26 | Add a PR template and allow `target.pr: null` for in-PR task blocks | WebGPT cannot reliably know the PR number before opening a PR; the dispatcher can treat `null` as the current PR while still refusing missing or malformed task contracts. |
-| 2026-06-26 | Treat `opencode serve` as locally available but not yet Tailscale-proven | The scillm-managed Docker service is healthy on localhost; remote WebGPT/Tailscale reachability still needs an explicit network proof before it can be called a remote control surface. |
+| 2026-06-26 | Treat `opencode serve` as locally available and Tailscale exposure as a future gate | The proven MVP loop uses GitHub events, not remote broker calls; the scillm-managed Docker service is healthy on localhost, while Tailscale exposure remains intentionally unproven because the services bind to `127.0.0.1`. |
 | 2026-06-26 | Classify Google `/js/th/` embed-helper aborts as expected third-party warnings | Live Pages proof showed the YouTube no-cookie embed can abort a Google helper script during modal lifecycle; first-party failures and unrelated third-party failures remain blocking. |
 
 ## Open Questions
@@ -59,7 +59,7 @@
 - [ ] Configure `COPILOT_AGENT_TASK_TOKEN` and run `Assign Copilot Agent` for issue #5.
 - [x] Trigger `.github/workflows/opencode-phatgpt.yml` from a real PR comment and preserve PR trace comments for a valid task block in PR #8.
 - [x] Validate `opencode serve` locally as the broker control surface: Docker service `docker-opencode-serve-1` is healthy, direct `:4098` requests require auth, and scillm health reports OpenCode `1.17.12`.
-- [ ] Validate Tailscale reachability to the `opencode serve` broker from the intended WebGPT/local-subagent path.
+- [x] Decide Tailscale broker exposure for this MVP: not required for the proven GitHub-event loop; current services bind to `127.0.0.1`, so remote Tailscale exposure remains a separate future gate.
 - [x] Keep the local worker as fallback/smoke only after the OpenCode event path is tested; PR #10 has both OpenCode event evidence and local reviewer/deployer fail-closed receipts.
 - [ ] Add bounded execution mode only after the dry-run receipt path is accepted.
 
