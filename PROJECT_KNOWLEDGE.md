@@ -49,11 +49,11 @@
 - [ ] Classify the three `youtube-nocookie.com` telemetry aborts as expected third-party noise or adjust the proof filter.
 - [ ] Implement Slice 002 dry-run local-subagent refusal/receipt path.
 - [ ] Implement a bounded loop controller so ChatGPT/WebGPT invokes deterministic rounds instead of relying on prose memory.
-- [ ] Prove WebGPT can create a bounded GitHub PR with a valid `phatgpt-task:v1` block; PR #9 proved the fail-closed missing-contract path, not the valid WebGPT-created path.
+- [x] Prove WebGPT can create a bounded GitHub PR with a valid `phatgpt-task:v1` block: PR #10 (`webgpt-mvp-loop-caption-002`) was created by WebGPT, carried the task block, triggered the PhatGPT OpenCode event worker, and produced coder/reviewer/deployer-review trace comments.
 - [ ] Configure `COPILOT_AGENT_TASK_TOKEN` and run `Assign Copilot Agent` for issue #5.
 - [x] Trigger `.github/workflows/opencode-phatgpt.yml` from a real PR comment and preserve PR trace comments for a valid task block in PR #8.
 - [ ] Validate `opencode serve` locally as the Tailscale/broker control surface.
-- [ ] Keep the local worker as fallback/smoke only after the OpenCode event path is tested.
+- [x] Keep the local worker as fallback/smoke only after the OpenCode event path is tested; PR #10 has both OpenCode event evidence and local reviewer/deployer fail-closed receipts.
 - [ ] Add bounded execution mode only after the dry-run receipt path is accepted.
 
 ## Key Files
