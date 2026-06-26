@@ -416,6 +416,36 @@ def git_worktree_dirty() -> bool:
     return False
 
 
+def current_branch() -> str:
+    result = subprocess.run(
+        ["git", "branch", "--show-current"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return result.stdout.strip()
+
+
+def checkout_target_branch(branch: str, commands_run: list[dict[str, Any]]) -> bool:
+    fetch_command = ["git", "fetch", "origin", branch]
+    exit_code, stdout, stderr = run_command(fetch_command)
+    commands_run.append(shell_record(" ".join(fetch_command), exit_code, stdout, stderr))
+    if exit_code != 0:
+        return False
+
+    switch_command = ["git", "switch", branch]
+    exit_code, stdout, stderr = run_command(switch_command)
+    commands_run.append(shell_record(" ".join(switch_command), exit_code, stdout, stderr))
+    if exit_code == 0:
+        return True
+
+    track_command = ["git", "switch", "--track", f"origin/{branch}"]
+    exit_code, stdout, stderr = run_command(track_command)
+    commands_run.append(shell_record(" ".join(track_command), exit_code, stdout, stderr))
+    return exit_code == 0
+
+
 def execute_coder_task(task: dict[str, Any], item: dict[str, Any], commands_run: list[dict[str, Any]]) -> tuple[str, str | None, list[str], list[str]]:
     task_command = task.get("command", "validate_only")
     if task_command not in {"apply_text_patch", "delete_file"}:
@@ -432,21 +462,8 @@ def execute_coder_task(task: dict[str, Any], item: dict[str, Any], commands_run:
         return "REFUSED", "dirty_worktree", ["clean git worktree"], []
 
     changed_files: list[str] = []
-    fetch_command = ["git", "fetch", "origin", branch]
-    exit_code, stdout, stderr = run_command(fetch_command)
-    commands_run.append(shell_record(" ".join(fetch_command), exit_code, stdout, stderr))
-    if exit_code != 0:
+    if not checkout_target_branch(branch, commands_run):
         return "FAILED", "git_branch_checkout_failed", [], changed_files
-
-    switch_command = ["git", "switch", branch]
-    exit_code, stdout, stderr = run_command(switch_command)
-    commands_run.append(shell_record(" ".join(switch_command), exit_code, stdout, stderr))
-    if exit_code != 0:
-        track_command = ["git", "switch", "--track", f"origin/{branch}"]
-        exit_code, stdout, stderr = run_command(track_command)
-        commands_run.append(shell_record(" ".join(track_command), exit_code, stdout, stderr))
-        if exit_code != 0:
-            return "FAILED", "git_branch_checkout_failed", [], changed_files
 
     if task_command == "apply_text_patch":
         exit_code, stdout, stderr, touched = apply_text_patch_payload(task["payload"])
@@ -632,6 +649,19 @@ def main() -> int:
             else "Coder or WebGPT must repair the task or implementation evidence."
         )
     elif args.role == "reviewer":
+        restore_branch = current_branch()
+        branch = str(task.get("target", {}).get("branch") or item.get("headRefName") or "")
+        checkout_ok = True
+        if branch:
+            if git_worktree_dirty():
+                checkout_ok = False
+                commands_run.append(shell_record("reviewer_checkout_preflight", 2, stderr="dirty_worktree"))
+            else:
+                checkout_ok = checkout_target_branch(branch, commands_run)
+        else:
+            checkout_ok = False
+            commands_run.append(shell_record("reviewer_checkout_preflight", 2, stderr="target_branch_missing"))
+
         files_allowed, actual_files, outside_files = changed_files_allowlist(task, item)
         commands_run.append(
             shell_record(
@@ -646,11 +676,19 @@ def main() -> int:
                 ),
             )
         )
-        validation_ok = run_validation_commands(task, commands_run)
-        review_ok = validation_ok and files_allowed
+        validation_ok = run_validation_commands(task, commands_run) if checkout_ok else False
+        if restore_branch and restore_branch != current_branch():
+            restore_command = ["git", "switch", restore_branch]
+            exit_code, stdout, stderr = run_command(restore_command)
+            commands_run.append(shell_record(" ".join(restore_command), exit_code, stdout, stderr))
+            if exit_code != 0:
+                validation_ok = False
+        review_ok = checkout_ok and validation_ok and files_allowed
         status = "COMPLETED" if review_ok else "FAILED"
         reason = "review_pass" if review_ok else "review_needs_changes"
         missing = []
+        if not checkout_ok:
+            missing.append("reviewer_checkout_target_branch")
         if not validation_ok:
             missing.append("validation_commands_pass")
         if not files_allowed:
