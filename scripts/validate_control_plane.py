@@ -53,6 +53,7 @@ REQUIRED_FILES = (
     "scripts/write_workflow_result.py",
     ".github/workflows/source-check.yml",
     ".github/workflows/agent-dispatch.yml",
+    ".github/workflows/webgpt-command-dispatcher.yml",
 )
 
 

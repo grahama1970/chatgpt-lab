@@ -135,6 +135,7 @@ iterations/                            durable per-run evidence records
 artifacts/                             CI receipts, screenshots, and reports
 .github/workflows/source-check.yml     deterministic repository validation
 .github/workflows/agent-dispatch.yml   bounded GitHub Actions executor proof
+.github/workflows/webgpt-command-dispatcher.yml path-filtered WebGPT file-write bridge
 agent-state/                           machine-readable controller memory
 ```
 
