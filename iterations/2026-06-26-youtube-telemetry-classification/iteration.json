@@ -1,0 +1,10 @@
+{
+  "schema": "chatgpt_lab.iteration.v1",
+  "iteration_id": "2026-06-26-youtube-telemetry-classification",
+  "objective": "Classify expected YouTube no-cookie telemetry aborts in Monocle Pages live proof while keeping first-party and unexpected network failures blocking.",
+  "controller": "ChatGPT Web",
+  "issue": "https://github.com/grahama1970/chatgpt-lab/issues/5",
+  "branch": "chatgpt-classify-youtube-telemetry-20260626",
+  "expected_validation": ["Source Check", "Monocle Man Benchmark", "Monocle Man GitHub Pages proof after merge"],
+  "non_claims": ["No code-review PASS claimed", "No design-review PASS claimed"]
+}
