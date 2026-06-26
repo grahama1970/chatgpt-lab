@@ -211,7 +211,7 @@ function HeroSection({ onOpenVideo }) {
           loading="eager"
           decoding="async"
         />
-        <figcaption>One lens. One side. Evidence over opinion.</figcaption>
+        <figcaption>One lens. One side. Receipts over vibes.</figcaption>
       </figure>
     </section>
   );
