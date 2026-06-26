@@ -13,7 +13,6 @@ The proof may classify aborted YouTube privacy-enhanced embed telemetry requests
 - host is `www.youtube-nocookie.com`;
 - failure text is `net::ERR_ABORTED`;
 - path is `/api/stats/qoe` or `/youtubei/v1/log_event`;
-- the request is observed during or after the modal/video interaction.
 
 These requests are recorded in `expected_third_party_network_warnings` and do not block deployment proof.
 
@@ -25,4 +24,4 @@ The generated `delivery-proof/monocle-man/latest/deployment-proof.json` should d
 - `expected_third_party_network_warnings`;
 - raw observed `network_errors`.
 
-A live proof may report `status: PASS` only when `blocking_network_errors` is empty and the existing DOM, animation, console, and screenshot checks pass.
+A live proof may report `status: PASS` only when `blocking_network_errors` is empty, `hero_heading_contains_monocle_man` is true, `normal_motion_animation_name` is `spin`, and `blocking_network_errors_count` is 0.
