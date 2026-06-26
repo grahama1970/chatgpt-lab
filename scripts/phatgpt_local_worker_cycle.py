@@ -404,7 +404,16 @@ def git_worktree_dirty() -> bool:
         text=True,
         check=False,
     )
-    return bool(result.stdout.strip())
+    ignored_prefixes = {
+        ".codex/",
+        "artifacts/local-worker/",
+    }
+    for line in result.stdout.splitlines():
+        path = line[3:] if len(line) > 3 else ""
+        if any(path == prefix.rstrip("/") or path.startswith(prefix) for prefix in ignored_prefixes):
+            continue
+        return True
+    return False
 
 
 def execute_coder_task(task: dict[str, Any], item: dict[str, Any], commands_run: list[dict[str, Any]]) -> tuple[str, str | None, list[str], list[str]]:
