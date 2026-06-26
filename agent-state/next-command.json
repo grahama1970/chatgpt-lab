@@ -1,14 +1,14 @@
 {
   "schema": "chatgpt_lab.next_command.v1",
-  "command_id": "echo-proof-001",
+  "command_id": "webgpt-api-proof-001",
   "command": "echo_hello",
   "target_repo": "grahama1970/chatgpt-lab",
   "target_ref": "main",
   "workflow": "agent-dispatch.yml",
   "state_path": "agent-state/next-command.json",
-  "objective": "Write a workflow result file proving GitHub Actions ran an allowlisted command.",
+  "objective": "Prove WebGPT can write repo state and dispatch GitHub Actions through its authenticated GitHub API surface.",
   "allowed_outputs": [
     "agent-state/last-result.json"
   ],
-  "stop_condition": "agent-state/last-result.json exists and contains command_id echo-proof-001 with status PASS for the dispatch run."
+  "stop_condition": "agent-state/last-result.json exists and contains command_id webgpt-api-proof-001 with status PASS for the dispatch run."
 }
