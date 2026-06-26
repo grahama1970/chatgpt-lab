@@ -1,6 +1,7 @@
 {
   "schema": "chatgpt_lab.pr_local_task.v1",
   "task_id": "pr-7-evidence-001",
+  "command": "validate_only",
   "mode": "evidence_collection",
   "target": {
     "repository": "grahama1970/chatgpt-lab",

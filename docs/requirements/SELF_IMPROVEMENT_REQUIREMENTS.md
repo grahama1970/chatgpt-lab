@@ -145,8 +145,9 @@ iterations/
 ## Local Subagent Request Contract
 
 WebGPT must never emit free-form instructions such as "run whatever is needed
-locally." Local work requests must be structured JSON and validated before any
-cron-launched local subagent acts.
+locally." Work requests must be structured JSON and validated before any
+GitHub-event OpenCode agent, `opencode serve` session, or fallback local worker
+acts.
 
 Minimum request shape:
 
@@ -220,7 +221,10 @@ There are two primary collaboration surfaces:
 1. **GitHub repository control plane:** durable source, requirements, state, decisions, schemas, CI workflows, evidence artifacts, and iteration records.
 2. **`$ask webgpt` control plane:** browser-backed planning, review, oracle, and task-collaboration surface with preserved request/status/event/output artifacts.
 
-The cron-launched local subagent is not a third planning authority. It is a bounded local execution surface for structured tasks that WebGPT requests through the `$ask webgpt` collaboration path and that the project agent can audit through artifacts.
+The OpenCode event/server path and fallback local worker are not third planning
+authorities. They are bounded execution surfaces for structured tasks that
+WebGPT requests through GitHub tickets or the `$ask webgpt` collaboration path
+and that the project agent can audit through artifacts.
 
 ## Actors
 
@@ -231,7 +235,7 @@ The cron-launched local subagent is not a third planning authority. It is a boun
 | GitHub | Repository control-plane surface | Stores requirements, state, decisions, source, CI workflows, logs, artifacts, and iteration records. |
 | Netlify | Deployment authority | Hosts reviewed builds and exposes deployment metadata tied to commits. |
 | WebGPT via `$ask` | Browser-backed collaboration control-plane surface | May plan, review, ask clarifying questions, or request bounded local subagent work, but cannot replace deterministic proof. |
-| Cron-launched local subagent | Bounded local execution surface | Watches or receives approved WebGPT task requests, performs bounded local work, and returns artifacts. |
+| OpenCode event agent / fallback local worker | Bounded execution surface | Receives approved WebGPT/GitHub ticket tasks, performs bounded work, and returns artifacts. |
 
 ## Capability Requirements
 
@@ -245,9 +249,9 @@ The cron-launched local subagent is not a third planning authority. It is a boun
 | REQ-CAP-006 | CI results must be retrievable by ChatGPT as structured evidence, not only as prose. | Downloaded run metadata, logs, artifacts, and normalized iteration evidence. | `PARTIAL`; control-plane runs are retrievable. |
 | REQ-CAP-007 | ChatGPT must be able to inspect rendered output through fresh screenshots and browser interactions from the same tested commit. | Screenshot files, browser trace, interaction result JSON, commit/deploy mapping. | `NOT_ESTABLISHED` for benchmark. |
 | REQ-CAP-008 | The project agent must be able to use `$ask webgpt` to perform bounded planning, review, oracle, and task-collaboration workflows. | `$ask` run directory containing request, status, events, raw response, parsed output, and any mode-specific artifacts. | `NEEDS_ATTENTION`; plan-collab preflight is currently blocked by duplicate ChatGPT tabs. |
-| REQ-CAP-009 | WebGPT must be able to request bounded local work that is performed by a cron-launched local subagent, not by ad hoc manual interpretation. | WebGPT task request artifact, cron pickup receipt, subagent execution receipt, response artifact, identity/auth proof. | `NOT_ESTABLISHED`. |
+| REQ-CAP-009 | WebGPT must be able to request bounded work that is performed by a GitHub-event OpenCode primary agent delegating to role subagents, with `opencode serve` as the local/Tailscale control surface and local worker execution retained only as fallback/smoke. | WebGPT task request artifact, OpenCode workflow run or server session, PR comment trace, subagent receipt, response artifact, identity/auth proof. | `SOURCE_ADDED_UNPROVEN`. |
 | REQ-CAP-010 | The WebGPT-to-local-subagent bridge must be fail-closed and reachable through a controlled path such as Tailscale when remote transport is needed. | Tailscale identity, endpoint health proof, task transcript, auth decision, rollback/safety policy. | `NOT_ESTABLISHED`. |
-| REQ-CAP-011 | The cron-launched subagent must have a narrow task contract and must not execute arbitrary WebGPT prose. | Task schema, allowlist, timeout, workspace boundary, command log, and refusal receipt for invalid tasks. | `NOT_ESTABLISHED`. |
+| REQ-CAP-011 | The bounded execution agent must have a narrow task contract and must not execute arbitrary WebGPT prose. | Task schema, allowlist, timeout, workspace boundary, command log, and refusal receipt for invalid tasks. | `SOURCE_ADDED_UNPROVEN`. |
 
 ## Evidence Requirements
 
@@ -280,15 +284,17 @@ The cron-launched local subagent is not a third planning authority. It is a boun
 | REQ-WEB-002 | `$ask webgpt-plan-collab` may be used to improve plans, but its output is advisory. | Ask artifacts include request, status, events, raw response, and plan-collab output. |
 | REQ-WEB-003 | `$ask webgpt-review` may review code, plans, or phase gates only from a concrete bundle. | Bundle includes objective, files, commands, evidence, questions, and acceptance gates. |
 | REQ-WEB-004 | WebGPT cannot inspect bare local paths unless file contents or served URLs are supplied. | Bundle contains the relevant content or URL. |
-| REQ-WEB-005 | If WebGPT wants local work, it must emit a structured task request for the cron-launched subagent. | Request includes task id, objective, allowed files, allowed commands, timeout, required artifacts, and refusal conditions. |
-| REQ-WEB-006 | The cron-launched subagent must execute only validated tasks and must produce a response artifact for WebGPT and the project agent. | Response includes status, commands run, files touched, artifacts produced, errors, and remaining blockers. |
+| REQ-WEB-005 | If WebGPT wants executable work, it must emit a structured task request through a GitHub ticket or `$ask` artifact. | Request includes task id, objective, allowed files, allowed commands, timeout, required artifacts, and refusal conditions. |
+| REQ-WEB-006 | The event agent or fallback local worker must execute only validated tasks and must produce a response artifact for WebGPT and the project agent. | Response includes status, commands run, files touched, artifacts produced, errors, and remaining blockers. |
 | REQ-WEB-007 | Local subagent output must not be treated as proof unless it includes raw command results or artifacts. | Subagent receipt includes commands, paths, hashes, screenshots, logs, or test output. |
 | REQ-WEB-008 | PR/issue work handed to a local subagent must be implementation-ready before execution. | The target contains a `chatgpt_lab.pr_local_task.v1` block with allowed commands, paths, validation commands, expected evidence, required outputs, stop condition, and refusal conditions. |
 | REQ-WEB-009 | Under-specified PR/issue work must be refused, not inferred. | The local worker writes a `chatgpt_lab.local_subagent_receipt.v1` receipt with `status: REFUSED`, `reason`, `missing`, and `next_required_action`. |
-| REQ-WEB-010 | The MVP cron loop must separate coder, reviewer, and optional researcher roles. | `agent-skills/agents/phatgpt-coder`, `phatgpt-reviewer`, and `phatgpt-researcher` contracts exist; each invocation handles at most one PR/issue and writes a receipt. |
+| REQ-WEB-010 | The MVP event loop must separate coder, reviewer, and optional researcher roles. | `.opencode/agents/phatgpt-dispatcher.md` routes to `phatgpt-coder`, `phatgpt-reviewer`, or `phatgpt-researcher`; each invocation handles at most one PR/issue and writes a receipt/comment trace. |
 | REQ-WEB-011 | The coder role is the only local role allowed to mutate code. | Coder contract allows scoped mutation only after a valid task block; reviewer and researcher contracts deny code mutation, commit, push, and merge. |
 | REQ-WEB-012 | The reviewer role must be read-only and must return `PASS`, `NEEDS_CHANGES`, or `BLOCKED` style output without patching. | Reviewer contract denies write access and emits review receipt/findings/next owner. |
 | REQ-WEB-013 | Reviewer `NEEDS_CHANGES` output must become the next coder target instead of triggering reviewer mutation. | PR labels/comments route findings back to the coder queue; the coder may retry only within the bounded retry budget. |
+| REQ-WEB-014 | The PhatGPT coder, reviewer, and researcher must follow `best-practices-github-ticket`. | Agent contracts compose the skill and enforce ticket type, target path, requested outcome, route/agent metadata, required proof, lease-before-work, separate repair/review, and proof-based closure. |
+| REQ-WEB-015 | Reviewer verdicts must be written as GitHub PR comments. | Every reviewer run leaves a PR comment naming verdict, evidence checked, commands run, findings, required fixes, and next owner. |
 
 ## Trust Boundary Requirements
 
@@ -342,7 +348,7 @@ The cron-launched local subagent is not a third planning authority. It is a boun
 
 ## Parking Lot
 
-- Live Tailscale/WebGPT/cron-subagent bridge execution.
+- Live Tailscale/WebGPT/OpenCode server or fallback local-worker bridge execution.
 - Bounded loop controller implementation.
 - Netlify deployment proof collector.
 - Artifact ingestion back into ChatGPT Project context without manual upload.

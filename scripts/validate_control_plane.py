@@ -70,8 +70,13 @@ REQUIRED_FILES = (
     ".github/workflows/agent-dispatch.yml",
     ".github/workflows/webgpt-command-dispatcher.yml",
     ".github/workflows/assign-copilot-agent.yml",
+    ".github/workflows/opencode-phatgpt.yml",
     ".github/workflows/monocle-man-benchmark.yml",
     ".github/workflows/monocle-man-pages.yml",
+    ".opencode/agents/phatgpt-dispatcher.md",
+    ".opencode/agents/phatgpt-coder.md",
+    ".opencode/agents/phatgpt-reviewer.md",
+    ".opencode/agents/phatgpt-researcher.md",
     "scripts/start_copilot_agent_task.py",
 )
 

@@ -1,0 +1,61 @@
+name: PhatGPT OpenCode Event Loop
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: Bounded PhatGPT dispatcher prompt
+        required: true
+        type: string
+
+jobs:
+  phatgpt-opencode:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'pull_request' ||
+      contains(github.event.comment.body || '', '/phatgpt') ||
+      contains(github.event.comment.body || '', '/oc') ||
+      contains(github.event.comment.body || '', '/opencode')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Run OpenCode PhatGPT dispatcher
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          model: openai/gpt-5
+          variant: medium
+          agent: phatgpt-dispatcher
+          use_github_token: true
+          prompt: |
+            Run the PhatGPT-LAB event dispatcher.
+
+            Manual prompt, when supplied:
+            ${{ inputs.prompt }}
+
+            Inspect the issue or PR event, require best-practices-github-ticket
+            metadata and a phatgpt-task:v1 block before mutation, invoke
+            @phatgpt-coder only for implementation-ready scoped work, invoke
+            @phatgpt-reviewer for ready-for-review PRs, and always leave a
+            GitHub PR/issue comment with verdict, evidence checked, commands
+            run, findings, required fixes, and next owner.
+
+            Do not merge. Do not claim PASS without deterministic proof.

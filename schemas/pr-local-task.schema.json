@@ -21,6 +21,12 @@
   "properties": {
     "schema": {"const": "chatgpt_lab.pr_local_task.v1"},
     "task_id": {"type": "string", "minLength": 1},
+    "command": {
+      "enum": [
+        "validate_only",
+        "apply_text_patch"
+      ]
+    },
     "mode": {
       "enum": [
         "read_only",
@@ -47,7 +53,25 @@
     "expected_evidence": {"type": "array", "items": {"type": "string"}},
     "required_outputs": {"type": "array", "items": {"type": "string"}},
     "stop_condition": {"type": "string", "minLength": 1},
-    "refusal_conditions": {"type": "array", "items": {"type": "string"}}
+    "refusal_conditions": {"type": "array", "items": {"type": "string"}},
+    "payload": {
+      "type": "object",
+      "required": [
+        "schema",
+        "path",
+        "exact_old",
+        "exact_new",
+        "expected_replacements"
+      ],
+      "properties": {
+        "schema": {"const": "chatgpt_lab.command.apply_text_patch.v1"},
+        "path": {"type": "string", "minLength": 1},
+        "exact_old": {"type": "string", "minLength": 1},
+        "exact_new": {"type": "string"},
+        "expected_replacements": {"const": 1}
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }
