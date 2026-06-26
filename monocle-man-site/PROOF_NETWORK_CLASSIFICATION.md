@@ -12,7 +12,7 @@ The proof may classify aborted YouTube privacy-enhanced embed requests as expect
 
 - host is `www.youtube-nocookie.com`;
 - failure text is `net::ERR_ABORTED`;
-- the request is YouTube embed lifecycle traffic at `/api/stats/qoe`, `/youtubei/v1/log_event`, or `/youtubei/v1/next`, or the request is the iframe document under `/embed/NBxByrz5BRE`.
+- the request is YouTube embed lifecycle traffic at `/api/stats/qoe`, `/youtubei/v1/log_event`, or `/youtubei/v1/next`, the iframe document under `/embed/NBxByrz5BRE`, or a no-cookie embed script under `/s/_/ytembeds/_/js/`.
 
 These requests are recorded in `expected_third_party_network_warnings` and do not block deployment proof.
 

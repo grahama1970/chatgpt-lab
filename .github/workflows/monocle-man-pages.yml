@@ -199,7 +199,8 @@ jobs:
             if (entry.host !== 'www.youtube-nocookie.com') return false;
             if (entry.failureText !== 'net::ERR_ABORTED') return false;
             if (entry.pathname === '/youtubei/v1/log_event' || entry.pathname === '/youtubei/v1/next' || entry.pathname === '/api/stats/qoe') return true;
-            return entry.resourceType === 'document' && entry.pathname.startsWith('/embed/NBxByrz5BRE');
+            if (entry.resourceType === 'document' && entry.pathname.startsWith('/embed/NBxByrz5BRE')) return true;
+            return entry.resourceType === 'script' && entry.pathname.startsWith('/s/_/ytembeds/_/js/');
           };
 
           const expectedThirdPartyNetworkWarnings = networkErrors
