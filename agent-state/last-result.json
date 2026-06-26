@@ -1,14 +1,14 @@
 {
-  "checked_at": "2026-06-26T12:39:40Z",
-  "command_id": "push-proof-002",
-  "head_sha": "1d2a5e58ff185fdbc6e18042cac980cbb41a94c2",
+  "checked_at": "2026-06-26T14:46:45Z",
+  "command_id": "apply-text-patch-proof-001",
+  "head_sha": "5450331fcf932ddcbf79cbea490005f250c7d29e",
   "output_path": "agent-state/last-result.json",
   "repository": "grahama1970/chatgpt-lab",
   "run_attempt": 1,
-  "run_id": 28238575766,
+  "run_id": 28245515891,
   "schema": "chatgpt_lab.workflow_result.v1",
   "status": "PASS",
   "stderr": "",
-  "stdout": "hello from ChatGPT-Lab agent-dispatch",
+  "stdout": "{\n  \"path\": \"monocle-man-site/src/main.jsx\",\n  \"replacements\": 1,\n  \"schema\": \"chatgpt_lab.apply_text_patch_result.v1\",\n  \"status\": \"PASS\",\n  \"touched_files_manifest\": \".agent-dispatch-touched-files.txt\"\n}",
   "workflow": "agent-dispatch.yml"
 }
