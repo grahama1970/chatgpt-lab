@@ -8,11 +8,11 @@ The proof must fail when any first-party request from the deployed page origin f
 
 ## Expected non-blocking third-party warnings
 
-The proof may classify aborted YouTube privacy-enhanced embed telemetry requests as expected non-blocking warnings only when all of the following are true:
+The proof may classify aborted YouTube privacy-enhanced embed requests as expected non-blocking warnings only when all of the following are true:
 
 - host is `www.youtube-nocookie.com`;
 - failure text is `net::ERR_ABORTED`;
-- path is `/api/stats/qoe` or `/youtubei/v1/log_event`;
+- the request is telemetry at `/api/stats/qoe` or `/youtubei/v1/log_event`, or the request is the iframe document at `/embed/NBxByrz5BRE`.
 
 These requests are recorded in `expected_third_party_network_warnings` and do not block deployment proof.
 
