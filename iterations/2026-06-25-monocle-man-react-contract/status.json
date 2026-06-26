@@ -1,64 +1,48 @@
 {
   "schema": "chatgpt_lab.iteration_status.v1",
   "iteration_id": "2026-06-25-monocle-man-react-contract",
-  "state": "BLOCKED_LIVE_DELIVERY_PROOF",
-  "phase": "react_and_pages_workflow_merged_live_delivery_tool_blocked",
-  "scope": "frontend_react_ci_and_github_pages_delivery_path",
-  "react_pr": {
-    "pull_request": "https://github.com/grahama1970/snippets/pull/3",
-    "candidate_commit": "911052a2973a005021cdd9a41c4eefda72cc3b34",
-    "merged_commit": "043f1a7c807a30b221ddd56cd3ea744b34c1dfd8",
-    "github_actions_run": "28198930713",
-    "artifact_id": "7890258305",
-    "artifact_digest": "sha256:005c8b06d93a71e8fab77642cd68f7cd68ee3be87ff3a7f38edb3651b197bc27",
-    "verdict": "PASS"
-  },
-  "pages_pr": {
-    "pull_request": "https://github.com/grahama1970/snippets/pull/4",
-    "candidate_commit": "bc37d7be7419077d946e443678224d421fb0324d",
-    "merged_commit": "aa30c43cbbb61d40ae7b22625e8dee24bb35c511",
-    "pages_pr_build_run": "28200836938",
-    "benchmark_run": "28200837231",
-    "artifact_id": "7891035281",
-    "artifact_digest": "sha256:dc470f692016d680cb991faf6d20d08b8da3ad66fb6448283f3af8f53b32ed96",
-    "verdict": "PASS_FOR_PR_BUILD_AND_BENCHMARK"
-  },
-  "delivery_proof_pr": {
-    "pull_request": "https://github.com/grahama1970/snippets/pull/5",
-    "candidate_commit": "2ab8efa75c8394afe63266d4851de6e593a41fe0",
-    "merged_commit": "e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e",
-    "pages_pr_build_run": "28203526971",
-    "benchmark_run": "28203526868",
-    "artifact_id": "7892100656",
-    "artifact_digest": "sha256:66793ccf37659226e5bbdbfbe813d7aface53260bc8d1a55f69e49860263d8f9",
-    "verdict": "PASS_FOR_PR_BUILD_AND_BENCHMARK"
+  "state": "PASS_LIVE_DEPLOYMENT_PROVEN",
+  "phase": "self_contained_monocle_deployed_on_chatgpt_lab_pages",
+  "scope": "frontend_react_ci_github_pages_live_proof",
+  "migration": {
+    "repository": "grahama1970/chatgpt-lab",
+    "migration_commit": "05e2ea40f5be30c8b4c494f362cf7624caa408b8",
+    "live_proof_commit": "fee9b0ed568861825e23dbf46748062d549573e7",
+    "live_site": "https://grahama1970.github.io/chatgpt-lab/"
   },
   "live_delivery": {
-    "state": "BLOCKED_TOOL_ACCESS",
-    "proof_attempt_record": "iterations/2026-06-25-monocle-man-react-contract/evidence/live-delivery-proof-attempt-pr5.json",
-    "missing": [
-      "post_merge_pages_deploy_run",
-      "deploy_pages_page_url",
-      "live_desktop_screenshot",
-      "live_mobile_screenshot",
-      "persona_bound_review_design",
-      "scoped_review_code"
-    ]
+    "state": "PASS",
+    "proof_json": "delivery-proof/monocle-man/latest/deployment-proof.json",
+    "page_url": "https://grahama1970.github.io/chatgpt-lab/",
+    "github_pages_run": 28243097448,
+    "github_pages_head_sha": "05e2ea40f5be30c8b4c494f362cf7624caa408b8",
+    "github_pages_conclusion": "success",
+    "live_proof_artifact_id": 7907492328,
+    "live_proof_artifact_digest": "sha256:be15b0cf1ad28a650769a2a14f7e07ddc19ac8e36203ed376fe4ac8c44a55a04",
+    "proof_status": "PASS",
+    "http_status_before_browser": 200,
+    "hero_heading_contains_monocle_man": true,
+    "normal_motion_animation_name": "spin",
+    "console_errors": 0,
+    "network_error_caveat": "3 third-party youtube-nocookie telemetry requests aborted after modal interaction; no first-party asset failure observed"
   },
-  "report": {
-    "path": "iterations/2026-06-25-monocle-man-react-contract/REPORT.md",
-    "state": "UPDATED_WITH_PR5_BLOCKER"
+  "benchmark": {
+    "run_id": 28243059075,
+    "head_sha": "05e2ea40f5be30c8b4c494f362cf7624caa408b8",
+    "conclusion": "success"
   },
-  "blockers": [
-    "available_github_connector_does_not_expose_push_triggered_pages_runs_or_pages_deployments",
-    "assistant_runtime_cannot_resolve_likely_github_pages_urls",
-    "live_visual_inspection_not_yet_recorded",
-    "review_design_bundle_missing",
-    "review_code_bundle_missing"
+  "source_check": {
+    "run_id": 28243281032,
+    "head_sha": "fee9b0ed568861825e23dbf46748062d549573e7",
+    "conclusion": "success"
+  },
+  "local_project_agent_used": true,
+  "local_project_agent_role": "execution bridge for migration/configuration/proof capture; repo proof is deterministic GitHub Actions plus committed proof JSON",
+  "remaining_gaps": [
+    "webgpt_project_agent_no_local_agent_hypothesis_not_proven",
+    "persona_bound_review_design_not_recorded_as_pass",
+    "scoped_review_code_not_recorded_as_pass"
   ],
-  "warnings": [
-    "playwright_provides_deterministic_interaction_evidence_but_standalone_test_interactions_manifest_missing"
-  ],
-  "required_next_diagnostic": "Use GitHub UI, gh CLI, or a connector/API surface that can list push-triggered workflow runs and GitHub Pages deployments for grahama1970/snippets, workflow Monocle Man GitHub Pages, branch preview-monocle-man-netlify, merge commit e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e. Record page_url and capture live screenshots.",
-  "updated_at": "2026-06-25T18:13:00-04:00"
+  "verdict": "PASS_FOR_SELF_CONTAINED_MONOCLE_DEPLOYMENT; PARTIAL_FOR_NO_LOCAL_AGENT_HYPOTHESIS",
+  "updated_at": "2026-06-26T10:30:00-04:00"
 }
