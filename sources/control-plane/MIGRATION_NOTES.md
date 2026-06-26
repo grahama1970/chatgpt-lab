@@ -2,7 +2,7 @@
 
 This package was prepared from the ChatGPT-Lab bootstrap control plane formerly held at:
 
-- Repository: `grahama1970/snippets`
+- Repository: `grahama1970/chatgpt-lab`
 - Branch: `chatgpt-lab`
 - Path: `chatgpt-lab/`
 

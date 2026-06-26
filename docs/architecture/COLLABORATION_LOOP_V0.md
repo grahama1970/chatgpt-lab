@@ -11,7 +11,7 @@ This is V0 for Slice 001 only.
 | Surface | Role | Slice 001 behavior |
 |---|---|---|
 | GitHub / `grahama1970/chatgpt-lab` | Durable control plane | Stores requirements, schemas, validators, iteration templates, and evidence references. |
-| GitHub / `grahama1970/snippets` | Benchmark source and CI authority | Owns the Monocle Man source files, benchmark workflow, Playwright tests, and uploaded evidence artifact. |
+| GitHub / `grahama1970/chatgpt-lab` | Benchmark source and CI authority | Owns the Monocle Man source files, benchmark workflow, Playwright tests, and uploaded evidence artifact. |
 | `$ask webgpt` | Browser-backed collaborator | Produces request/status/events/raw/parsed artifacts for creation, planning, review, or oracle work. |
 | `$surf` | Browser transport proof layer | Lower-level transport proof used by `$ask`; not called directly by normal project-agent workflows. |
 | Local subagent | Future bounded execution surface | Schema/stub only in Slice 001. No live execution bridge is implemented here. |

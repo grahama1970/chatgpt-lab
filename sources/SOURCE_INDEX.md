@@ -51,7 +51,7 @@ The ChatGPT-Lab project agent is a bounded local execution adapter for capabilit
 | WebGPT operating model | `docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md` | Slice 002 GitHub dispatcher and repo-state operating contract |
 | Agent state | `agent-state/current.json`, `agent-state/skill-router.json`, `agent-state/next-command.json`, `agent-state/last-result.json` | Machine-readable state, routing, command, and workflow-result memory |
 | Skill registry | `grahama1970/agent-skills`, branch `main`, `SOURCES.md` and `sources/agent-skills-registry.json` | Skill discovery and progressive loading |
-| Benchmark source | `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/` | Monocle Man SPA source code |
+| Benchmark source | `grahama1970/chatgpt-lab`, branch `main`, path `monocle-man-site/` | Monocle Man SPA source code |
 | Execution evidence | GitHub Actions associated with the benchmark commit or pull request | Tests, logs, reports, and screenshot artifacts |
 | Rendered evidence | Netlify project `monocle-man-review` | Live deployed website |
 | Visual evidence | Fresh desktop/mobile screenshots from the same commit and deployment | Design and responsive verification |

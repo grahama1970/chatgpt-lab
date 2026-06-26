@@ -52,9 +52,18 @@ REQUIRED_FILES = (
     "scripts/validate_local_subagent_contract.py",
     "scripts/validate_agent_state.py",
     "scripts/write_workflow_result.py",
+    "monocle-man-site/package.json",
+    "monocle-man-site/package-lock.json",
+    "monocle-man-site/playwright.config.ts",
+    "monocle-man-site/scripts/collect-evidence.mjs",
+    "monocle-man-site/src/main.jsx",
+    "monocle-man-site/tests/monocle-man.spec.ts",
+    "monocle-man-site/tests/monocle-man-animation.spec.ts",
     ".github/workflows/source-check.yml",
     ".github/workflows/agent-dispatch.yml",
     ".github/workflows/webgpt-command-dispatcher.yml",
+    ".github/workflows/monocle-man-benchmark.yml",
+    ".github/workflows/monocle-man-pages.yml",
 )
 
 
@@ -110,7 +119,7 @@ def main() -> int:
                 "agent-skills-registry",
                 "monocle-man-source",
                 "monocle-man-ci",
-                "monocle-man-netlify",
+                "monocle-man-github-pages",
             }
             missing = sorted(required_source_ids.difference(ids))
             if missing:

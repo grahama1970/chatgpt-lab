@@ -27,8 +27,8 @@ that make future local-subagent delegation safe.
 
 Slice 001 proves only this vertical path:
 
-1. target repo: `grahama1970/snippets`;
-2. target branch: `preview-monocle-man-netlify`;
+1. target repo: `grahama1970/chatgpt-lab`;
+2. target branch: `main`;
 3. target path: `monocle-man-site/`;
 4. benchmark CI builds or statically serves the site;
 5. Playwright smoke test runs;
@@ -78,12 +78,12 @@ the exact tested commit.
 ```json
 {
   "schema": "chatgpt_lab.github_actions_run.v1",
-  "repository": "grahama1970/snippets",
+  "repository": "grahama1970/chatgpt-lab",
   "workflow": "monocle-man-benchmark",
   "run_id": null,
   "run_attempt": null,
   "head_sha": null,
-  "branch": "preview-monocle-man-netlify",
+  "branch": "main",
   "artifact_name": "monocle-man-benchmark-evidence",
   "generated_at": null
 }
@@ -158,8 +158,8 @@ Minimum request shape:
   "objective": "Run read-only validation for the benchmark evidence bundle.",
   "mode": "read_only",
   "target": {
-    "repository": "grahama1970/snippets",
-    "branch": "preview-monocle-man-netlify",
+    "repository": "grahama1970/chatgpt-lab",
+    "branch": "main",
     "path": "monocle-man-site/",
     "commit": null
   },
@@ -313,7 +313,7 @@ The cron-launched local subagent is not a third planning authority. It is a boun
    visible ChatGPT-authored benchmark change plus one iteration record.
 2. ChatGPT-Lab owns contracts, schemas, iteration records, source references, and
    evidence references.
-3. `grahama1970/snippets@preview-monocle-man-netlify:monocle-man-site/` owns
+3. `grahama1970/chatgpt-lab@main:monocle-man-site/` owns
    the benchmark source, benchmark workflow, Playwright smoke, screenshot
    capture, and generated benchmark artifacts.
 4. `$ask webgpt` owns WebGPT orchestration artifacts. `$surf` owns browser
@@ -329,7 +329,7 @@ The cron-launched local subagent is not a third planning authority. It is a boun
 
 1. Which exact ChatGPT conversation URL or browser-oracle project binding should
    be canonical for `$ask webgpt` work on ChatGPT-Lab?
-2. Should Slice 001 land directly on `preview-monocle-man-netlify`, or through a
+2. Should Slice 001 land directly on `main`, or through a
    branch plus pull request before merge?
 3. What is the first tiny visible Monocle Man change ChatGPT should make once
    benchmark CI exists?

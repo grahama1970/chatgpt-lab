@@ -6,7 +6,7 @@ Prove a narrow end-to-end collaboration loop for the Monocle Man SPA without cla
 
 ## In scope
 
-- Benchmark GitHub Actions workflow in `grahama1970/snippets`.
+- Benchmark GitHub Actions workflow in `grahama1970/chatgpt-lab`.
 - Playwright smoke and interaction checks.
 - Console error capture.
 - Network error capture.
@@ -54,8 +54,8 @@ benchmark-evidence/
 `source-metadata.json` must identify:
 
 ```text
-repository = grahama1970/snippets
-branch = preview-monocle-man-netlify
+repository = grahama1970/chatgpt-lab
+branch = main
 path = monocle-man-site/
 commit = candidate commit
 ```

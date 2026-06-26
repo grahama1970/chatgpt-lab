@@ -15,7 +15,7 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 | Dedicated control-plane repository | `READY` | `grahama1970/chatgpt-lab`, branch `main`. |
 | Control-plane source check | `PASS` | Workflow is active and runs on pushes to `main`; latest control-plane evidence updates still need the current push run inspected before broader readiness promotion. |
 | Self-improvement requirements | `DRAFT_V0.2` | Slice 001 scope, benchmark evidence layout, local-subagent request contract, and schema stubs are recorded. |
-| GitHub source read/write | `READY` | ChatGPT Web has written to `grahama1970/chatgpt-lab` and `grahama1970/snippets`. |
+| GitHub source read/write | `READY` | ChatGPT Web has written to the control-plane repository. Earlier `snippets` writes remain historical bootstrap evidence only. |
 | Skill discovery | `READY` | `grahama1970/agent-skills` registry is accessible; latest observed content hash: `2cb9ea5b36cef21e7c2d69e52cfd36da7b2e4f54895b03cbc878b37a64a83025`. |
 | Monocle Man benchmark CI | `READY_REACT_CONTRACT` | PR #3 merged as `043f1a7c807a30b221ddd56cd3ea744b34c1dfd8`. Candidate CI run `28198930713` passed and uploaded artifact `7890258305`. PR #4 benchmark run `28200837231` passed after adding normal-motion animation proof and uploaded artifact `7891035281`. PR #5 benchmark run `28203526868` also passed and uploaded artifact `7892100656`. |
 | Monocle Man GitHub Pages workflow | `MERGED_DELIVERY_PROOF_BLOCKED` | PR #4 merged the Pages workflow as `aa30c43cbbb61d40ae7b22625e8dee24bb35c511`. PR #5 merged a fresh delivery-proof trigger as `e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e`. PR Pages build runs `28200836938` and `28203526971` passed build steps. Post-merge Pages deployment run/URL is not visible through the currently exposed connector helper. |
@@ -31,19 +31,19 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 
 - Control plane: `grahama1970/chatgpt-lab`, branch `main`
 - Requirements: `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`
-- Benchmark source: `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/`
-- React contract benchmark PR: `https://github.com/grahama1970/snippets/pull/3`
+- Benchmark source: `grahama1970/chatgpt-lab`, branch `main`, path `monocle-man-site/`
+- React contract benchmark PR: historical `https://github.com/grahama1970/snippets/pull/3`
 - React contract benchmark merge commit: `043f1a7c807a30b221ddd56cd3ea744b34c1dfd8`
-- React contract candidate CI run: `https://github.com/grahama1970/snippets/actions/runs/28198930713`
-- GitHub Pages delivery PR: `https://github.com/grahama1970/snippets/pull/4`
+- React contract candidate CI run: historical `https://github.com/grahama1970/snippets/actions/runs/28198930713`
+- GitHub Pages delivery PR: historical `https://github.com/grahama1970/snippets/pull/4`
 - GitHub Pages delivery merge commit: `aa30c43cbbb61d40ae7b22625e8dee24bb35c511`
-- PR #4 Pages build run: `https://github.com/grahama1970/snippets/actions/runs/28200836938`
-- PR #4 benchmark run: `https://github.com/grahama1970/snippets/actions/runs/28200837231`
+- PR #4 Pages build run: historical `https://github.com/grahama1970/snippets/actions/runs/28200836938`
+- PR #4 benchmark run: historical `https://github.com/grahama1970/snippets/actions/runs/28200837231`
 - PR #4 benchmark artifact: `monocle-man-benchmark-evidence`, ID `7891035281`, digest `sha256:dc470f692016d680cb991faf6d20d08b8da3ad66fb6448283f3af8f53b32ed96`
-- Live delivery proof PR: `https://github.com/grahama1970/snippets/pull/5`
+- Live delivery proof PR: historical `https://github.com/grahama1970/snippets/pull/5`
 - Live delivery proof merge commit: `e3fb0c09950c9cd11bbbbd8da7651326cccb5d8e`
-- PR #5 Pages build run: `https://github.com/grahama1970/snippets/actions/runs/28203526971`
-- PR #5 benchmark run: `https://github.com/grahama1970/snippets/actions/runs/28203526868`
+- PR #5 Pages build run: historical `https://github.com/grahama1970/snippets/actions/runs/28203526971`
+- PR #5 benchmark run: historical `https://github.com/grahama1970/snippets/actions/runs/28203526868`
 - PR #5 benchmark artifact: `monocle-man-benchmark-evidence`, ID `7892100656`, digest `sha256:66793ccf37659226e5bbdbfbe813d7aface53260bc8d1a55f69e49860263d8f9`
 
 ## Immediate blockers to a closed live-delivery loop

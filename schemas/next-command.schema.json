@@ -17,7 +17,7 @@
   "properties": {
     "schema": { "const": "chatgpt_lab.next_command.v1" },
     "command_id": { "type": "string", "minLength": 1 },
-    "command": { "enum": ["echo_hello"] },
+    "command": { "enum": ["echo_hello", "validate_control_plane"] },
     "target_repo": { "const": "grahama1970/chatgpt-lab" },
     "target_ref": { "type": "string", "minLength": 1 },
     "workflow": { "const": "agent-dispatch.yml" },

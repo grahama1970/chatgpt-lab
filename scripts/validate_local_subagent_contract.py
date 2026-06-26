@@ -69,8 +69,8 @@ def validate_request(data: Any) -> list[str]:
         for key in ["repository", "branch", "path", "commit"]:
             if key not in target:
                 errors.append(f"request.target missing required field: {key}")
-        if target.get("repository") != "grahama1970/snippets":
-            errors.append("request.target.repository must be grahama1970/snippets for Slice 001")
+        if target.get("repository") != "grahama1970/chatgpt-lab":
+            errors.append("request.target.repository must be grahama1970/chatgpt-lab for Slice 001")
         if target.get("path") != "monocle-man-site/":
             errors.append("request.target.path must be monocle-man-site/")
     forbidden = data.get("forbidden_paths") if isinstance(data.get("forbidden_paths"), list) else []

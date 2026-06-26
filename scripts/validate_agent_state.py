@@ -18,7 +18,7 @@ TARGET_REPOSITORY = "grahama1970/chatgpt-lab"
 DISPATCH_WORKFLOW = "agent-dispatch.yml"
 NEXT_COMMAND_PATH = "agent-state/next-command.json"
 LAST_RESULT_PATH = "agent-state/last-result.json"
-ALLOWED_COMMANDS = {"echo_hello"}
+ALLOWED_COMMANDS = {"echo_hello", "validate_control_plane"}
 RESULT_STATUSES = {"NOT_RUN", "PASS", "FAILED", "REFUSED"}
 
 

@@ -12,7 +12,7 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 
 **Decision:** Target `grahama1970/webgpt-lab`, branch `main`, as the canonical control plane.
 
-**Migration rule:** The earlier `grahama1970/snippets@chatgpt-lab:chatgpt-lab/` branch remains historical bootstrap evidence after this repository is populated and validated.
+**Migration rule:** Earlier bootstrap branches and `grahama1970/snippets` benchmark work remain historical evidence after this repository is populated and validated.
 
 ## 2026-06-25 — D-003: Evidence has explicit precedence
 
@@ -68,7 +68,7 @@ Append new decisions. Do not rewrite old entries merely because later work chang
 
 ## 2026-06-25 — D-012: ChatGPT Web takeover gates
 
-**Decision:** ChatGPT Web owns both `grahama1970/chatgpt-lab` and the bounded Monocle Man benchmark surface in `grahama1970/snippets`, with different authority. `chatgpt-lab` is the durable control plane. `snippets` authority is limited to branch `preview-monocle-man-netlify` and path `monocle-man-site/` unless a later decision expands scope.
+**Decision:** ChatGPT Web owns `grahama1970/chatgpt-lab` as the durable control plane and bounded Monocle Man benchmark surface. Historical `grahama1970/snippets` work is retained only as bootstrap evidence. Active benchmark authority is now `chatgpt-lab`, branch `main`, path `monocle-man-site/`.
 
 **Next milestone:** The immediate milestone is the first bounded self-improvement iteration using benchmark CI evidence. Netlify deployment proof is the next gate for live-site or project-ownership claims after CI evidence is normalized into an iteration record.
 

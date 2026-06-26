@@ -38,12 +38,20 @@ jobs:
               print(json.load(handle)["command"])
           PY
           )"
-          if [ "$command" != "echo_hello" ]; then
-            echo "unsupported command: $command" >&2
-            exit 2
-          fi
-          printf 'hello from ChatGPT-Lab agent-dispatch\n' | tee stdout.txt
-          : > stderr.txt
+          case "$command" in
+            echo_hello)
+              printf 'hello from ChatGPT-Lab agent-dispatch\n' | tee stdout.txt
+              : > stderr.txt
+              ;;
+            validate_control_plane)
+              python3 scripts/validate_control_plane.py > stdout.txt 2> stderr.txt
+              cat stdout.txt
+              ;;
+            *)
+              echo "unsupported command: $command" >&2
+              exit 2
+              ;;
+          esac
 
       - name: Write workflow result
         if: always()

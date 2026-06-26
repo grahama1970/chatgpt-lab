@@ -5,8 +5,8 @@
   "objective": "Run read-only validation for the benchmark evidence bundle.",
   "mode": "read_only",
   "target": {
-    "repository": "grahama1970/snippets",
-    "branch": "preview-monocle-man-netlify",
+    "repository": "grahama1970/chatgpt-lab",
+    "branch": "main",
     "path": "monocle-man-site/",
     "commit": null
   },

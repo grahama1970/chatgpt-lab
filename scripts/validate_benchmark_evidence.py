@@ -78,8 +78,8 @@ def main() -> int:
     if isinstance(run_metadata, dict):
         if run_metadata.get("schema") != "chatgpt_lab.github_actions_run.v1":
             errors.append("run-metadata.json has unexpected schema")
-        if run_metadata.get("repository") != "grahama1970/snippets":
-            errors.append("run-metadata.repository must be grahama1970/snippets")
+        if run_metadata.get("repository") != "grahama1970/chatgpt-lab":
+            errors.append("run-metadata.repository must be grahama1970/chatgpt-lab")
         if run_metadata.get("artifact_name") != "monocle-man-benchmark-evidence":
             errors.append("run-metadata.artifact_name must be monocle-man-benchmark-evidence")
 
