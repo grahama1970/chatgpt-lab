@@ -16,7 +16,7 @@ on:
       model:
         description: OpenCode model id
         required: false
-        default: gpt-5.5
+        default: opencode/gpt-5.5
         type: string
       variant:
         description: Provider-specific reasoning variant
@@ -52,7 +52,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: ${{ github.event.inputs.model || vars.PHATGPT_OPENCODE_MODEL || 'gpt-5.5' }}
+          model: ${{ github.event.inputs.model || vars.PHATGPT_OPENCODE_MODEL || 'opencode/gpt-5.5' }}
           variant: ${{ github.event.inputs.variant || vars.PHATGPT_OPENCODE_VARIANT || 'medium' }}
           agent: phatgpt-dispatcher
           use_github_token: true

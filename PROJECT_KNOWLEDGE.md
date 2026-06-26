@@ -21,7 +21,7 @@
 - The MVP event loop uses three shared agent contracts under `/home/graham/workspace/experiments/agent-skills/agents`: `phatgpt-coder` for the only mutating implementation role, `phatgpt-reviewer` for read-only pass/needs-changes/blocked review, and `phatgpt-researcher` for optional task-block preparation/refusal.
 - The PhatGPT coder, reviewer, and researcher must follow `best-practices-github-ticket`: ticket type, target, route/agent metadata, required proof, lease-before-work, separate repair/review, proof-based comments/closure, and reviewer PR comments as the trace.
 - The OpenCode GitHub event workflow is not yet proven live. A source-level workflow and `.opencode/agents` prompts exist, but the next gate is a real `/opencode` or `/phatgpt` PR comment event that leaves a PR trace comment.
-- The OpenCode GitHub event workflow defaults to OpenCode OAuth model `gpt-5.5` with `medium` reasoning. The GitHub action rejected `opencode/gpt-5.5` and suggested `gpt-5.5`; local `opencode models` displays provider-qualified ids, but the action's OpenCode provider expects the unqualified model id. Manual dispatch may override the model for smoke tests, including `deepseek-v4-flash`.
+- The OpenCode GitHub event workflow defaults to OpenCode OAuth model `opencode/gpt-5.5` with `medium` reasoning and requires repository secret `OPENCODE_API_KEY`. Live run `28257657868` showed the unqualified model id `gpt-5.5` fails CLI validation because OpenCode requires `provider/model`.
 
 ## Recent Decisions
 
@@ -37,7 +37,7 @@
 | 2026-06-26 | Prefer GitHub event or `opencode serve` over cron as the MVP trigger | OpenCode can be driven by GitHub events or HTTP/OpenAPI server, and the primary agent can route to PhatGPT subagents. Cron/local worker remains fallback/smoke. |
 | 2026-06-26 | Split MVP event loop into coder, reviewer, and optional researcher agents | The coder is the only mutating role; the reviewer is read-only and returns pass/needs-changes/blocked; the researcher prepares task blocks or refuses vague work. |
 | 2026-06-26 | Make `best-practices-github-ticket` mandatory for PhatGPT event agents | PRs/issues are the queue contract; agents must lease one ticket, honor route metadata, preserve proof, comment verdicts in the PR, and keep repair and review separate. |
-| 2026-06-26 | Use OpenCode OAuth `gpt-5.5` medium as the default event agent model | Live GitHub Action run `28257495934` rejected `opencode/gpt-5.5` and suggested `gpt-5.5`; the workflow keeps model/variant override inputs for smoke tests. |
+| 2026-06-26 | Use OpenCode OAuth `opencode/gpt-5.5` medium as the default event agent model | Repository secret `OPENCODE_API_KEY` is required; run `28257657868` showed unqualified `gpt-5.5` fails CLI validation, while local `opencode models opencode` lists `opencode/gpt-5.5`. |
 
 ## Open Questions
 
