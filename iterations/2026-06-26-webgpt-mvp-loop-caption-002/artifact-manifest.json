@@ -1,0 +1,24 @@
+{
+  "schema": "chatgpt_lab.artifact_manifest.v1",
+  "task_id": "webgpt-pr-monocle-caption-002",
+  "branch": "webgpt-mvp-loop-caption-002",
+  "coder_commit": "82611e9a02b2753cf198eef85a87f1fbec64ec09",
+  "artifacts": [
+    {
+      "path": "artifacts/local-worker/coder-receipt.json",
+      "role": "phatgpt-coder receipt"
+    },
+    {
+      "path": "artifacts/local-worker/artifact-manifest.json",
+      "role": "artifact manifest"
+    }
+  ],
+  "validation_commands": [
+    {"command": "python3 scripts/validate_control_plane.py", "exit_code": 0},
+    {"command": "npm --prefix monocle-man-site ci", "exit_code": 0},
+    {"command": "npm --prefix monocle-man-site run build", "exit_code": 0}
+  ],
+  "changed_files": ["monocle-man-site/src/main.jsx"],
+  "verdict": "PASS",
+  "next_owner": "ChatGPT Web (controller)"
+}

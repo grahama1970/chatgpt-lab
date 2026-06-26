@@ -1,0 +1,51 @@
+{
+  "schema": "chatgpt_lab.local_subagent_receipt.v1",
+  "subagent": "phatgpt-coder",
+  "task_id": "webgpt-pr-monocle-caption-002",
+  "status": "PASS",
+  "checked_at": "2026-06-26T20:22:12Z",
+  "repository": "grahama1970/chatgpt-lab",
+  "branch": "webgpt-mvp-loop-caption-002",
+  "commit": "82611e9a02b2753cf198eef85a87f1fbec64ec09",
+  "operations": [
+    {
+      "command": "apply_text_patch",
+      "path": "monocle-man-site/src/main.jsx",
+      "exact_old": "One lens. One side. Evidence over opinion.",
+      "exact_new": "One lens. One side. Proof beats opinion.",
+      "replacements": 1,
+      "result": "applied"
+    }
+  ],
+  "validation_results": [
+    {
+      "command": "python3 scripts/validate_control_plane.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "npm --prefix monocle-man-site ci",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "npm --prefix monocle-man-site run build",
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  ],
+  "changed_files": [
+    "monocle-man-site/src/main.jsx"
+  ],
+  "evidence": [
+    "monocle-man-site/src/main.jsx line 214 changed to 'Proof beats opinion'",
+    "git diff shows exactly 1 insertion, 1 deletion, only the figcaption line",
+    "validate_control_plane.py exits 0 (PASS)",
+    "npm ci exits 0 (0 vulnerabilities)",
+    "npm run build exits 0 (built in 140ms)"
+  ],
+  "next_owner": "phatgpt-reviewer",
+  "notes": [
+    "PhatGPT coder completed bounded text patch. Ready for read-only review."
+  ]
+}
