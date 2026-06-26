@@ -143,9 +143,10 @@ artifacts/                             CI receipts, screenshots, and reports
 scripts/phatgpt_local_worker_cycle.py  short-lived PR/issue worker contract validator
 scripts/phatgpt_deployer_cycle.py     dry-run release/deploy gate receipt writer
 scripts/phatgpt_review_deployer_receipt.py read-only deployer receipt reviewer
-scripts/phatgpt_memory_sync.py        optional compact receipt index writer for `$memory`
-agent-state/                           machine-readable controller memory
-../agent-skills/agents/phatgpt-coder/  mutating event worker contract
+	scripts/phatgpt_memory_sync.py        optional compact receipt index writer for `$memory`
+	agent-state/                           machine-readable controller memory
+	controller-state/current.json          evidence-derived next-action state
+	../agent-skills/agents/phatgpt-coder/  mutating event worker contract
 ../agent-skills/agents/phatgpt-reviewer/ read-only event reviewer contract
 ../agent-skills/agents/phatgpt-researcher/ optional task-spec researcher contract
 ../agent-skills/agents/phatgpt-deployer/ dry-run deployer/releaser gate contract
@@ -196,6 +197,8 @@ The shared agent contracts live in `../agent-skills/agents/phatgpt-coder/`, `../
 
 The local `opencode serve` control surface has been checked through the scillm-managed Docker service. `docker-opencode-serve-1` is recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, enforces Basic auth with `401` on unauthenticated root requests, and reports healthy through `http://127.0.0.1:4001/v1/scillm/opencode/health` with OpenCode `1.17.12`. Tailscale is active on this machine at `100.102.12.64`, but both `opencode serve` and scillm are bound to localhost, so they are not exposed as remote Tailscale services. That is acceptable for the current MVP because the proven loop is GitHub-event driven; exposing the broker over Tailscale is a separate future gate.
 
+The bounded controller state is `controller-state/current.json`. It is generated from durable evidence, not hand-written status prose. `scripts/update_controller_state.py --check` derives the current state from `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json` and `delivery-proof/monocle-man/latest/deployment-proof.json`; Source Check fails if the checked-in controller state drifts. The current state is `READY_FOR_NEXT_TASK`, with `next_action.type: create_bounded_pr_task`.
+
 All four shared contracts compose `best-practices-github-ticket`. A ChatGPT/WebGPT PR is not actionable until it contains ticket type, target path, current state, requested outcome, route or agent metadata when known, required proof, non-goals, and a valid `phatgpt-task:v1` block. The coder must lease before mutation; the reviewer must stay read-only and comment every verdict on the GitHub PR; closure requires deterministic proof, deployer receipt review, and reconciled review findings.
 
 Subagent logs and receipts are not stored only in memory. Raw evidence stays in GitHub comments, CI runs, `artifacts/`, and proof files. `$memory` may store compact searchable summaries in the `subagent_memory` collection through `scripts/phatgpt_memory_sync.py`, containing PR number, role, status, receipt path, head SHA, missing gates, and next action. Memory recall is a routing accelerator, not closure proof.
@@ -205,6 +208,7 @@ Run the current validator with:
 ```bash
 python3 scripts/validate_control_plane.py
 python3 scripts/validate_agent_state.py
+python3 scripts/update_controller_state.py --check
 ```
 
 That check proves the control-plane structure is internally consistent. It does not, by itself, prove the benchmark website, deployment, or design review loop.

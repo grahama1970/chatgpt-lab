@@ -23,6 +23,8 @@ jobs:
           cat artifacts/control-plane-validation.json
           python3 scripts/validate_agent_state.py > artifacts/agent-state-validation.json
           cat artifacts/agent-state-validation.json
+          python3 scripts/update_controller_state.py --check > artifacts/controller-state-validation.json
+          cat artifacts/controller-state-validation.json
 
       - name: Upload validation receipt
         if: always()
@@ -32,5 +34,6 @@ jobs:
           path: |
             artifacts/control-plane-validation.json
             artifacts/agent-state-validation.json
+            artifacts/controller-state-validation.json
           if-no-files-found: error
           retention-days: 14

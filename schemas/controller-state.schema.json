@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/controller-state.schema.json",
+  "title": "PhatGPT-LAB Controller State",
+  "type": "object",
+  "required": [
+    "schema",
+    "repository",
+    "branch",
+    "phase",
+    "state",
+    "current_iteration",
+    "latest_release",
+    "gates",
+    "next_action",
+    "required_inputs",
+    "stop_condition",
+    "updated_at"
+  ],
+  "properties": {
+    "schema": {
+      "const": "chatgpt_lab.controller_state.v1"
+    },
+    "repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "branch": {
+      "type": "string",
+      "minLength": 1
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "READY_FOR_NEXT_TASK",
+        "RUNNING",
+        "NEEDS_CHANGES",
+        "BLOCKED",
+        "INSUFFICIENT_EVIDENCE"
+      ]
+    },
+    "current_iteration": {
+      "type": "object"
+    },
+    "latest_release": {
+      "type": "object"
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "next_action": {
+      "type": "object"
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "stop_condition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "updated_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "additionalProperties": false
+}

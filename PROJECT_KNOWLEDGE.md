@@ -1,6 +1,6 @@
 # Project Knowledge: chatgpt-lab
 
-**Last updated:** 2026-06-26 17:23 EDT by agent
+**Last updated:** 2026-06-26 18:02 EDT by agent
 **Status:** Active development
 
 ## Current Understanding
@@ -25,6 +25,7 @@
 - PR #9 is the first WebGPT-created PR test and is useful negative evidence: it had an empty body, no `best-practices-github-ticket` metadata, and no `phatgpt-task:v1` block, so the worker refused it with a PR comment instead of inferring work.
 - PR #10 is the first valid WebGPT-created loop proof. WebGPT created branch `webgpt-mvp-loop-caption-002` and a valid PR task block; OpenCode applied the bounded Monocle caption change; local reviewer re-ran checks on the PR branch; a local rebase from a non-`github-actions[bot]` identity cleared the `action_required` check state; the dry-run deployer reached `WOULD_MERGE` on head `1bdc732c671ceedeed728e01c498b50ed24ccd78`; PR #10 was squash-merged as `d4c013ce98fd78ef4efcbdc716ec8523db9afaed`; and post-merge Pages proof passed for classifier commit `0d987970d268a212b31683881d2391c0c015a577`.
 - The PR #10 post-merge proof run is `28265880104`; `delivery-proof/monocle-man/latest/deployment-proof.json` records `status: PASS`, `blocking_network_errors_count: 0`, `expected_third_party_network_warnings_count: 4`, and screenshots for desktop, modal, mobile, and mobile menu. The tracked release receipt is `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
+- `controller-state/current.json` is the evidence-derived bounded controller surface. It is generated and checked by `scripts/update_controller_state.py` from the PR #10 release receipt and live Pages proof; the current state is `READY_FOR_NEXT_TASK`, and the next action is for WebGPT to create a bounded PR/issue with a valid `phatgpt-task:v1` block.
 - WebGPT-created PRs must use `.github/pull_request_template.md`. The `target.pr` field can be `null` when the task block lives in the PR being processed, which avoids requiring WebGPT to know the PR number before opening the PR.
 - The OpenCode GitHub event workflow model is configured through repository variables. Current smoke configuration uses `PHATGPT_OPENCODE_MODEL=opencode/deepseek-v4-flash-free` and `PHATGPT_OPENCODE_VARIANT=medium`; earlier `opencode/gpt-5.5` attempts were blocked by account balance, and unqualified `gpt-5.5` failed CLI validation because OpenCode requires `provider/model`.
 - The local `opencode serve` broker surface is reachable through the scillm-managed Docker service. `docker-opencode-serve-1` was rebuilt/recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, returns `401 Unauthorized` without Basic auth, and `http://127.0.0.1:4001/v1/scillm/opencode/health` returns `status: ok`, `health.healthy: true`, OpenCode `1.17.12`. Tailscale is active at `100.102.12.64`, but `opencode serve` and scillm are bound to localhost, so remote Tailscale broker access is intentionally not proven or exposed for this MVP.
@@ -47,13 +48,14 @@
 | 2026-06-26 | Add a PR template and allow `target.pr: null` for in-PR task blocks | WebGPT cannot reliably know the PR number before opening a PR; the dispatcher can treat `null` as the current PR while still refusing missing or malformed task contracts. |
 | 2026-06-26 | Treat `opencode serve` as locally available and Tailscale exposure as a future gate | The proven MVP loop uses GitHub events, not remote broker calls; the scillm-managed Docker service is healthy on localhost, while Tailscale exposure remains intentionally unproven because the services bind to `127.0.0.1`. |
 | 2026-06-26 | Classify Google `/js/th/` embed-helper aborts as expected third-party warnings | Live Pages proof showed the YouTube no-cookie embed can abort a Google helper script during modal lifecycle; first-party failures and unrelated third-party failures remain blocking. |
+| 2026-06-26 | Add evidence-derived `controller-state/current.json` as the repeatable next-action surface | WebGPT should not infer the next move from prose; Source Check now validates that controller state matches tracked release and Pages proof evidence. |
 
 ## Open Questions
 
 - [ ] Add code-review and design-review receipts for the migrated Monocle source, workflows, and live screenshots.
 - [x] Classify YouTube/no-cookie embed lifecycle aborts, including the observed Google `/js/th/` helper script abort, as expected third-party warnings while preserving fail-closed first-party network handling.
 - [ ] Implement Slice 002 dry-run local-subagent refusal/receipt path.
-- [ ] Implement a bounded loop controller so ChatGPT/WebGPT invokes deterministic rounds instead of relying on prose memory.
+- [x] Add a bounded controller state file and Source Check gate: `controller-state/current.json` is generated from release proof and `scripts/update_controller_state.py --check` fails on drift.
 - [x] Prove WebGPT can create a bounded GitHub PR with a valid `phatgpt-task:v1` block: PR #10 (`webgpt-mvp-loop-caption-002`) was created by WebGPT, carried the task block, triggered the PhatGPT OpenCode event worker, and reached dry-run deployer `WOULD_MERGE` after real GitHub checks passed on the latest head.
 - [x] Prove the PR #10 release lane through real merge and post-merge live Pages proof: squash merge `d4c013ce98fd78ef4efcbdc716ec8523db9afaed`, Pages run `28265880104`, proof commit `26b82c4`, and release receipt `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
 - [ ] Configure `COPILOT_AGENT_TASK_TOKEN` and run `Assign Copilot Agent` for issue #5.
@@ -71,6 +73,7 @@
 | README.md | Human entry point and current project summary |
 | agent-state/next-command.json | WebGPT-writable command envelope |
 | agent-state/last-result.json | GitHub Actions result receipt |
+| controller-state/current.json | Evidence-derived current controller state and next action |
 | .github/workflows/webgpt-command-dispatcher.yml | Path-filtered proxy that turns WebGPT file writes into workflow dispatches |
 | .github/workflows/agent-dispatch.yml | Bounded executor workflow |
 | .github/workflows/assign-copilot-agent.yml | Manual Agent Tasks API handoff test for Copilot cloud |
@@ -81,6 +84,7 @@
 | scripts/phatgpt_deployer_cycle.py | Dry-run release/deploy gate checker that writes deployer receipts |
 | scripts/phatgpt_review_deployer_receipt.py | Read-only reviewer for deployer receipts |
 | scripts/phatgpt_memory_sync.py | Optional compact `$memory` index writer for receipt summaries |
+| scripts/update_controller_state.py | Generates/checks `controller-state/current.json` from tracked release proof |
 | .github/workflows/opencode-phatgpt.yml | GitHub-event OpenCode dispatcher workflow for the PhatGPT MVP |
 | .opencode/agents/phatgpt-dispatcher.md | Primary OpenCode event router |
 | .opencode/agents/phatgpt-coder.md | Repo-local OpenCode coder subagent prompt |
