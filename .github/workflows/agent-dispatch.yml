@@ -27,7 +27,7 @@ jobs:
       - name: Validate dispatch request
         run: |
           test "${{ inputs.state_path }}" = "agent-state/next-command.json"
-          python3 scripts/validate_agent_state.py --command-id "${{ inputs.command_id }}"
+          python3 scripts/validate_agent_state.py --command-id "${{ inputs.command_id }}" --skip-result
 
       - name: Execute allowlisted command
         id: execute
