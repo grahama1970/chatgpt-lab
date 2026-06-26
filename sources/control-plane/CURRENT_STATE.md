@@ -24,10 +24,10 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 | GitHub dispatcher agent-state | `READY_NARROW` | WebGPT wrote `agent-state/next-command.json` as commit `1d2a5e58ff185fdbc6e18042cac980cbb41a94c2`; `webgpt-command-dispatcher.yml` run `28238572045` dispatched `agent-dispatch.yml`; executor run `28238575766` passed and committed `agent-state/last-result.json` as `59e44c80d1acb864b6583bd17c1369d873692030`. |
 | Safe mutation command | `PASS_NARROW` | WebGPT wrote `apply-text-patch-proof-001` as commit `5450331fcf932ddcbf79cbea490005f250c7d29e`; dispatcher run `28245510581` triggered executor run `28245515891`; result commit `064f5fd5b2b52bd1874c205edaeb616f7eae0533` changed `monocle-man-site/src/main.jsx` and committed `agent-state/last-result.json` with `status: PASS`. |
 | Copilot cloud-agent handoff | `DRAFT_UNPROVEN` | `.github/workflows/assign-copilot-agent.yml` and `scripts/start_copilot_agent_task.py` draft the minimal on-demand Agent Tasks API test. Proof requires `COPILOT_AGENT_TASK_TOKEN` and a run against issue #5. |
-| OpenCode GitHub event loop | `SOURCE_ADDED_UNPROVEN` | `.github/workflows/opencode-phatgpt.yml` can start OpenCode from issue/PR events or manual dispatch. It defaults to OpenCode OAuth model `opencode/gpt-5.5` with `medium` reasoning and repository secret `OPENCODE_API_KEY`; manual overrides such as `opencode/deepseek-v4-flash` are allowed for smoke tests. Live run `28257657868` proved unqualified `gpt-5.5` fails CLI validation. `.opencode/agents/phatgpt-dispatcher.md` is the primary agent and routes to coder/reviewer/researcher subagents. A live successful event run is still required. |
+| OpenCode GitHub event loop | `PASS_NARROW_PR_SCOPE` | PR #8 exercised a valid `phatgpt-task:v1` block through the event workflow: coder changed `monocle-man-site/src/main.jsx`, checks passed at head `146d51dc54b977dab01470a0ae288af38b9f7813`, and reviewer/comment receipts recorded `PASS`. This is PR-scope proof only; Pages deployment is skipped on PR branches. |
 | OpenCode server control surface | `DESIGNED_UNPROVEN` | `opencode serve` is the preferred local/Tailscale HTTP/OpenAPI surface for external broker control. No local server run has been recorded yet. |
 | Local worker fallback path | `DRY_RUN_CONTRACT_READY` | `scripts/phatgpt_local_worker_cycle.py` inspects one PR/issue, requires a `phatgpt-task:v1` block, validates `schemas/pr-local-task.schema.json`, and writes a local-subagent receipt. It remains a deterministic smoke/fallback harness rather than the preferred trigger. |
-| Shared PhatGPT subagents | `CONTRACTS_ADDED` | Agent contracts exist under `/home/graham/workspace/experiments/agent-skills/agents/phatgpt-coder`, `phatgpt-reviewer`, and `phatgpt-researcher`. They define one-target-per-invocation event workers but are not yet proven in a live OpenCode GitHub/server run. |
+| Shared PhatGPT subagents | `PASS_NARROW_PR_SCOPE` | Agent contracts exist under `/home/graham/workspace/experiments/agent-skills/agents/phatgpt-coder`, `phatgpt-reviewer`, and `phatgpt-researcher`. PR #8 proves the coder/reviewer path for one valid task block; PR #9 proves missing WebGPT task metadata is refused with a PR comment. |
 | Local/project-agent involvement | `USED_AS_EXECUTION_BRIDGE` | The migration/proof was reported by the project agent and verified through repo artifacts. This proves the self-contained GitHub Actions path, not pure ChatGPT-Web-only autonomy. |
 | `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Prior plan-collab attempts were blocked by ambiguous ChatGPT tab identity. |
 | Local subagent bridge | `NOT_ESTABLISHED` | Only schema/refusal examples exist. |
@@ -58,9 +58,9 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 3. Run persona-bound `review-design` over committed live screenshots if design readiness is claimed.
 4. Run scoped `review-code` over the migrated `chatgpt-lab` Monocle source, workflows, and safe mutation executor.
 5. Reconcile the three third-party YouTube telemetry aborts as expected/non-blocking or patch the proof filter to classify them explicitly.
-6. Trigger `.github/workflows/opencode-phatgpt.yml` from a real PR comment and preserve the OpenCode PR comment trace.
+6. Prove a WebGPT-created PR with a valid `phatgpt-task:v1` block. PR #9 proved the missing-contract refusal path only.
 7. Validate `opencode serve` locally as the Tailscale/broker control surface.
-8. Run the role-specific local worker against a real PR/issue only as fallback/smoke evidence.
+8. Run the role-specific local worker against a real PR/issue only as fallback/smoke evidence when GitHub event delivery is unavailable.
 9. Implement a bounded loop controller script so ChatGPT invokes a deterministic loop rather than acting as the loop in prose.
 10. Reduce or explicitly record local project-agent intervention in follow-on workflow dispatch and evidence normalization.
 

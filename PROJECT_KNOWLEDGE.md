@@ -1,6 +1,6 @@
 # Project Knowledge: chatgpt-lab
 
-**Last updated:** 2026-06-26 13:07 EDT by agent
+**Last updated:** 2026-06-26 15:55 EDT by agent
 **Status:** Active development
 
 ## Current Understanding
@@ -20,8 +20,10 @@
 - The preferred MVP trigger is GitHub event or `opencode serve` -> OpenCode primary dispatcher -> role subagent. Cron/local worker execution remains a fallback watchdog and deterministic smoke harness, not the primary architecture.
 - The MVP event loop uses three shared agent contracts under `/home/graham/workspace/experiments/agent-skills/agents`: `phatgpt-coder` for the only mutating implementation role, `phatgpt-reviewer` for read-only pass/needs-changes/blocked review, and `phatgpt-researcher` for optional task-block preparation/refusal.
 - The PhatGPT coder, reviewer, and researcher must follow `best-practices-github-ticket`: ticket type, target, route/agent metadata, required proof, lease-before-work, separate repair/review, proof-based comments/closure, and reviewer PR comments as the trace.
-- The OpenCode GitHub event workflow is not yet proven live. A source-level workflow and `.opencode/agents` prompts exist, but the next gate is a real `/opencode` or `/phatgpt` PR comment event that leaves a PR trace comment.
-- The OpenCode GitHub event workflow defaults to OpenCode OAuth model `opencode/gpt-5.5` with `medium` reasoning and requires repository secret `OPENCODE_API_KEY`. Live run `28257657868` showed the unqualified model id `gpt-5.5` fails CLI validation because OpenCode requires `provider/model`.
+- The OpenCode/GitHub event loop has a narrow PR-scope proof in PR #8: the valid task block triggered a coder change to `monocle-man-site/src/main.jsx`, checks passed at head `146d51dc54b977dab01470a0ae288af38b9f7813`, and the reviewer commented `PASS`. This does not prove live deployment ownership because Pages deployment is skipped on PR branches.
+- PR #9 is the first WebGPT-created PR test and is useful negative evidence: it had an empty body, no `best-practices-github-ticket` metadata, and no `phatgpt-task:v1` block, so the worker refused it with a PR comment instead of inferring work.
+- WebGPT-created PRs must use `.github/pull_request_template.md`. The `target.pr` field can be `null` when the task block lives in the PR being processed, which avoids requiring WebGPT to know the PR number before opening the PR.
+- The OpenCode GitHub event workflow model is configured through repository variables. Current smoke configuration uses `PHATGPT_OPENCODE_MODEL=opencode/deepseek-v4-flash-free` and `PHATGPT_OPENCODE_VARIANT=medium`; earlier `opencode/gpt-5.5` attempts were blocked by account balance, and unqualified `gpt-5.5` failed CLI validation because OpenCode requires `provider/model`.
 
 ## Recent Decisions
 
@@ -38,6 +40,7 @@
 | 2026-06-26 | Split MVP event loop into coder, reviewer, and optional researcher agents | The coder is the only mutating role; the reviewer is read-only and returns pass/needs-changes/blocked; the researcher prepares task blocks or refuses vague work. |
 | 2026-06-26 | Make `best-practices-github-ticket` mandatory for PhatGPT event agents | PRs/issues are the queue contract; agents must lease one ticket, honor route metadata, preserve proof, comment verdicts in the PR, and keep repair and review separate. |
 | 2026-06-26 | Use OpenCode OAuth `opencode/gpt-5.5` medium as the default event agent model | Repository secret `OPENCODE_API_KEY` is required; run `28257657868` showed unqualified `gpt-5.5` fails CLI validation, while local `opencode models opencode` lists `opencode/gpt-5.5`. |
+| 2026-06-26 | Add a PR template and allow `target.pr: null` for in-PR task blocks | WebGPT cannot reliably know the PR number before opening a PR; the dispatcher can treat `null` as the current PR while still refusing missing or malformed task contracts. |
 
 ## Open Questions
 
@@ -45,9 +48,9 @@
 - [ ] Classify the three `youtube-nocookie.com` telemetry aborts as expected third-party noise or adjust the proof filter.
 - [ ] Implement Slice 002 dry-run local-subagent refusal/receipt path.
 - [ ] Implement a bounded loop controller so ChatGPT/WebGPT invokes deterministic rounds instead of relying on prose memory.
-- [ ] Prove WebGPT can create the next bounded GitHub issue/PR/task for Codex cloud, Codex can implement it, and Actions/Pages can deploy and preserve evidence.
+- [ ] Prove WebGPT can create a bounded GitHub PR with a valid `phatgpt-task:v1` block; PR #9 proved the fail-closed missing-contract path, not the valid WebGPT-created path.
 - [ ] Configure `COPILOT_AGENT_TASK_TOKEN` and run `Assign Copilot Agent` for issue #5.
-- [ ] Trigger `.github/workflows/opencode-phatgpt.yml` from a real PR comment and preserve the OpenCode trace comment.
+- [x] Trigger `.github/workflows/opencode-phatgpt.yml` from a real PR comment and preserve PR trace comments for a valid task block in PR #8.
 - [ ] Validate `opencode serve` locally as the Tailscale/broker control surface.
 - [ ] Keep the local worker as fallback/smoke only after the OpenCode event path is tested.
 - [ ] Add bounded execution mode only after the dry-run receipt path is accepted.

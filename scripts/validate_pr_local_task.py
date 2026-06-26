@@ -93,8 +93,9 @@ def validate_task(data: Any) -> list[str]:
     else:
         if target.get("repository") != "grahama1970/chatgpt-lab":
             errors.append("task.target.repository must be grahama1970/chatgpt-lab")
-        if not isinstance(target.get("pr"), int) or target.get("pr") < 1:
-            errors.append("task.target.pr must be a positive integer")
+        target_pr = target.get("pr")
+        if target_pr is not None and (not isinstance(target_pr, int) or target_pr < 1):
+            errors.append("task.target.pr must be a positive integer or null for this PR")
         if not nonempty_string(target.get("branch")):
             errors.append("task.target.branch must be a non-empty string")
         commit = target.get("commit")
