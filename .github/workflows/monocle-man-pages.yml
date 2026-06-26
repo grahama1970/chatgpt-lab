@@ -112,6 +112,7 @@ jobs:
             throw new Error('Missing PAGE_URL from deploy-pages output');
           }
 
+          const pageOrigin = new URL(pageUrl).origin;
           const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
           let lastStatus = null;
           for (let i = 0; i < 36; i += 1) {
@@ -138,12 +139,28 @@ jobs:
               consoleErrors.push({ viewport, type: 'pageerror', text: error.message });
             });
             page.on('requestfailed', request => {
+              const url = request.url();
+              let origin = null;
+              let host = null;
+              let pathname = null;
+              try {
+                const parsed = new URL(url);
+                origin = parsed.origin;
+                host = parsed.hostname;
+                pathname = parsed.pathname;
+              } catch {
+                // Keep null fields for malformed URLs so the classifier stays fail-closed.
+              }
               networkErrors.push({
                 viewport,
-                url: request.url(),
+                url,
+                origin,
+                host,
+                pathname,
                 method: request.method(),
                 resourceType: request.resourceType(),
-                failureText: request.failure()?.errorText || null
+                failureText: request.failure()?.errorText || null,
+                firstParty: origin === pageOrigin
               });
             });
           };
@@ -178,6 +195,32 @@ jobs:
 
           await browser.close();
 
+          const isExpectedYoutubeTelemetryAbort = (entry) => {
+            if (entry.host !== 'www.youtube-nocookie.com') return false;
+            if (entry.failureText !== 'net::ERR_ABORTED') return false;
+            return entry.pathname === '/youtubei/v1/log_event' || entry.pathname === '/api/stats/qoe';
+          };
+
+          const expectedThirdPartyNetworkWarnings = networkErrors
+            .filter(isExpectedYoutubeTelemetryAbort)
+            .map(entry => ({
+              ...entry,
+              classification: 'expected_third_party_telemetry_abort',
+              blocking: false,
+              reason: 'YouTube privacy-enhanced embed telemetry request aborted after modal/video interaction; no first-party asset failure.'
+            }));
+
+          const blockingNetworkErrors = networkErrors
+            .filter(entry => !isExpectedYoutubeTelemetryAbort(entry))
+            .map(entry => ({
+              ...entry,
+              classification: entry.firstParty ? 'blocking_first_party_network_error' : 'blocking_unexpected_network_error',
+              blocking: true,
+              reason: entry.firstParty
+                ? 'First-party request failed during live Pages proof.'
+                : 'Unexpected non-allowlisted network request failed during live Pages proof.'
+            }));
+
           const proof = {
             schema: 'chatgpt_lab.github_pages_live_proof.v1',
             status: 'PASS',
@@ -192,7 +235,9 @@ jobs:
               hero_heading_contains_monocle_man: /Monocle Man/i.test(desktopHeading),
               normal_motion_animation_name: animation?.animationName || null,
               normal_motion_animation_duration: animation?.animationDuration || null,
-              normal_motion_animation_iteration_count: animation?.animationIterationCount || null
+              normal_motion_animation_iteration_count: animation?.animationIterationCount || null,
+              blocking_network_errors_count: blockingNetworkErrors.length,
+              expected_third_party_network_warnings_count: expectedThirdPartyNetworkWarnings.length
             },
             screenshots: {
               desktop_full: 'screenshots/live-desktop-full.png',
@@ -201,6 +246,8 @@ jobs:
               mobile_menu: 'screenshots/live-mobile-menu.png'
             },
             console_errors: consoleErrors,
+            blocking_network_errors: blockingNetworkErrors,
+            expected_third_party_network_warnings: expectedThirdPartyNetworkWarnings,
             network_errors: networkErrors
           };
 
@@ -208,6 +255,9 @@ jobs:
             proof.status = 'FAIL';
           }
           if (proof.assertions.normal_motion_animation_name !== 'spin') {
+            proof.status = 'FAIL';
+          }
+          if (proof.assertions.blocking_network_errors_count > 0) {
             proof.status = 'FAIL';
           }
 
