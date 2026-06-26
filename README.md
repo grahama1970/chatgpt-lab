@@ -31,9 +31,9 @@ This repo records:
 
 ## Project Mission
 
-The mission is to prove a reusable, evidence-driven self-improvement system controlled from ChatGPT Web.
+The mission is to prove a reusable, evidence-driven self-improvement system controlled from ChatGPT Web and grounded in GitHub evidence.
 
-ChatGPT Web is the primary controller and default implementer. It selects the bounded objective, changes source through GitHub branches and pull requests, retrieves CI and deployment evidence, reviews rendered results, and decides whether to patch, merge, stop, or delegate. The project agent is a bounded local execution adapter for operations unavailable through current ChatGPT tools; it is not a co-equal planning authority.
+ChatGPT Web / WebGPT is the primary controller. It reads the repo state, selects the bounded objective, names the skills and contracts to use, creates or updates the GitHub issue/PR/task, retrieves CI and deployment evidence, reviews rendered results, and decides whether to continue, stop, or delegate. The Codex cloud agent is the preferred implementer for GitHub-native code changes. The local project agent is only a bounded execution adapter for operations unavailable through current ChatGPT/GitHub tools; it is not a co-equal planning authority.
 
 The working model is simple:
 
@@ -51,24 +51,24 @@ Bias: evidence over opinion. Chats, reviewers, and model judgments may guide the
 ```text
 human objective or detected defect
     ↓
-load current requirements + select the smallest useful skill chain
+WebGPT loads current requirements + selects the smallest useful skill chain
     ↓
-baseline the exact Git commit and rendered site
+WebGPT creates a bounded GitHub issue/PR/task
     ↓
-ChatGPT writes a bounded patch on an isolated branch
+Codex cloud agent implements on a branch or PR
     ↓
-GitHub Actions: build + interactions + accessibility + screenshots
+GitHub Actions: source check + benchmark + interactions + accessibility + screenshots
     ↓
-Netlify: deploy the tested commit
+GitHub Pages deploys the tested commit
     ↓
-independent code review + visual review of fresh evidence
+WebGPT/ChatGPT reviews fresh CI, deployment, and screenshot evidence
     ↓
 PASS | NEEDS_CHANGES | BLOCKED | INSUFFICIENT_EVIDENCE
     ↓
 retry within a fixed round limit, then preserve the lesson
 ```
 
-The **inner loop** improves the benchmark. The **outer loop** improves the skill selection, tests, evidence gates, reviewer quality, and stopping rules that produced the result.
+The **inner loop** improves the benchmark through GitHub-native work. The **outer loop** improves the skill selection, task contracts, tests, evidence gates, reviewer quality, and stopping rules that produced the result.
 
 ## Try This First
 
@@ -146,6 +146,7 @@ agent-state/                           machine-readable controller memory
 
 - **Evidence before confidence.** Missing proof becomes `INSUFFICIENT_EVIDENCE`, not an optimistic pass.
 - **ChatGPT controls the round.** The project agent executes only explicit local-only tasks and cannot self-approve.
+- **WebGPT gives Codex bounded work.** WebGPT names the objective, skills, files, validation commands, and proof requirements; Codex cloud implements the GitHub-native change.
 - **Progressive skill loading.** Read the registry first; load only the smallest applicable skill chain and its declared dependencies.
 - **Builder/reviewer separation.** ChatGPT may perform both roles, but the review phase remains read-only until findings are finalized.
 - **Bounded retries.** The current default is three rounds and no more than five prioritized fixes per round.
