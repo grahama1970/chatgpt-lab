@@ -39,6 +39,19 @@ def nonempty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def validate_delete_file_payload(value: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(value, dict):
+        return ["delete_file payload must be an object"]
+    if value.get("schema") != "chatgpt_lab.command.delete_file.v1":
+        errors.append("delete_file payload.schema must be chatgpt_lab.command.delete_file.v1")
+    if not nonempty_string(value.get("path")):
+        errors.append("delete_file payload.path must be a non-empty string")
+    if len(set(value).difference({"schema", "path"})) > 0:
+        errors.append("delete_file payload has unexpected fields")
+    return errors
+
+
 def validate_task(data: Any) -> list[str]:
     errors: list[str] = []
     if not isinstance(data, dict):
@@ -66,8 +79,8 @@ def validate_task(data: Any) -> list[str]:
     if data.get("schema") != TASK_SCHEMA:
         errors.append(f"task.schema must be {TASK_SCHEMA}")
     command = data.get("command", "validate_only")
-    if command not in {"validate_only", "apply_text_patch"}:
-        errors.append("task.command must be validate_only or apply_text_patch")
+    if command not in {"validate_only", "apply_text_patch", "delete_file"}:
+        errors.append("task.command must be validate_only, apply_text_patch, or delete_file")
     if data.get("mode") not in TASK_MODES:
         errors.append(f"task.mode must be one of {sorted(TASK_MODES)}")
     for key in ["task_id", "objective", "stop_condition"]:
@@ -118,17 +131,19 @@ def validate_task(data: Any) -> list[str]:
         errors.append("task.validation_commands must include python3 scripts/validate_control_plane.py")
     if "local-subagent-receipt.json" not in (data.get("required_outputs") or []):
         errors.append("task.required_outputs must include local-subagent-receipt.json")
-    if command == "apply_text_patch":
+    if command in {"apply_text_patch", "delete_file"}:
         if data.get("mode") != "bounded_execution":
-            errors.append("apply_text_patch task.mode must be bounded_execution")
+            errors.append(f"{command} task.mode must be bounded_execution")
         if "payload" not in data:
-            errors.append("apply_text_patch task requires payload")
-        else:
+            errors.append(f"{command} task requires payload")
+        elif command == "apply_text_patch":
             errors.extend(validate_apply_text_patch_payload(data.get("payload")))
+        else:
+            errors.extend(validate_delete_file_payload(data.get("payload")))
         if not any(str(command_value).startswith("python3 scripts/phatgpt_local_worker_cycle.py") for command_value in data.get("allowed_commands") or []):
-            errors.append("apply_text_patch task.allowed_commands must include python3 scripts/phatgpt_local_worker_cycle.py")
+            errors.append(f"{command} task.allowed_commands must include python3 scripts/phatgpt_local_worker_cycle.py")
     elif "payload" in data:
-        errors.append("task.payload is only allowed for apply_text_patch")
+        errors.append("task.payload is only allowed for apply_text_patch or delete_file")
 
     return errors
 

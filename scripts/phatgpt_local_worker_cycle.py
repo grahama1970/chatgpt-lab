@@ -365,6 +365,17 @@ def apply_text_patch_payload(payload: dict[str, Any]) -> tuple[int, str, str, li
     return 0, f"patched {relative_path}", "", [relative_path]
 
 
+def delete_file_payload(payload: dict[str, Any]) -> tuple[int, str, str, list[str]]:
+    relative_path = str(payload["path"])
+    target = (ROOT / relative_path).resolve()
+    if not str(target).startswith(str(ROOT.resolve()) + "/"):
+        return 2, "", "path_outside_workspace", []
+    if not target.is_file():
+        return 2, "", "target_file_missing", []
+    target.unlink()
+    return 0, f"deleted {relative_path}", "", [relative_path]
+
+
 def run_validation_commands(task: dict[str, Any], commands_run: list[dict[str, Any]]) -> bool:
     allowed = set(task.get("allowed_commands") or [])
     ok = True
@@ -397,10 +408,14 @@ def git_worktree_dirty() -> bool:
 
 
 def execute_coder_task(task: dict[str, Any], item: dict[str, Any], commands_run: list[dict[str, Any]]) -> tuple[str, str | None, list[str], list[str]]:
-    if task.get("command", "validate_only") != "apply_text_patch":
+    task_command = task.get("command", "validate_only")
+    if task_command not in {"apply_text_patch", "delete_file"}:
         return "COMPLETED", "task_contract_validated", [], []
     if task.get("mode") != "bounded_execution":
         return "REFUSED", "task_not_implementation_ready", ["bounded_execution mode"], []
+    payload_path = str(task.get("payload", {}).get("path") or "")
+    if not path_allowed(payload_path, [str(pattern) for pattern in task.get("allowed_paths") or []]):
+        return "REFUSED", "path_outside_allowlist", [payload_path], []
     branch = str(task.get("target", {}).get("branch") or item.get("headRefName") or "")
     if not branch:
         return "REFUSED", "target_branch_missing", ["target.branch"], []
@@ -424,11 +439,16 @@ def execute_coder_task(task: dict[str, Any], item: dict[str, Any], commands_run:
         if exit_code != 0:
             return "FAILED", "git_branch_checkout_failed", [], changed_files
 
-    exit_code, stdout, stderr, touched = apply_text_patch_payload(task["payload"])
-    commands_run.append(shell_record("apply_text_patch_payload", exit_code, stdout, stderr))
+    if task_command == "apply_text_patch":
+        exit_code, stdout, stderr, touched = apply_text_patch_payload(task["payload"])
+        command_label = "apply_text_patch_payload"
+    else:
+        exit_code, stdout, stderr, touched = delete_file_payload(task["payload"])
+        command_label = "delete_file_payload"
+    commands_run.append(shell_record(command_label, exit_code, stdout, stderr))
     changed_files.extend(touched)
     if exit_code != 0:
-        return "REFUSED", stderr or "apply_text_patch_failed", [], changed_files
+        return "REFUSED", stderr or f"{task_command}_failed", [], changed_files
 
     validation_ok = run_validation_commands(task, commands_run)
     if not validation_ok:

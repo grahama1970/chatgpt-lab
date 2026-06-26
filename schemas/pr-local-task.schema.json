@@ -24,7 +24,8 @@
     "command": {
       "enum": [
         "validate_only",
-        "apply_text_patch"
+        "apply_text_patch",
+        "delete_file"
       ]
     },
     "mode": {
@@ -61,22 +62,38 @@
     "stop_condition": {"type": "string", "minLength": 1},
     "refusal_conditions": {"type": "array", "items": {"type": "string"}},
     "payload": {
-      "type": "object",
-      "required": [
-        "schema",
-        "path",
-        "exact_old",
-        "exact_new",
-        "expected_replacements"
-      ],
-      "properties": {
-        "schema": {"const": "chatgpt_lab.command.apply_text_patch.v1"},
-        "path": {"type": "string", "minLength": 1},
-        "exact_old": {"type": "string", "minLength": 1},
-        "exact_new": {"type": "string"},
-        "expected_replacements": {"const": 1}
-      },
-      "additionalProperties": false
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "schema",
+            "path",
+            "exact_old",
+            "exact_new",
+            "expected_replacements"
+          ],
+          "properties": {
+            "schema": {"const": "chatgpt_lab.command.apply_text_patch.v1"},
+            "path": {"type": "string", "minLength": 1},
+            "exact_old": {"type": "string", "minLength": 1},
+            "exact_new": {"type": "string"},
+            "expected_replacements": {"const": 1}
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "schema",
+            "path"
+          ],
+          "properties": {
+            "schema": {"const": "chatgpt_lab.command.delete_file.v1"},
+            "path": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        }
+      ]
     }
   },
   "additionalProperties": false
