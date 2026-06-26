@@ -1,6 +1,6 @@
 {
   "schema": "chatgpt_lab.next_command.v1",
-  "command_id": "push-proof-001",
+  "command_id": "push-proof-002",
   "command": "echo_hello",
   "target_repo": "grahama1970/chatgpt-lab",
   "target_ref": "main",
@@ -10,5 +10,5 @@
   "allowed_outputs": [
     "agent-state/last-result.json"
   ],
-  "stop_condition": "agent-state/last-result.json exists and contains command_id push-proof-001 with status PASS for the dispatch run."
+  "stop_condition": "agent-state/last-result.json exists and contains command_id push-proof-002 with status PASS for the dispatch run."
 }
