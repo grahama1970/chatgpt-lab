@@ -178,6 +178,45 @@ jobs:
 
           await browser.close();
 
+          const pageOrigin = new URL(pageUrl).origin;
+          const parseUrl = (value) => {
+            try {
+              return new URL(value);
+            } catch {
+              return null;
+            }
+          };
+          const isExpectedYouTubeTelemetryAbort = (entry) => {
+            const parsed = parseUrl(entry.url);
+            if (!parsed) return false;
+            const knownTelemetryPath = parsed.pathname === '/api/stats/qoe' || parsed.pathname === '/youtubei/v1/log_event';
+            return (
+              parsed.hostname === 'www.youtube-nocookie.com'
+              && knownTelemetryPath
+              && entry.failureText === 'net::ERR_ABORTED'
+            );
+          };
+
+          const expectedThirdPartyNetworkWarnings = [];
+          const blockingNetworkErrors = [];
+          const unexpectedThirdPartyNetworkErrors = [];
+          for (const entry of networkErrors) {
+            const parsed = parseUrl(entry.url);
+            if (isExpectedYouTubeTelemetryAbort(entry)) {
+              expectedThirdPartyNetworkWarnings.push({
+                ...entry,
+                host: parsed?.hostname || null,
+                reason: 'aborted telemetry request after modal/video interaction'
+              });
+              continue;
+            }
+
+            blockingNetworkErrors.push(entry);
+            if (!parsed || parsed.origin !== pageOrigin) {
+              unexpectedThirdPartyNetworkErrors.push(entry);
+            }
+          }
+
           const proof = {
             schema: 'chatgpt_lab.github_pages_live_proof.v1',
             status: 'PASS',
@@ -201,7 +240,11 @@ jobs:
               mobile_menu: 'screenshots/live-mobile-menu.png'
             },
             console_errors: consoleErrors,
-            network_errors: networkErrors
+            network_errors: networkErrors,
+            total_observed_network_events: networkErrors.length,
+            blocking_network_errors: blockingNetworkErrors,
+            expected_third_party_network_warnings: expectedThirdPartyNetworkWarnings,
+            unexpected_third_party_network_errors: unexpectedThirdPartyNetworkErrors
           };
 
           if (!proof.assertions.hero_heading_contains_monocle_man) {
@@ -210,10 +253,17 @@ jobs:
           if (proof.assertions.normal_motion_animation_name !== 'spin') {
             proof.status = 'FAIL';
           }
+          if (proof.blocking_network_errors.length > 0) {
+            proof.status = 'FAIL';
+          }
 
           fs.writeFileSync(path.join(outDir, 'deployment-proof.json'), `${JSON.stringify(proof, null, 2)}\n`);
           if (proof.status !== 'PASS') {
-            throw new Error(`Live Pages proof failed: ${JSON.stringify(proof.assertions)}`);
+            throw new Error(`Live Pages proof failed: ${JSON.stringify({
+              assertions: proof.assertions,
+              blocking_network_errors: proof.blocking_network_errors.length,
+              unexpected_third_party_network_errors: proof.unexpected_third_party_network_errors.length
+            })}`);
           }
           NODE
           node live-pages-proof.mjs
