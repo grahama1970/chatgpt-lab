@@ -196,11 +196,13 @@ jobs:
           await browser.close();
 
           const isExpectedYoutubeExpectedAbort = (entry) => {
-            if (entry.host !== 'www.youtube-nocookie.com') return false;
             if (entry.failureText !== 'net::ERR_ABORTED') return false;
-            if (entry.pathname === '/youtubei/v1/log_event' || entry.pathname === '/youtubei/v1/next' || entry.pathname === '/api/stats/qoe') return true;
-            if (entry.resourceType === 'document' && entry.pathname.startsWith('/embed/NBxByrz5BRE')) return true;
-            return entry.resourceType === 'script' && entry.pathname.startsWith('/s/_/ytembeds/_/js/');
+            if (entry.host === 'www.youtube-nocookie.com') {
+              if (entry.pathname === '/youtubei/v1/log_event' || entry.pathname === '/youtubei/v1/next' || entry.pathname === '/api/stats/qoe') return true;
+              if (entry.resourceType === 'document' && entry.pathname.startsWith('/embed/NBxByrz5BRE')) return true;
+              return entry.resourceType === 'script' && entry.pathname.startsWith('/s/_/ytembeds/_/js/');
+            }
+            return entry.host === 'www.google.com' && entry.resourceType === 'script' && entry.pathname.startsWith('/js/th/');
           };
 
           const expectedThirdPartyNetworkWarnings = networkErrors
@@ -209,7 +211,7 @@ jobs:
               ...entry,
               classification: 'expected_third_party_youtube_abort',
               blocking: false,
-              reason: 'YouTube privacy-enhanced embed request aborted during modal/video lifecycle; no first-party asset failure.'
+              reason: 'YouTube privacy-enhanced embed helper request aborted during modal/video lifecycle; no first-party asset failure.'
             }));
 
           const blockingNetworkErrors = networkErrors
