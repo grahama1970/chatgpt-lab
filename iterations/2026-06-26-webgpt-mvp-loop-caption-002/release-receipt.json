@@ -1,0 +1,60 @@
+{
+  "schema": "chatgpt_lab.release_receipt.v1",
+  "role": "deployer",
+  "target": "pr#10",
+  "status": "DEPLOYED",
+  "reason": "post_merge_pages_proof_passed",
+  "pr": {
+    "number": 10,
+    "url": "https://github.com/grahama1970/chatgpt-lab/pull/10",
+    "state": "MERGED",
+    "merged_at": "2026-06-26T21:15:17Z",
+    "reviewed_head_sha": "1bdc732c671ceedeed728e01c498b50ed24ccd78",
+    "squash_merge_commit": "d4c013ce98fd78ef4efcbdc716ec8523db9afaed"
+  },
+  "pre_merge": {
+    "deployer_receipt": "artifacts/deployer/pr-10/deployer-receipt.json",
+    "deployer_review_receipt": "artifacts/deployer/pr-10/deployer-review-receipt.json",
+    "deployer_status": "WOULD_MERGE",
+    "reviewer_verdict": "PASS"
+  },
+  "post_merge": {
+    "fix_commit": "0d987970d268a212b31683881d2391c0c015a577",
+    "proof_commit": "26b82c4",
+    "source_check_run": {
+      "run_id": 28265880123,
+      "conclusion": "success"
+    },
+    "benchmark_run": {
+      "run_id": 28265880118,
+      "job_id": 83752348295,
+      "conclusion": "success"
+    },
+    "pages_run": {
+      "run_id": 28265880104,
+      "build_job_id": 83752348481,
+      "deploy_proof_job_id": 83752389728,
+      "conclusion": "success"
+    },
+    "deployment_proof": {
+      "path": "delivery-proof/monocle-man/latest/deployment-proof.json",
+      "status": "PASS",
+      "page_url": "https://grahama1970.github.io/chatgpt-lab/",
+      "commit": "0d987970d268a212b31683881d2391c0c015a577",
+      "blocking_network_errors_count": 0,
+      "expected_third_party_network_warnings_count": 4,
+      "screenshots": [
+        "delivery-proof/monocle-man/latest/screenshots/live-desktop-full.png",
+        "delivery-proof/monocle-man/latest/screenshots/live-desktop-modal.png",
+        "delivery-proof/monocle-man/latest/screenshots/live-mobile.png",
+        "delivery-proof/monocle-man/latest/screenshots/live-mobile-menu.png"
+      ]
+    }
+  },
+  "labels_added": [
+    "phatgpt-deployed"
+  ],
+  "mocked": false,
+  "live": true,
+  "completed_at": "2026-06-26T21:22:04Z"
+}

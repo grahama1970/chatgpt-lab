@@ -1,6 +1,6 @@
 # Project Knowledge: chatgpt-lab
 
-**Last updated:** 2026-06-26 17:11 EDT by agent
+**Last updated:** 2026-06-26 17:23 EDT by agent
 **Status:** Active development
 
 ## Current Understanding
@@ -11,7 +11,7 @@
 - The first safe mutation command is proven through the bridge. `apply_text_patch` requires a schema-validated payload, only allows selected `monocle-man-site/**` text files, and refuses unless the old text appears exactly once.
 - The current proof command is `apply-text-patch-proof-001`; `agent-state/last-result.json` records `status: PASS`, executor run `28245515891`, WebGPT command commit `5450331fcf932ddcbf79cbea490005f250c7d29e`, and result commit `064f5fd5b2b52bd1874c205edaeb616f7eae0533`.
 - Follow-on proof for the mutated commit exists: Source Check run `28245666829`, Monocle Benchmark run `28245666824`, GitHub Pages live proof run `28245666963`, and `delivery-proof/monocle-man/latest/deployment-proof.json` records `status: PASS`.
-- This proves the narrow GitHub memory/executor loop and one bounded source mutation. It does not prove broad autonomous project ownership, arbitrary command execution, local-subagent delegation, or visual/design review closure.
+- This proves the narrow GitHub memory/executor loop, one bounded source mutation, one WebGPT-created PR loop, real merge, and post-merge Pages proof. It does not prove broad autonomous project ownership, arbitrary command execution, or Tailscale/WebGPT reachability to the local broker.
 - The intended operating model is now explicit: WebGPT controls the task, names required skills/contracts, creates or updates GitHub issues/PRs/tasks, the Codex cloud agent implements GitHub-native code changes, GitHub Actions/Pages produce proof, and PhatGPT-LAB records the iteration.
 - WebGPT deliverables should be executable GitHub work packets, not advisory prose: exact objective, skills, files, validation command, deployment/evidence expectation, and fail-closed verdict rules.
 - The next cloud-agent handoff artifact is `.github/workflows/assign-copilot-agent.yml`. It uses GitHub's public-preview Agent Tasks API to start a Copilot cloud-agent task for a bounded issue and records `agent-state/last-result.json`.
@@ -23,7 +23,8 @@
 - Subagent receipt summaries may be mirrored into `$memory` collection `subagent_memory` for recall, but canonical proof remains GitHub PR comments, CI run IDs, raw receipt files, screenshots, and deployment proof JSON.
 - The OpenCode/GitHub event loop has a narrow PR-scope proof in PR #8: the valid task block triggered a coder change to `monocle-man-site/src/main.jsx`, checks passed at head `146d51dc54b977dab01470a0ae288af38b9f7813`, and the reviewer commented `PASS`. This does not prove live deployment ownership because Pages deployment is skipped on PR branches.
 - PR #9 is the first WebGPT-created PR test and is useful negative evidence: it had an empty body, no `best-practices-github-ticket` metadata, and no `phatgpt-task:v1` block, so the worker refused it with a PR comment instead of inferring work.
-- PR #10 is the first valid WebGPT-created loop proof. WebGPT created branch `webgpt-mvp-loop-caption-002` and a valid PR task block; OpenCode applied the bounded Monocle caption change; local reviewer re-ran checks on the PR branch; a local rebase from a non-`github-actions[bot]` identity cleared the `action_required` check state; and the dry-run deployer reached `WOULD_MERGE` on head `1bdc732c671ceedeed728e01c498b50ed24ccd78`.
+- PR #10 is the first valid WebGPT-created loop proof. WebGPT created branch `webgpt-mvp-loop-caption-002` and a valid PR task block; OpenCode applied the bounded Monocle caption change; local reviewer re-ran checks on the PR branch; a local rebase from a non-`github-actions[bot]` identity cleared the `action_required` check state; the dry-run deployer reached `WOULD_MERGE` on head `1bdc732c671ceedeed728e01c498b50ed24ccd78`; PR #10 was squash-merged as `d4c013ce98fd78ef4efcbdc716ec8523db9afaed`; and post-merge Pages proof passed for classifier commit `0d987970d268a212b31683881d2391c0c015a577`.
+- The PR #10 post-merge proof run is `28265880104`; `delivery-proof/monocle-man/latest/deployment-proof.json` records `status: PASS`, `blocking_network_errors_count: 0`, `expected_third_party_network_warnings_count: 4`, and screenshots for desktop, modal, mobile, and mobile menu. The tracked release receipt is `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
 - WebGPT-created PRs must use `.github/pull_request_template.md`. The `target.pr` field can be `null` when the task block lives in the PR being processed, which avoids requiring WebGPT to know the PR number before opening the PR.
 - The OpenCode GitHub event workflow model is configured through repository variables. Current smoke configuration uses `PHATGPT_OPENCODE_MODEL=opencode/deepseek-v4-flash-free` and `PHATGPT_OPENCODE_VARIANT=medium`; earlier `opencode/gpt-5.5` attempts were blocked by account balance, and unqualified `gpt-5.5` failed CLI validation because OpenCode requires `provider/model`.
 - The local `opencode serve` broker surface is reachable through the scillm-managed Docker service. `docker-opencode-serve-1` was rebuilt/recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, returns `401 Unauthorized` without Basic auth, and `http://127.0.0.1:4001/v1/scillm/opencode/health` returns `status: ok`, `health.healthy: true`, OpenCode `1.17.12`.
@@ -45,14 +46,16 @@
 | 2026-06-26 | Use OpenCode OAuth `opencode/gpt-5.5` medium as the default event agent model | Repository secret `OPENCODE_API_KEY` is required; run `28257657868` showed unqualified `gpt-5.5` fails CLI validation, while local `opencode models opencode` lists `opencode/gpt-5.5`. |
 | 2026-06-26 | Add a PR template and allow `target.pr: null` for in-PR task blocks | WebGPT cannot reliably know the PR number before opening a PR; the dispatcher can treat `null` as the current PR while still refusing missing or malformed task contracts. |
 | 2026-06-26 | Treat `opencode serve` as locally available but not yet Tailscale-proven | The scillm-managed Docker service is healthy on localhost; remote WebGPT/Tailscale reachability still needs an explicit network proof before it can be called a remote control surface. |
+| 2026-06-26 | Classify Google `/js/th/` embed-helper aborts as expected third-party warnings | Live Pages proof showed the YouTube no-cookie embed can abort a Google helper script during modal lifecycle; first-party failures and unrelated third-party failures remain blocking. |
 
 ## Open Questions
 
 - [ ] Add code-review and design-review receipts for the migrated Monocle source, workflows, and live screenshots.
-- [ ] Classify the three `youtube-nocookie.com` telemetry aborts as expected third-party noise or adjust the proof filter.
+- [x] Classify YouTube/no-cookie embed lifecycle aborts, including the observed Google `/js/th/` helper script abort, as expected third-party warnings while preserving fail-closed first-party network handling.
 - [ ] Implement Slice 002 dry-run local-subagent refusal/receipt path.
 - [ ] Implement a bounded loop controller so ChatGPT/WebGPT invokes deterministic rounds instead of relying on prose memory.
 - [x] Prove WebGPT can create a bounded GitHub PR with a valid `phatgpt-task:v1` block: PR #10 (`webgpt-mvp-loop-caption-002`) was created by WebGPT, carried the task block, triggered the PhatGPT OpenCode event worker, and reached dry-run deployer `WOULD_MERGE` after real GitHub checks passed on the latest head.
+- [x] Prove the PR #10 release lane through real merge and post-merge live Pages proof: squash merge `d4c013ce98fd78ef4efcbdc716ec8523db9afaed`, Pages run `28265880104`, proof commit `26b82c4`, and release receipt `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
 - [ ] Configure `COPILOT_AGENT_TASK_TOKEN` and run `Assign Copilot Agent` for issue #5.
 - [x] Trigger `.github/workflows/opencode-phatgpt.yml` from a real PR comment and preserve PR trace comments for a valid task block in PR #8.
 - [x] Validate `opencode serve` locally as the broker control surface: Docker service `docker-opencode-serve-1` is healthy, direct `:4098` requests require auth, and scillm health reports OpenCode `1.17.12`.
