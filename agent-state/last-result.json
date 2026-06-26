@@ -1,14 +1,14 @@
 {
-  "checked_at": "2026-06-26T14:46:45Z",
-  "command_id": "apply-text-patch-proof-001",
-  "head_sha": "5450331fcf932ddcbf79cbea490005f250c7d29e",
+  "checked_at": "2026-06-26T16:28:10Z",
+  "command_id": "copilot-agent-issue-5",
+  "head_sha": "061a19d5c7321f34bf7416669217b7df58009a98",
   "output_path": "agent-state/last-result.json",
   "repository": "grahama1970/chatgpt-lab",
   "run_attempt": 1,
-  "run_id": 28245515891,
+  "run_id": 28251209316,
   "schema": "chatgpt_lab.workflow_result.v1",
-  "status": "PASS",
-  "stderr": "",
-  "stdout": "{\n  \"path\": \"monocle-man-site/src/main.jsx\",\n  \"replacements\": 1,\n  \"schema\": \"chatgpt_lab.apply_text_patch_result.v1\",\n  \"status\": \"PASS\",\n  \"touched_files_manifest\": \".agent-dispatch-touched-files.txt\"\n}",
-  "workflow": "agent-dispatch.yml"
+  "status": "BLOCKED_CLOUD_AGENT_AUTH",
+  "stderr": "{\n  \"error\": \"missing COPILOT_AGENT_TASK_TOKEN\",\n  \"note\": \"GitHub Agent Tasks API requires a user-to-server token; GITHUB_TOKEN is not sufficient.\",\n  \"required_secret\": \"COPILOT_AGENT_TASK_TOKEN\"\n}",
+  "stdout": "{}",
+  "workflow": "assign-copilot-agent.yml"
 }
