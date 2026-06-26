@@ -1,0 +1,15 @@
+{
+  "schema": "chatgpt_lab.iteration_status.v1",
+  "iteration_id": "2026-06-26-apply-text-patch-proof",
+  "state": "PASS",
+  "phase": "webgpt-file-write-safe-mutation",
+  "candidate_commit": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+  "required_next_evidence": [
+    "review_code_receipt_for_workflows_and_mutation_executor",
+    "review_design_receipt_for_live_screenshots_if_design_readiness_is_claimed",
+    "automated_or_explicit_post_executor_follow_on_dispatch_contract",
+    "third_party_network_error_classification"
+  ],
+  "blockers": [],
+  "updated_at": "2026-06-26T15:05:18Z"
+}

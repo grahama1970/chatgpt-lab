@@ -1,0 +1,40 @@
+{
+  "schema": "chatgpt_lab.github_actions_run_set.v1",
+  "iteration_id": "2026-06-26-apply-text-patch-proof",
+  "runs": [
+    {
+      "workflow": "WebGPT Command Dispatcher",
+      "run_id": "28245510581",
+      "head_sha": "5450331fcf932ddcbf79cbea490005f250c7d29e",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "Agent Dispatch",
+      "run_id": "28245515891",
+      "head_sha": "5450331fcf932ddcbf79cbea490005f250c7d29e",
+      "conclusion": "success",
+      "artifact_name": "chatgpt-lab-agent-dispatch-result",
+      "artifact_id": "7908476495"
+    },
+    {
+      "workflow": "Source Check",
+      "run_id": "28245666829",
+      "head_sha": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "Monocle Man Benchmark",
+      "run_id": "28245666824",
+      "head_sha": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "Monocle Man GitHub Pages",
+      "run_id": "28245666963",
+      "head_sha": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+      "conclusion": "success",
+      "artifact_name": "monocle-man-live-pages-proof",
+      "artifact_id": "7908610801"
+    }
+  ]
+}

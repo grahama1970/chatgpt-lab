@@ -1,0 +1,15 @@
+{
+  "schema": "chatgpt_lab.source_mutation_evidence.v1",
+  "iteration_id": "2026-06-26-apply-text-patch-proof",
+  "command_id": "apply-text-patch-proof-001",
+  "command": "apply_text_patch",
+  "command_commit": "5450331fcf932ddcbf79cbea490005f250c7d29e",
+  "result_commit": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+  "path": "monocle-man-site/src/main.jsx",
+  "exact_old": "One lens. One side. No compromise.",
+  "exact_new": "One lens. One side. Evidence over opinion.",
+  "expected_replacements": 1,
+  "observed_replacements": 1,
+  "receipt_path": "agent-state/last-result.json",
+  "receipt_status": "PASS"
+}

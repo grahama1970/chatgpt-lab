@@ -157,9 +157,11 @@ agent-state/                           machine-readable controller memory
 
 The control-plane repository, requirements, controller authority, source-check workflow, and WebGPT-to-GitHub-Actions bridge are established.
 
-The proven bridge is narrow: WebGPT writes `agent-state/next-command.json`, GitHub runs `.github/workflows/webgpt-command-dispatcher.yml`, the proxy dispatches `.github/workflows/agent-dispatch.yml`, and the executor commits `agent-state/last-result.json`. The current bridge proof is `push-proof-002`: dispatcher run `28238572045`, executor run `28238575766`, result commit `59e44c80d1acb864b6583bd17c1369d873692030`, and `agent-state/last-result.json` records `status: PASS`.
+The proven bridge is narrow but no longer read-only: WebGPT writes `agent-state/next-command.json`, GitHub runs `.github/workflows/webgpt-command-dispatcher.yml`, the proxy dispatches `.github/workflows/agent-dispatch.yml`, and the executor commits `agent-state/last-result.json`. The first mutation proof is `apply-text-patch-proof-001`: WebGPT command commit `5450331fcf932ddcbf79cbea490005f250c7d29e`, dispatcher run `28245510581`, executor run `28245515891`, result commit `064f5fd5b2b52bd1874c205edaeb616f7eae0533`, and `agent-state/last-result.json` records `status: PASS`.
 
-The next safe mutation command is `apply_text_patch`. It accepts only a schema-validated payload with an allowlisted `monocle-man-site/**` path, exact old text, exact new text, and `expected_replacements: 1`. The next proof step is to have WebGPT write an `apply_text_patch` command and observe GitHub Actions commit the changed file plus `agent-state/last-result.json`.
+The safe mutation command is `apply_text_patch`. It accepts only a schema-validated payload with an allowlisted `monocle-man-site/**` path, exact old text, exact new text, and `expected_replacements: 1`. The first live command changed `monocle-man-site/src/main.jsx` from `One lens. One side. No compromise.` to `One lens. One side. Evidence over opinion.` and the follow-on checks for commit `064f5fd5b2b52bd1874c205edaeb616f7eae0533` passed: Source Check run `28245666829`, Monocle Benchmark run `28245666824`, and GitHub Pages proof run `28245666963`.
+
+This is not yet a broad autonomous project-ownership claim. The remaining work is to reduce local project-agent involvement, add review receipts, classify third-party network noise, implement the dry-run local-subagent receipt path, and turn the current manual loop into a bounded controller.
 
 Run the current validator with:
 

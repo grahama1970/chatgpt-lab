@@ -1,0 +1,139 @@
+{
+  "schema": "chatgpt_lab.iteration.v1",
+  "iteration_id": "2026-06-26-apply-text-patch-proof",
+  "started_at": "2026-06-26T14:45:00Z",
+  "completed_at": "2026-06-26T14:53:19Z",
+  "control_plane": {
+    "repository": "grahama1970/chatgpt-lab",
+    "ref": "35125263d78bc4e4b8b3c48485c44568691ba6d1"
+  },
+  "skills": {
+    "registry_repository": "local:agent-skills",
+    "registry_ref": "main",
+    "registry_hash": null,
+    "selected": [
+      "webgpt",
+      "ask"
+    ]
+  },
+  "candidate": {
+    "repository": "grahama1970/chatgpt-lab",
+    "branch": "main",
+    "commit": "064f5fd5b2b52bd1874c205edaeb616f7eae0533"
+  },
+  "evidence": {
+    "ci": {
+      "repository": "grahama1970/chatgpt-lab",
+      "workflow": "Source Check",
+      "run_id": "28245666829",
+      "run_attempt": "1",
+      "head_sha": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+      "branch": "main",
+      "conclusion": "success",
+      "url": "https://github.com/grahama1970/chatgpt-lab/actions/runs/28245666829",
+      "related_runs": [
+        {
+          "workflow": "WebGPT Command Dispatcher",
+          "run_id": "28245510581",
+          "head_sha": "5450331fcf932ddcbf79cbea490005f250c7d29e",
+          "conclusion": "success"
+        },
+        {
+          "workflow": "Agent Dispatch",
+          "run_id": "28245515891",
+          "head_sha": "5450331fcf932ddcbf79cbea490005f250c7d29e",
+          "conclusion": "success",
+          "artifact_name": "chatgpt-lab-agent-dispatch-result",
+          "artifact_id": "7908476495"
+        },
+        {
+          "workflow": "Monocle Man Benchmark",
+          "run_id": "28245666824",
+          "head_sha": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+          "conclusion": "success"
+        },
+        {
+          "workflow": "Monocle Man GitHub Pages",
+          "run_id": "28245666963",
+          "head_sha": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+          "conclusion": "success",
+          "artifact_name": "monocle-man-live-pages-proof",
+          "artifact_id": "7908610801"
+        }
+      ]
+    },
+    "deployment": {
+      "schema": "chatgpt_lab.github_pages_live_proof.v1",
+      "provider": "github_pages",
+      "url": "https://grahama1970.github.io/chatgpt-lab/",
+      "commit": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+      "branch": "main",
+      "status": "PASS",
+      "run_id": "28245666963",
+      "path": "delivery-proof/monocle-man/latest/deployment-proof.json",
+      "caveat": "Three aborted third-party youtube-nocookie.com telemetry requests were recorded after modal interaction."
+    },
+    "screenshots": [
+      {
+        "viewport": "desktop",
+        "path": "delivery-proof/monocle-man/latest/screenshots/live-desktop-full.png"
+      },
+      {
+        "viewport": "desktop-modal",
+        "path": "delivery-proof/monocle-man/latest/screenshots/live-desktop-modal.png"
+      },
+      {
+        "viewport": "mobile",
+        "path": "delivery-proof/monocle-man/latest/screenshots/live-mobile.png"
+      },
+      {
+        "viewport": "mobile-menu",
+        "path": "delivery-proof/monocle-man/latest/screenshots/live-mobile-menu.png"
+      },
+      {
+        "viewport": "cdp-desktop",
+        "path": "/tmp/codex-ui-verification/chatgpt-lab/monocle-apply-text-patch-proof/20260626T145319Z.png"
+      }
+    ],
+    "interactions": {
+      "workflow_result": "agent-state/last-result.json",
+      "command_id": "apply-text-patch-proof-001",
+      "status": "PASS",
+      "stdout_status": "PASS",
+      "replacement_path": "monocle-man-site/src/main.jsx",
+      "replacements": 1,
+      "webgpt_request": "artifacts/webgpt/apply-text-patch-proof-001-request.md",
+      "webgpt_response": "artifacts/webgpt/apply-text-patch-proof-001-request-response.md"
+    }
+  },
+  "reviews": {
+    "code": {
+      "reviewer": "project-agent",
+      "summary": "Recorded deterministic bridge and CI evidence. A separate scoped code-review receipt is still required for stronger readiness claims.",
+      "findings": []
+    },
+    "design": {
+      "reviewer": "playwright-and-cdp-screenshot-evidence",
+      "summary": "Fresh Pages screenshots and a CDP screenshot exist for the mutated commit. A persona-bound design review receipt is still required before claiming design closure."
+    }
+  },
+  "changes": [
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "commit": "5450331fcf932ddcbf79cbea490005f250c7d29e",
+      "summary": "WebGPT wrote the apply_text_patch command envelope to agent-state/next-command.json."
+    },
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "commit": "064f5fd5b2b52bd1874c205edaeb616f7eae0533",
+      "summary": "GitHub Actions applied the one-line Monocle text change and recorded agent-state/last-result.json."
+    },
+    {
+      "repository": "grahama1970/chatgpt-lab",
+      "commit": "35125263d78bc4e4b8b3c48485c44568691ba6d1",
+      "summary": "GitHub Pages workflow recorded live deployment proof for the mutated commit."
+    }
+  ],
+  "verdict": "PASS",
+  "stop_reason": "bounded_webgpt_file_write_to_safe_source_mutation_proved_project_agent_replacement_not_proved"
+}
