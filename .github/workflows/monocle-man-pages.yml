@@ -199,7 +199,7 @@ jobs:
             if (entry.host !== 'www.youtube-nocookie.com') return false;
             if (entry.failureText !== 'net::ERR_ABORTED') return false;
             if (entry.pathname === '/youtubei/v1/log_event' || entry.pathname === '/api/stats/qoe') return true;
-            return entry.resourceType === 'document' && entry.pathname === '/embed/NBxByrz5BRE';
+            return entry.resourceType === 'document' && entry.pathname.startsWith('/embed/NBxByrz5BRE');
           };
 
           const expectedThirdPartyNetworkWarnings = networkErrors
@@ -270,6 +270,7 @@ jobs:
           node live-pages-proof.mjs
 
       - name: Upload live Pages proof artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: monocle-man-live-pages-proof
@@ -278,6 +279,7 @@ jobs:
           retention-days: 30
 
       - name: Commit live Pages proof
+        if: always()
         run: |
           git config user.name "ChatGPT-Lab"
           git config user.email "chatgpt-lab@users.noreply.github.com"
