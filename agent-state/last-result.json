@@ -1,14 +1,14 @@
 {
-  "schema": "chatgpt_lab.workflow_result.v1",
+  "checked_at": "2026-06-26T11:58:16Z",
   "command_id": "echo-proof-001",
-  "status": "NOT_RUN",
-  "repository": "grahama1970/chatgpt-lab",
-  "workflow": "agent-dispatch.yml",
-  "run_id": null,
-  "run_attempt": null,
-  "head_sha": null,
+  "head_sha": "90c535e562ad7f7545403702e560f0a6c7d673be",
   "output_path": "agent-state/last-result.json",
-  "stdout": "",
+  "repository": "grahama1970/chatgpt-lab",
+  "run_attempt": 1,
+  "run_id": 28236539862,
+  "schema": "chatgpt_lab.workflow_result.v1",
+  "status": "PASS",
   "stderr": "",
-  "checked_at": null
+  "stdout": "hello from ChatGPT-Lab agent-dispatch",
+  "workflow": "agent-dispatch.yml"
 }
