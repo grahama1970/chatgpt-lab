@@ -1,6 +1,6 @@
 # Project Knowledge: chatgpt-lab
 
-**Last updated:** 2026-06-26 12:16 EDT by agent
+**Last updated:** 2026-06-26 13:07 EDT by agent
 **Status:** Active development
 
 ## Current Understanding
@@ -16,6 +16,9 @@
 - WebGPT deliverables should be executable GitHub work packets, not advisory prose: exact objective, skills, files, validation command, deployment/evidence expectation, and fail-closed verdict rules.
 - The next cloud-agent handoff artifact is `.github/workflows/assign-copilot-agent.yml`. It uses GitHub's public-preview Agent Tasks API to start a Copilot cloud-agent task for a bounded issue and records `agent-state/last-result.json`.
 - The handoff workflow is not proven until `COPILOT_AGENT_TASK_TOKEN` is configured and a run against issue #5 either starts a Copilot task or records `BLOCKED_CLOUD_AGENT_AUTH` / `BLOCKED_CLOUD_AGENT_API`.
+- The local-worker architecture should reject vague PRs/issues before doing work. `scripts/phatgpt_local_worker_cycle.py` now provides the first dry-run slice: inspect one GitHub PR/issue, require a `phatgpt-task:v1` JSON block, validate allowed commands/paths/evidence/stop condition, and write a local-subagent receipt.
+- The MVP cron loop uses three shared agent contracts under `/home/graham/workspace/experiments/agent-skills/agents`: `phatgpt-coder` for the only mutating implementation role, `phatgpt-reviewer` for read-only pass/needs-changes/blocked review, and `phatgpt-researcher` for optional task-block preparation/refusal.
+- The worker is not yet a mutating cron agent. It can discover one labeled PR/issue by role and validate/refuse it, but it does not yet edit product code, commit, push, post review labels, or process more than one target per invocation.
 
 ## Recent Decisions
 
@@ -27,6 +30,8 @@
 | 2026-06-26 | Treat `apply_text_patch` as the first safe mutation command | It gives WebGPT a narrow way to edit source without arbitrary shell access or broad file rewrites. |
 | 2026-06-26 | Use WebGPT as controller and Codex cloud as GitHub-native implementer | The experiment should prove a deployed GitHub/Actions/Pages loop without relying on the local project agent as the implementer. |
 | 2026-06-26 | Draft the minimal Agent Tasks API workflow before a GitHub App design | The next question is only whether PhatGPT-LAB can hand issue #5 to Copilot cloud and observe a receipt; service-account architecture is premature. |
+| 2026-06-26 | Require implementation-ready PR/issue task blocks before local worker execution | The local subagent must refuse vague work with a receipt instead of inferring architecture, acceptance criteria, or proof standards. |
+| 2026-06-26 | Split MVP cron loop into coder, reviewer, and optional researcher agents | The coder is the only mutating role; the reviewer is read-only and returns pass/needs-changes/blocked; the researcher prepares task blocks or refuses vague work. |
 
 ## Open Questions
 
@@ -36,6 +41,8 @@
 - [ ] Implement a bounded loop controller so ChatGPT/WebGPT invokes deterministic rounds instead of relying on prose memory.
 - [ ] Prove WebGPT can create the next bounded GitHub issue/PR/task for Codex cloud, Codex can implement it, and Actions/Pages can deploy and preserve evidence.
 - [ ] Configure `COPILOT_AGENT_TASK_TOKEN` and run `Assign Copilot Agent` for issue #5.
+- [ ] Promote the cron/service wrappers after the role-specific worker validates/refuses real PRs deterministically.
+- [ ] Add bounded execution mode only after the dry-run receipt path is accepted.
 
 ## Key Files
 
@@ -51,6 +58,11 @@
 | scripts/validate_agent_state.py | Validates agent-state command/result contracts |
 | scripts/apply_text_patch.py | Applies one schema-validated exact text replacement for safe mutation tests |
 | scripts/start_copilot_agent_task.py | Starts a bounded Copilot cloud-agent task and writes a fail-closed receipt |
+| scripts/phatgpt_local_worker_cycle.py | Short-lived PR/issue worker that validates or refuses structured local task blocks |
+| schemas/pr-local-task.schema.json | Machine-readable `phatgpt-task:v1` PR/issue task contract |
+| ../agent-skills/agents/phatgpt-coder/ | Shared mutating coder subagent contract for the MVP loop |
+| ../agent-skills/agents/phatgpt-reviewer/ | Shared read-only reviewer subagent contract for the MVP loop |
+| ../agent-skills/agents/phatgpt-researcher/ | Shared optional researcher/task-spec subagent contract for the MVP loop |
 | docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md | Operating contract for the GitHub memory/executor loop |
 
 ## Infrastructure State

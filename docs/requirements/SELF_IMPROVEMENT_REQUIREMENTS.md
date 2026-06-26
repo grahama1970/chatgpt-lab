@@ -283,6 +283,12 @@ The cron-launched local subagent is not a third planning authority. It is a boun
 | REQ-WEB-005 | If WebGPT wants local work, it must emit a structured task request for the cron-launched subagent. | Request includes task id, objective, allowed files, allowed commands, timeout, required artifacts, and refusal conditions. |
 | REQ-WEB-006 | The cron-launched subagent must execute only validated tasks and must produce a response artifact for WebGPT and the project agent. | Response includes status, commands run, files touched, artifacts produced, errors, and remaining blockers. |
 | REQ-WEB-007 | Local subagent output must not be treated as proof unless it includes raw command results or artifacts. | Subagent receipt includes commands, paths, hashes, screenshots, logs, or test output. |
+| REQ-WEB-008 | PR/issue work handed to a local subagent must be implementation-ready before execution. | The target contains a `chatgpt_lab.pr_local_task.v1` block with allowed commands, paths, validation commands, expected evidence, required outputs, stop condition, and refusal conditions. |
+| REQ-WEB-009 | Under-specified PR/issue work must be refused, not inferred. | The local worker writes a `chatgpt_lab.local_subagent_receipt.v1` receipt with `status: REFUSED`, `reason`, `missing`, and `next_required_action`. |
+| REQ-WEB-010 | The MVP cron loop must separate coder, reviewer, and optional researcher roles. | `agent-skills/agents/phatgpt-coder`, `phatgpt-reviewer`, and `phatgpt-researcher` contracts exist; each invocation handles at most one PR/issue and writes a receipt. |
+| REQ-WEB-011 | The coder role is the only local role allowed to mutate code. | Coder contract allows scoped mutation only after a valid task block; reviewer and researcher contracts deny code mutation, commit, push, and merge. |
+| REQ-WEB-012 | The reviewer role must be read-only and must return `PASS`, `NEEDS_CHANGES`, or `BLOCKED` style output without patching. | Reviewer contract denies write access and emits review receipt/findings/next owner. |
+| REQ-WEB-013 | Reviewer `NEEDS_CHANGES` output must become the next coder target instead of triggering reviewer mutation. | PR labels/comments route findings back to the coder queue; the coder may retry only within the bounded retry budget. |
 
 ## Trust Boundary Requirements
 

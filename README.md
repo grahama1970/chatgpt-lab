@@ -138,7 +138,11 @@ artifacts/                             CI receipts, screenshots, and reports
 .github/workflows/agent-dispatch.yml   bounded GitHub Actions executor proof
 .github/workflows/webgpt-command-dispatcher.yml path-filtered WebGPT file-write bridge
 .github/workflows/assign-copilot-agent.yml on-demand Copilot cloud-agent handoff test
+scripts/phatgpt_local_worker_cycle.py  short-lived PR/issue worker contract validator
 agent-state/                           machine-readable controller memory
+../agent-skills/agents/phatgpt-coder/  mutating cron worker contract
+../agent-skills/agents/phatgpt-reviewer/ read-only cron reviewer contract
+../agent-skills/agents/phatgpt-researcher/ optional task-spec researcher contract
 ```
 
 `chats/` explains intent and history, but it is not execution proof. Every accepted iteration must preserve durable revision identifiers, evidence references, findings, and a verdict.
@@ -148,6 +152,7 @@ agent-state/                           machine-readable controller memory
 - **Evidence before confidence.** Missing proof becomes `INSUFFICIENT_EVIDENCE`, not an optimistic pass.
 - **ChatGPT controls the round.** The project agent executes only explicit local-only tasks and cannot self-approve.
 - **WebGPT gives Codex bounded work.** WebGPT names the objective, skills, files, validation commands, and proof requirements; Codex cloud implements the GitHub-native change.
+- **Cron workers are role-bounded.** The MVP local loop has a coder that may patch, a reviewer that must stay read-only, and an optional researcher that prepares task blocks. Each invocation handles at most one PR/issue and exits.
 - **Progressive skill loading.** Read the registry first; load only the smallest applicable skill chain and its declared dependencies.
 - **Builder/reviewer separation.** ChatGPT may perform both roles, but the review phase remains read-only until findings are finalized.
 - **Bounded retries.** The current default is three rounds and no more than five prioritized fixes per round.
@@ -166,6 +171,14 @@ The safe mutation command is `apply_text_patch`. It accepts only a schema-valida
 This is not yet a broad autonomous project-ownership claim. The remaining work is to reduce local project-agent involvement, add review receipts, classify third-party network noise, implement the dry-run local-subagent receipt path, and turn the current manual loop into a bounded controller.
 
 The next handoff test is `.github/workflows/assign-copilot-agent.yml`. It is manually triggered with an issue number, calls GitHub's public-preview Agent Tasks API, and writes `agent-state/last-result.json` with either `PASS`, `BLOCKED_CLOUD_AGENT_AUTH`, or `BLOCKED_CLOUD_AGENT_API`. It requires a user-to-server token in the repository secret `COPILOT_AGENT_TASK_TOKEN`; the default `GITHUB_TOKEN` is not sufficient for starting Copilot cloud-agent tasks.
+
+The local-worker path starts stricter than a code-writing agent. `scripts/phatgpt_local_worker_cycle.py` inspects one GitHub PR or issue, requires a structured `phatgpt-task:v1` block, validates allowed commands, paths, evidence, and stop conditions, then writes a receipt. It now has MVP cron-facing role modes:
+
+- `phatgpt-coder`: selects one `phatgpt-local-agent` PR, validates the task, and is the only role allowed to mutate code in the later execution slice.
+- `phatgpt-reviewer`: selects one `phatgpt-ready-for-review` PR, runs read-only checks, and labels/comment-reports `pass`, `needs-changes`, or `blocked`.
+- `phatgpt-researcher`: prepares or refuses implementation-ready task blocks when the PR is too vague for the coder.
+
+The shared agent contracts live in `../agent-skills/agents/phatgpt-coder/`, `../agent-skills/agents/phatgpt-reviewer/`, and `../agent-skills/agents/phatgpt-researcher/`. This slice proves pickup/validation/refusal receipts; actual coder mutation and reviewer label updates remain the next gate.
 
 Run the current validator with:
 

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/pr-local-task.schema.json",
+  "title": "ChatGPT-Lab PR Local Task",
+  "type": "object",
+  "required": [
+    "schema",
+    "task_id",
+    "mode",
+    "target",
+    "objective",
+    "allowed_commands",
+    "allowed_paths",
+    "forbidden_paths",
+    "validation_commands",
+    "expected_evidence",
+    "required_outputs",
+    "stop_condition",
+    "refusal_conditions"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.pr_local_task.v1"},
+    "task_id": {"type": "string", "minLength": 1},
+    "mode": {
+      "enum": [
+        "read_only",
+        "evidence_collection",
+        "bounded_execution"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "required": ["repository", "pr", "branch", "commit"],
+      "properties": {
+        "repository": {"const": "grahama1970/chatgpt-lab"},
+        "pr": {"type": "integer", "minimum": 1},
+        "branch": {"type": "string", "minLength": 1},
+        "commit": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "objective": {"type": "string", "minLength": 1},
+    "allowed_commands": {"type": "array", "items": {"type": "string"}},
+    "allowed_paths": {"type": "array", "items": {"type": "string"}},
+    "forbidden_paths": {"type": "array", "items": {"type": "string"}},
+    "validation_commands": {"type": "array", "items": {"type": "string"}},
+    "expected_evidence": {"type": "array", "items": {"type": "string"}},
+    "required_outputs": {"type": "array", "items": {"type": "string"}},
+    "stop_condition": {"type": "string", "minLength": 1},
+    "refusal_conditions": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}

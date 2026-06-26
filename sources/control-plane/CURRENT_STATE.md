@@ -24,6 +24,8 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 | GitHub dispatcher agent-state | `READY_NARROW` | WebGPT wrote `agent-state/next-command.json` as commit `1d2a5e58ff185fdbc6e18042cac980cbb41a94c2`; `webgpt-command-dispatcher.yml` run `28238572045` dispatched `agent-dispatch.yml`; executor run `28238575766` passed and committed `agent-state/last-result.json` as `59e44c80d1acb864b6583bd17c1369d873692030`. |
 | Safe mutation command | `PASS_NARROW` | WebGPT wrote `apply-text-patch-proof-001` as commit `5450331fcf932ddcbf79cbea490005f250c7d29e`; dispatcher run `28245510581` triggered executor run `28245515891`; result commit `064f5fd5b2b52bd1874c205edaeb616f7eae0533` changed `monocle-man-site/src/main.jsx` and committed `agent-state/last-result.json` with `status: PASS`. |
 | Copilot cloud-agent handoff | `DRAFT_UNPROVEN` | `.github/workflows/assign-copilot-agent.yml` and `scripts/start_copilot_agent_task.py` draft the minimal on-demand Agent Tasks API test. Proof requires `COPILOT_AGENT_TASK_TOKEN` and a run against issue #5. |
+| Local worker refusal path | `DRY_RUN_CONTRACT_READY` | `scripts/phatgpt_local_worker_cycle.py` inspects one PR/issue, requires a `phatgpt-task:v1` block, validates `schemas/pr-local-task.schema.json`, and writes a local-subagent receipt. It now supports role modes for the MVP cron shape: coder, reviewer, and researcher. This is not yet a mutating cron agent. |
+| Shared PhatGPT subagents | `CONTRACTS_ADDED` | Agent contracts exist under `/home/graham/workspace/experiments/agent-skills/agents/phatgpt-coder`, `phatgpt-reviewer`, and `phatgpt-researcher`. They define one-target-per-invocation cron workers but are not yet live scheduled services. |
 | Local/project-agent involvement | `USED_AS_EXECUTION_BRIDGE` | The migration/proof was reported by the project agent and verified through repo artifacts. This proves the self-contained GitHub Actions path, not pure ChatGPT-Web-only autonomy. |
 | `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Prior plan-collab attempts were blocked by ambiguous ChatGPT tab identity. |
 | Local subagent bridge | `NOT_ESTABLISHED` | Only schema/refusal examples exist. |
@@ -54,9 +56,10 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 3. Run persona-bound `review-design` over committed live screenshots if design readiness is claimed.
 4. Run scoped `review-code` over the migrated `chatgpt-lab` Monocle source, workflows, and safe mutation executor.
 5. Reconcile the three third-party YouTube telemetry aborts as expected/non-blocking or patch the proof filter to classify them explicitly.
-6. Implement the dry-run local-subagent refusal/receipt path for Slice 002.
-7. Implement a bounded loop controller script so ChatGPT invokes a deterministic loop rather than acting as the loop in prose.
-8. Reduce or explicitly record local project-agent intervention in follow-on workflow dispatch and evidence normalization.
+6. Run the role-specific local worker against a real PR/issue and preserve the refusal or validation receipt.
+7. Add a cron/service wrapper only after the dry-run receipt path is accepted.
+8. Implement a bounded loop controller script so ChatGPT invokes a deterministic loop rather than acting as the loop in prose.
+9. Reduce or explicitly record local project-agent intervention in follow-on workflow dispatch and evidence normalization.
 
 ## Next admissible milestone
 

@@ -1,0 +1,56 @@
+{
+  "schema": "chatgpt_lab.pr_local_task.v1",
+  "task_id": "pr-7-evidence-001",
+  "mode": "evidence_collection",
+  "target": {
+    "repository": "grahama1970/chatgpt-lab",
+    "pr": 7,
+    "branch": "copilot/issue-5-classify-youtube-telemetry-aborts",
+    "commit": null
+  },
+  "objective": "Collect deterministic evidence for the bounded PR and report whether the PR is ready for WebGPT review.",
+  "allowed_commands": [
+    "gh pr view",
+    "gh workflow run",
+    "gh run view",
+    "gh run download",
+    "python3 scripts/validate_control_plane.py"
+  ],
+  "allowed_paths": [
+    "artifacts/local-worker/**",
+    "iterations/**"
+  ],
+  "forbidden_paths": [
+    ".env",
+    "**/.env",
+    "~/.ssh/**",
+    "**/secrets/**"
+  ],
+  "validation_commands": [
+    "python3 scripts/validate_control_plane.py"
+  ],
+  "expected_evidence": [
+    "source_check_run_for_pr_head",
+    "benchmark_run_for_pr_head",
+    "pages_proof_run_for_pr_head",
+    "local_subagent_receipt"
+  ],
+  "required_outputs": [
+    "local-subagent-receipt.json",
+    "artifact-manifest.json"
+  ],
+  "stop_condition": "PR has source check, benchmark, Pages proof, and a receipt comment for the exact PR head commit.",
+  "refusal_conditions": [
+    "missing_structured_task_block",
+    "task_not_implementation_ready",
+    "command_not_allowlisted",
+    "path_outside_allowlist",
+    "secrets_requested",
+    "unsafe_git_operation",
+    "unclear_acceptance_criteria",
+    "missing_validation_command",
+    "missing_expected_evidence",
+    "timeout_exceeded",
+    "concurrent_lease_exists"
+  ]
+}

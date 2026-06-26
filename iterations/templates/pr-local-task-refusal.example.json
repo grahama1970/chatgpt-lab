@@ -1,0 +1,26 @@
+{
+  "schema": "chatgpt_lab.local_subagent_receipt.v1",
+  "task_id": "pr-7-evidence-001",
+  "status": "REFUSED",
+  "reason": "task_not_implementation_ready",
+  "missing": [
+    "allowed_commands",
+    "allowed_paths",
+    "validation_commands",
+    "expected_evidence",
+    "stop_condition"
+  ],
+  "next_required_action": "WebGPT must update the PR body with a structured phatgpt-task:v1 block.",
+  "commands_run": [
+    {
+      "command": "gh pr view 7 --repo grahama1970/chatgpt-lab --json number,title,body,labels,headRefName,headRefOid,url",
+      "exit_code": 0
+    }
+  ],
+  "files_touched": [],
+  "artifacts": [
+    "artifacts/local-worker/pr-7/local-subagent-receipt.json"
+  ],
+  "started_at": null,
+  "completed_at": null
+}

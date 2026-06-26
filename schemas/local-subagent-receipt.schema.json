@@ -13,11 +13,14 @@
     "started_at",
     "completed_at"
   ],
-  "properties": {
+    "properties": {
     "schema": {"const": "chatgpt_lab.local_subagent_receipt.v1"},
+    "role": {"enum": ["coder", "reviewer", "researcher"]},
     "task_id": {"type": "string", "minLength": 1},
     "status": {"enum": ["REFUSED", "COMPLETED", "FAILED"]},
     "reason": {"type": ["string", "null"]},
+    "missing": {"type": "array", "items": {"type": "string"}},
+    "next_required_action": {"type": ["string", "null"]},
     "commands_run": {"type": "array", "items": {"type": "object"}},
     "files_touched": {"type": "array", "items": {"type": "string"}},
     "artifacts": {"type": "array", "items": {"type": "string"}},
