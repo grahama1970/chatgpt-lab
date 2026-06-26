@@ -19,6 +19,16 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def infer_target_from_path(path: Path) -> str:
+    parts = path.relative_to(ROOT).parts
+    for part in parts:
+        if part.startswith("pr-") and part[3:].isdigit():
+            return f"pr#{part[3:]}"
+        if part.startswith("issue-") and part[6:].isdigit():
+            return f"issue#{part[6:]}"
+    return ""
+
+
 def load_json(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         value = json.load(handle)
@@ -28,7 +38,7 @@ def load_json(path: Path) -> dict[str, Any]:
 
 
 def summarize(path: Path, receipt: dict[str, Any]) -> dict[str, Any]:
-    target = str(receipt.get("target") or "")
+    target = str(receipt.get("target") or infer_target_from_path(path))
     role = str(receipt.get("role") or "")
     status = str(receipt.get("status") or receipt.get("verdict") or "")
     key = "phatgpt_" + "_".join(part for part in [role, target.replace("#", "_"), status.lower()] if part)
