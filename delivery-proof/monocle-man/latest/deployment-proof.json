@@ -1,0 +1,47 @@
+{
+  "schema": "chatgpt_lab.github_pages_live_proof.v1",
+  "status": "PASS",
+  "page_url": "https://grahama1970.github.io/chatgpt-lab/",
+  "branch": "main",
+  "commit": "05e2ea40f5be30c8b4c494f362cf7624caa408b8",
+  "run_id": "28243097448",
+  "run_attempt": "1",
+  "checked_at": "2026-06-26T14:05:25.662Z",
+  "http_status_before_browser": 200,
+  "assertions": {
+    "hero_heading_contains_monocle_man": true,
+    "normal_motion_animation_name": "spin",
+    "normal_motion_animation_duration": "20s",
+    "normal_motion_animation_iteration_count": "infinite"
+  },
+  "screenshots": {
+    "desktop_full": "screenshots/live-desktop-full.png",
+    "desktop_modal": "screenshots/live-desktop-modal.png",
+    "mobile": "screenshots/live-mobile.png",
+    "mobile_menu": "screenshots/live-mobile-menu.png"
+  },
+  "console_errors": [],
+  "network_errors": [
+    {
+      "viewport": "desktop",
+      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=2sovXT_sOqD6t27G&el=embedded&ns=yt&fexp=v1%2C24004644%2C27058999%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C23206%2C35405%2C33143%2C32154%2C2877%2C12228%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5236%2C7779%2C13111%2C2977%2C9404%2C23826%2C9500%2C1840%2C45715%2C13160%2C453%2C30488%2C5021%2C5798%2C4172%2C3324%2C7295%2C4199%2C460%2C29654%2C17715%2C6633%2C249%2C82%2C17367%2C12593%2C7525%2C6032%2C1168%2C372%2C490%2C2324%2C2630%2C2315%2C16624%2C5773%2C3095%2C3475%2C5353%2C1900%2C2286%2C5680%2C1097%2C499%2C928%2C190%2C2058%2C273%2C6416%2C1567%2C134%2C527%2C615%2C2550%2C7345%2C1877%2C236%2C2129%2C2217%2C2107%2C20862%2C3974%2C2708%2C905%2C1132&cl=936900853&seq=1&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260625.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.000:N,0.025:B,0.140:ER&ctmp=dttg:t.0;dtt.1;gl.0,user_intent_bh:t.6;bh.0.000;th.0.000&cat=streaming&cmt=0.025:0.000,0.140:0.000,0.140:0.000&bat=0.140:1:1&vis=0.140:0&bh=0.140:0.000&qclc=ChAyc292WFRfc09xRDZ0MjdHEAE",
+      "method": "POST",
+      "resourceType": "fetch",
+      "failureText": "net::ERR_ABORTED"
+    },
+    {
+      "viewport": "desktop",
+      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=2sovXT_sOqD6t27G&el=embedded&ns=yt&fexp=v1%2C24004644%2C27058999%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C23206%2C35405%2C33143%2C32154%2C2877%2C12228%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5236%2C7779%2C13111%2C2977%2C9404%2C23826%2C9500%2C1840%2C45715%2C13160%2C453%2C30488%2C5021%2C5798%2C4172%2C3324%2C7295%2C4199%2C460%2C29654%2C17715%2C6633%2C249%2C82%2C17367%2C12593%2C7525%2C6032%2C1168%2C372%2C490%2C2324%2C2630%2C2315%2C16624%2C5773%2C3095%2C3475%2C5353%2C1900%2C2286%2C5680%2C1097%2C499%2C928%2C190%2C2058%2C273%2C6416%2C1567%2C134%2C527%2C615%2C2550%2C7345%2C1877%2C236%2C2129%2C2217%2C2107%2C20862%2C3974%2C2708%2C905%2C1132&cl=936900853&seq=2&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260625.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.958:ER&user_intent=0.006&bat=0.958:1:1&cmt=0.958:0.000&bh=0.958:0.000&qclc=ChAyc292WFRfc09xRDZ0MjdHEAI",
+      "method": "POST",
+      "resourceType": "fetch",
+      "failureText": "net::ERR_ABORTED"
+    },
+    {
+      "viewport": "desktop",
+      "url": "https://www.youtube-nocookie.com/youtubei/v1/log_event?alt=json",
+      "method": "POST",
+      "resourceType": "xhr",
+      "failureText": "net::ERR_ABORTED"
+    }
+  ]
+}
