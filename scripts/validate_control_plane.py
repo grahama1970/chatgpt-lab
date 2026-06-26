@@ -59,6 +59,7 @@ REQUIRED_FILES = (
     "scripts/apply_text_patch.py",
     "scripts/write_workflow_result.py",
     "scripts/phatgpt_local_worker_cycle.py",
+    "scripts/phatgpt_deployer_cycle.py",
     "monocle-man-site/package.json",
     "monocle-man-site/package-lock.json",
     "monocle-man-site/playwright.config.ts",
@@ -77,6 +78,7 @@ REQUIRED_FILES = (
     ".opencode/agents/phatgpt-coder.md",
     ".opencode/agents/phatgpt-reviewer.md",
     ".opencode/agents/phatgpt-researcher.md",
+    ".opencode/agents/phatgpt-deployer.md",
     "scripts/start_copilot_agent_task.py",
 )
 

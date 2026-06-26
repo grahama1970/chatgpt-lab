@@ -70,8 +70,9 @@ jobs:
             Inspect the issue or PR event, require best-practices-github-ticket
             metadata and a phatgpt-task:v1 block before mutation, invoke
             @phatgpt-coder only for implementation-ready scoped work, invoke
-            @phatgpt-reviewer for ready-for-review PRs, and always leave a
-            GitHub PR/issue comment with verdict, evidence checked, commands
-            run, findings, required fixes, and next owner.
+            @phatgpt-reviewer for ready-for-review PRs, invoke
+            @phatgpt-deployer only for dry-run ready-to-deploy gate checks, and
+            always leave a GitHub PR/issue comment with verdict, evidence
+            checked, commands run, findings, required fixes, and next owner.
 
             Do not merge. Do not claim PASS without deterministic proof.

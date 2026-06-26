@@ -18,8 +18,8 @@
 - The handoff workflow is not proven until `COPILOT_AGENT_TASK_TOKEN` is configured and a run against issue #5 either starts a Copilot task or records `BLOCKED_CLOUD_AGENT_AUTH` / `BLOCKED_CLOUD_AGENT_API`.
 - The local-worker architecture should reject vague PRs/issues before doing work. `scripts/phatgpt_local_worker_cycle.py` now provides the first dry-run slice: inspect one GitHub PR/issue, require a `phatgpt-task:v1` JSON block, validate allowed commands/paths/evidence/stop condition, and write a local-subagent receipt.
 - The preferred MVP trigger is GitHub event or `opencode serve` -> OpenCode primary dispatcher -> role subagent. Cron/local worker execution remains a fallback watchdog and deterministic smoke harness, not the primary architecture.
-- The MVP event loop uses three shared agent contracts under `/home/graham/workspace/experiments/agent-skills/agents`: `phatgpt-coder` for the only mutating implementation role, `phatgpt-reviewer` for read-only pass/needs-changes/blocked review, and `phatgpt-researcher` for optional task-block preparation/refusal.
-- The PhatGPT coder, reviewer, and researcher must follow `best-practices-github-ticket`: ticket type, target, route/agent metadata, required proof, lease-before-work, separate repair/review, proof-based comments/closure, and reviewer PR comments as the trace.
+- The MVP event loop uses four shared agent contracts under `/home/graham/workspace/experiments/agent-skills/agents`: `phatgpt-coder` for the only mutating implementation role, `phatgpt-reviewer` for read-only pass/needs-changes/blocked review, `phatgpt-researcher` for optional task-block preparation/refusal, and `phatgpt-deployer` for dry-run release/deploy gate receipts.
+- The PhatGPT coder, reviewer, researcher, and deployer must follow `best-practices-github-ticket`: ticket type, target, route/agent metadata, required proof, lease-before-work, separate repair/review/release, proof-based comments/closure, and reviewer PR comments as the trace.
 - The OpenCode/GitHub event loop has a narrow PR-scope proof in PR #8: the valid task block triggered a coder change to `monocle-man-site/src/main.jsx`, checks passed at head `146d51dc54b977dab01470a0ae288af38b9f7813`, and the reviewer commented `PASS`. This does not prove live deployment ownership because Pages deployment is skipped on PR branches.
 - PR #9 is the first WebGPT-created PR test and is useful negative evidence: it had an empty body, no `best-practices-github-ticket` metadata, and no `phatgpt-task:v1` block, so the worker refused it with a PR comment instead of inferring work.
 - WebGPT-created PRs must use `.github/pull_request_template.md`. The `target.pr` field can be `null` when the task block lives in the PR being processed, which avoids requiring WebGPT to know the PR number before opening the PR.
@@ -37,7 +37,7 @@
 | 2026-06-26 | Draft the minimal Agent Tasks API workflow before a GitHub App design | The next question is only whether PhatGPT-LAB can hand issue #5 to Copilot cloud and observe a receipt; service-account architecture is premature. |
 | 2026-06-26 | Require implementation-ready PR/issue task blocks before local worker execution | The local subagent must refuse vague work with a receipt instead of inferring architecture, acceptance criteria, or proof standards. |
 | 2026-06-26 | Prefer GitHub event or `opencode serve` over cron as the MVP trigger | OpenCode can be driven by GitHub events or HTTP/OpenAPI server, and the primary agent can route to PhatGPT subagents. Cron/local worker remains fallback/smoke. |
-| 2026-06-26 | Split MVP event loop into coder, reviewer, and optional researcher agents | The coder is the only mutating role; the reviewer is read-only and returns pass/needs-changes/blocked; the researcher prepares task blocks or refuses vague work. |
+| 2026-06-26 | Split MVP event loop into coder, reviewer, optional researcher, and dry-run deployer agents | The coder is the only mutating role; the reviewer is read-only and returns pass/needs-changes/blocked; the researcher prepares task blocks or refuses vague work; the deployer only checks release gates and writes receipts. |
 | 2026-06-26 | Make `best-practices-github-ticket` mandatory for PhatGPT event agents | PRs/issues are the queue contract; agents must lease one ticket, honor route metadata, preserve proof, comment verdicts in the PR, and keep repair and review separate. |
 | 2026-06-26 | Use OpenCode OAuth `opencode/gpt-5.5` medium as the default event agent model | Repository secret `OPENCODE_API_KEY` is required; run `28257657868` showed unqualified `gpt-5.5` fails CLI validation, while local `opencode models opencode` lists `opencode/gpt-5.5`. |
 | 2026-06-26 | Add a PR template and allow `target.pr: null` for in-PR task blocks | WebGPT cannot reliably know the PR number before opening a PR; the dispatcher can treat `null` as the current PR while still refusing missing or malformed task contracts. |
@@ -70,15 +70,18 @@
 | scripts/apply_text_patch.py | Applies one schema-validated exact text replacement for safe mutation tests |
 | scripts/start_copilot_agent_task.py | Starts a bounded Copilot cloud-agent task and writes a fail-closed receipt |
 | scripts/phatgpt_local_worker_cycle.py | Short-lived PR/issue worker that validates or refuses structured local task blocks |
+| scripts/phatgpt_deployer_cycle.py | Dry-run release/deploy gate checker that writes deployer receipts |
 | .github/workflows/opencode-phatgpt.yml | GitHub-event OpenCode dispatcher workflow for the PhatGPT MVP |
 | .opencode/agents/phatgpt-dispatcher.md | Primary OpenCode event router |
 | .opencode/agents/phatgpt-coder.md | Repo-local OpenCode coder subagent prompt |
 | .opencode/agents/phatgpt-reviewer.md | Repo-local OpenCode reviewer subagent prompt |
 | .opencode/agents/phatgpt-researcher.md | Repo-local OpenCode researcher subagent prompt |
+| .opencode/agents/phatgpt-deployer.md | Repo-local OpenCode deployer subagent prompt |
 | schemas/pr-local-task.schema.json | Machine-readable `phatgpt-task:v1` PR/issue task contract |
 | ../agent-skills/agents/phatgpt-coder/ | Shared mutating coder subagent contract for the MVP loop |
 | ../agent-skills/agents/phatgpt-reviewer/ | Shared read-only reviewer subagent contract for the MVP loop |
 | ../agent-skills/agents/phatgpt-researcher/ | Shared optional researcher/task-spec subagent contract for the MVP loop |
+| ../agent-skills/agents/phatgpt-deployer/ | Shared dry-run deployer/releaser subagent contract for the MVP loop |
 | docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md | Operating contract for the GitHub memory/executor loop |
 
 ## Infrastructure State
