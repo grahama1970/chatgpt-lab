@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChatGPT-Lab Next Command",
+  "type": "object",
+  "required": [
+    "schema",
+    "command_id",
+    "command",
+    "target_repo",
+    "target_ref",
+    "workflow",
+    "state_path",
+    "objective",
+    "allowed_outputs",
+    "stop_condition"
+  ],
+  "properties": {
+    "schema": { "const": "chatgpt_lab.next_command.v1" },
+    "command_id": { "type": "string", "minLength": 1 },
+    "command": { "enum": ["echo_hello"] },
+    "target_repo": { "const": "grahama1970/chatgpt-lab" },
+    "target_ref": { "type": "string", "minLength": 1 },
+    "workflow": { "const": "agent-dispatch.yml" },
+    "state_path": { "const": "agent-state/next-command.json" },
+    "objective": { "type": "string", "minLength": 1 },
+    "allowed_outputs": {
+      "type": "array",
+      "contains": { "const": "agent-state/last-result.json" },
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "stop_condition": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

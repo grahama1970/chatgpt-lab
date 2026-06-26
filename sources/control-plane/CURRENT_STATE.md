@@ -1,6 +1,6 @@
 # Current State
 
-**As of:** 2026-06-25  
+**As of:** 2026-06-26  
 **Profile:** Monocle Man React + GitHub Pages delivery  
 **Overall readiness:** `NOT_READY`  
 **Benchmark:** Monocle Man SPA
@@ -22,6 +22,7 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 | Monocle Man evidence record | `READY_WITH_BLOCKER` | Superseding iteration record: `iterations/2026-06-25-monocle-man-react-contract/`, including `PLAN.md`, `REPORT.md`, and `evidence/live-delivery-proof-attempt-pr5.json`. |
 | Netlify project | `SECONDARY_STALE_OR_HISTORICAL` | Project `monocle-man-review`, site ID `df347395-47e5-4ed6-a1c7-57360a5735de`. Current GitHub-first path is GitHub Pages; Netlify no longer blocks this experiment unless later source reselects it. |
 | Verified live deployment | `BLOCKED_TOOL_ACCESS` | GitHub Pages workflow and fresh trigger are merged, but no live Pages URL/deploy metadata and no live desktop/mobile visual inspection have been proven. Connector does not expose push-triggered Pages run/deployment metadata, and runtime DNS failed for likely Pages URLs. |
+| GitHub dispatcher agent-state | `BOOTSTRAPPED` | `agent-state/*.json`, dispatcher schemas, validators, and `.github/workflows/agent-dispatch.yml` exist; first external WebGPT/API dispatch remains to be proven. |
 | `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Prior plan-collab attempts were blocked by ambiguous ChatGPT tab identity. |
 | Local subagent bridge | `NOT_ESTABLISHED` | Only schema/refusal examples exist. |
 | Bounded loop controller | `NOT_ESTABLISHED` | Manual ChatGPT-driven loop is proven for Slice 001 and the React/Pages rounds; deterministic controller script still needs implementation. |
@@ -55,6 +56,7 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 6. Invoke `$ask webgpt` through a stable ChatGPT-Lab project binding and preserve artifacts.
 7. Implement the dry-run local-subagent refusal/receipt path for Slice 002.
 8. Implement a bounded loop controller script so ChatGPT invokes a deterministic loop rather than acting as the loop in prose.
+9. Prove WebGPT or a GPT Action can dispatch `.github/workflows/agent-dispatch.yml` and read the resulting `agent-state/last-result.json`.
 
 ## Next admissible milestone
 

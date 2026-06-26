@@ -1,0 +1,14 @@
+{
+  "schema": "chatgpt_lab.workflow_result.v1",
+  "command_id": "echo-proof-001",
+  "status": "NOT_RUN",
+  "repository": "grahama1970/chatgpt-lab",
+  "workflow": "agent-dispatch.yml",
+  "run_id": null,
+  "run_attempt": null,
+  "head_sha": null,
+  "output_path": "agent-state/last-result.json",
+  "stdout": "",
+  "stderr": "",
+  "checked_at": null
+}

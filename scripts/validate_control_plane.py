@@ -30,7 +30,16 @@ REQUIRED_FILES = (
     "docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md",
     "docs/requirements/CONTROL_AUTHORITY.md",
     "docs/requirements/BENCHMARK_SLICE_001.md",
+    "docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md",
     "docs/architecture/COLLABORATION_LOOP_V0.md",
+    "agent-state/current.json",
+    "agent-state/skill-router.json",
+    "agent-state/next-command.json",
+    "agent-state/last-result.json",
+    "schemas/agent-state.schema.json",
+    "schemas/skill-router.schema.json",
+    "schemas/next-command.schema.json",
+    "schemas/workflow-result.schema.json",
     "schemas/iteration.schema.json",
     "schemas/iteration-status.schema.json",
     "iterations/templates/iteration.slice-001.template.json",
@@ -40,7 +49,10 @@ REQUIRED_FILES = (
     "scripts/validate_iteration.py",
     "scripts/validate_benchmark_evidence.py",
     "scripts/validate_local_subagent_contract.py",
+    "scripts/validate_agent_state.py",
+    "scripts/write_workflow_result.py",
     ".github/workflows/source-check.yml",
+    ".github/workflows/agent-dispatch.yml",
 )
 
 

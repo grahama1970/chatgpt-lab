@@ -1,0 +1,18 @@
+{
+  "schema": "chatgpt_lab.agent_state.v1",
+  "project": "PhatGPT-LAB",
+  "repository": "grahama1970/chatgpt-lab",
+  "branch": "main",
+  "phase": "dispatcher-bootstrap",
+  "controller": "ChatGPT Web",
+  "executor": "GitHub Actions",
+  "next_command_path": "agent-state/next-command.json",
+  "last_result_path": "agent-state/last-result.json",
+  "skill_router_path": "agent-state/skill-router.json",
+  "updated_at": "2026-06-26T00:00:00Z",
+  "notes": [
+    "GitHub is the durable state and execution surface.",
+    "WebGPT may write next-command.json and dispatch agent-dispatch.yml through an authenticated GitHub REST action.",
+    "Local project-agent execution is fallback only."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "chatgpt_lab.skill_router.v1",
+  "default_chain": [
+    "ask",
+    "create-architecture",
+    "github"
+  ],
+  "routes": [
+    {
+      "intent": "webgpt_collaboration",
+      "skills": [
+        "ask",
+        "create-architecture"
+      ],
+      "authority": "advisory_bundle"
+    },
+    {
+      "intent": "repo_write_and_ci",
+      "skills": [
+        "github"
+      ],
+      "authority": "authenticated_github_api"
+    },
+    {
+      "intent": "local_execution_fallback",
+      "skills": [
+        "ask",
+        "subagent-runner"
+      ],
+      "authority": "bounded_receipt_only"
+    }
+  ],
+  "updated_at": "2026-06-26T00:00:00Z"
+}

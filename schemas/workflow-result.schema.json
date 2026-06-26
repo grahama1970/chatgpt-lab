@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChatGPT-Lab Workflow Result",
+  "type": "object",
+  "required": [
+    "schema",
+    "command_id",
+    "status",
+    "repository",
+    "workflow",
+    "run_id",
+    "run_attempt",
+    "head_sha",
+    "output_path",
+    "stdout",
+    "stderr",
+    "checked_at"
+  ],
+  "properties": {
+    "schema": { "const": "chatgpt_lab.workflow_result.v1" },
+    "command_id": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["NOT_RUN", "PASS", "FAILED", "REFUSED"] },
+    "repository": { "const": "grahama1970/chatgpt-lab" },
+    "workflow": { "const": "agent-dispatch.yml" },
+    "run_id": { "type": ["integer", "null"] },
+    "run_attempt": { "type": ["integer", "null"] },
+    "head_sha": { "type": ["string", "null"] },
+    "output_path": { "const": "agent-state/last-result.json" },
+    "stdout": { "type": "string" },
+    "stderr": { "type": "string" },
+    "checked_at": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

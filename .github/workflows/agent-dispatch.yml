@@ -1,0 +1,85 @@
+name: ChatGPT-Lab Agent Dispatch
+
+on:
+  workflow_dispatch:
+    inputs:
+      command_id:
+        description: Command id from agent-state/next-command.json
+        required: true
+        type: string
+      state_path:
+        description: Path to the next command JSON file
+        required: true
+        default: agent-state/next-command.json
+        type: string
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate dispatch request
+        run: |
+          test "${{ inputs.state_path }}" = "agent-state/next-command.json"
+          python3 scripts/validate_agent_state.py --command-id "${{ inputs.command_id }}"
+
+      - name: Execute allowlisted command
+        id: execute
+        run: |
+          command="$(python3 - <<'PY'
+import json
+with open("agent-state/next-command.json", "r", encoding="utf-8") as handle:
+    print(json.load(handle)["command"])
+PY
+)"
+          if [ "$command" != "echo_hello" ]; then
+            echo "unsupported command: $command" >&2
+            exit 2
+          fi
+          printf 'hello from ChatGPT-Lab agent-dispatch\n' | tee stdout.txt
+          : > stderr.txt
+
+      - name: Write workflow result
+        if: always()
+        run: |
+          status="PASS"
+          if [ "${{ steps.execute.outcome }}" != "success" ]; then
+            status="FAILED"
+          fi
+          python3 scripts/write_workflow_result.py \
+            --command-id "${{ inputs.command_id }}" \
+            --status "$status" \
+            --stdout "$(cat stdout.txt 2>/dev/null || true)" \
+            --stderr "$(cat stderr.txt 2>/dev/null || true)"
+          python3 scripts/validate_agent_state.py --command-id "${{ inputs.command_id }}"
+
+      - name: Upload dispatch evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: chatgpt-lab-agent-dispatch-result
+          path: |
+            agent-state/last-result.json
+            stdout.txt
+            stderr.txt
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Commit workflow result
+        if: always()
+        run: |
+          git config user.name "PhatGPT-LAB GitHub Actions"
+          git config user.email "phatgpt-lab@users.noreply.github.com"
+          git add agent-state/last-result.json
+          if git diff --cached --quiet; then
+            echo "No result change to commit."
+            exit 0
+          fi
+          git commit -m "Record agent dispatch result ${{ inputs.command_id }}"
+          git push

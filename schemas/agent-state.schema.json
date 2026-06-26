@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChatGPT-Lab Agent State",
+  "type": "object",
+  "required": [
+    "schema",
+    "project",
+    "repository",
+    "branch",
+    "phase",
+    "controller",
+    "executor",
+    "next_command_path",
+    "last_result_path",
+    "skill_router_path",
+    "updated_at"
+  ],
+  "properties": {
+    "schema": { "const": "chatgpt_lab.agent_state.v1" },
+    "project": { "type": "string", "minLength": 1 },
+    "repository": { "type": "string", "minLength": 1 },
+    "branch": { "type": "string", "minLength": 1 },
+    "phase": { "type": "string", "minLength": 1 },
+    "controller": { "type": "string", "minLength": 1 },
+    "executor": { "type": "string", "minLength": 1 },
+    "next_command_path": { "type": "string", "minLength": 1 },
+    "last_result_path": { "type": "string", "minLength": 1 },
+    "skill_router_path": { "type": "string", "minLength": 1 },
+    "updated_at": { "type": "string", "minLength": 1 },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

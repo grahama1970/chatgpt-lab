@@ -134,6 +134,8 @@ scripts/                               validation and maintenance tools
 iterations/                            durable per-run evidence records
 artifacts/                             CI receipts, screenshots, and reports
 .github/workflows/source-check.yml     deterministic repository validation
+.github/workflows/agent-dispatch.yml   bounded GitHub Actions executor proof
+agent-state/                           machine-readable controller memory
 ```
 
 `chats/` explains intent and history, but it is not execution proof. Every accepted iteration must preserve durable revision identifiers, evidence references, findings, and a verdict.
@@ -159,6 +161,7 @@ Run the current validator with:
 
 ```bash
 python3 scripts/validate_control_plane.py
+python3 scripts/validate_agent_state.py
 ```
 
 That check proves the control-plane structure is internally consistent. It does not, by itself, prove the benchmark website, deployment, or design review loop.

@@ -1,7 +1,7 @@
 ---
 project: ChatGPT-Lab
 source_version: 0.4.0
-updated: 2026-06-25
+updated: 2026-06-26
 canonical_manifest: sources/source-manifest.json
 ---
 
@@ -17,14 +17,16 @@ Before changing code, reviewing design, delegating work, or claiming system stat
 2. Read `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md`.
 3. Read `docs/requirements/CONTROL_AUTHORITY.md`.
 4. For Monocle Man work, read `docs/requirements/MONOCLE_MAN_REACT_CONTRACT.md` before touching product code.
-5. Read `sources/control-plane/OPERATING_CONTRACT.md` and `sources/control-plane/CURRENT_STATE.md`.
-6. Read `sources/control-plane/DECISIONS.md` for superseding architecture decisions.
-7. Fetch the current `grahama1970/agent-skills` registry.
-8. Select the smallest applicable skill chain.
-9. Use web search for current external references when the task depends on browser, React, accessibility, deployment, API, or standards behavior.
-10. Record the control-plane ref, registry ref/hash, selected skills, controller, and any delegates in the iteration artifact.
-11. Inspect the benchmark repository at the exact recorded branch or commit.
-12. Treat missing CI, deployment, screenshot, or interaction evidence as `INSUFFICIENT_EVIDENCE` rather than success.
+5. Read `docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md`.
+6. Read `agent-state/current.json`, `agent-state/skill-router.json`, `agent-state/next-command.json`, and `agent-state/last-result.json`.
+7. Read `sources/control-plane/OPERATING_CONTRACT.md` and `sources/control-plane/CURRENT_STATE.md`.
+8. Read `sources/control-plane/DECISIONS.md` for superseding architecture decisions.
+9. Fetch the current `grahama1970/agent-skills` registry.
+10. Select the smallest applicable skill chain.
+11. Use web search for current external references when the task depends on browser, React, accessibility, deployment, API, or standards behavior.
+12. Record the control-plane ref, registry ref/hash, selected skills, controller, and any delegates in the iteration artifact.
+13. Inspect the benchmark repository at the exact recorded branch or commit.
+14. Treat missing CI, deployment, screenshot, or interaction evidence as `INSUFFICIENT_EVIDENCE` rather than success.
 
 ## Plan-first rule
 
@@ -46,6 +48,8 @@ The ChatGPT-Lab project agent is a bounded local execution adapter for capabilit
 | Core requirements | `docs/requirements/SELF_IMPROVEMENT_REQUIREMENTS.md` | Testable requirements and Slice 001 evidence contract |
 | Control authority | `docs/requirements/CONTROL_AUTHORITY.md` | Normative controller, delegate, concurrency, and default write-path rules |
 | Monocle Man React contract | `docs/requirements/MONOCLE_MAN_REACT_CONTRACT.md` | Required React components, selectors, action IDs, and deterministic CI checks for the SPA |
+| WebGPT operating model | `docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md` | Slice 002 GitHub dispatcher and repo-state operating contract |
+| Agent state | `agent-state/current.json`, `agent-state/skill-router.json`, `agent-state/next-command.json`, `agent-state/last-result.json` | Machine-readable state, routing, command, and workflow-result memory |
 | Skill registry | `grahama1970/agent-skills`, branch `main`, `SOURCES.md` and `sources/agent-skills-registry.json` | Skill discovery and progressive loading |
 | Benchmark source | `grahama1970/snippets`, branch `preview-monocle-man-netlify`, path `monocle-man-site/` | Monocle Man SPA source code |
 | Execution evidence | GitHub Actions associated with the benchmark commit or pull request | Tests, logs, reports, and screenshot artifacts |
@@ -71,6 +75,7 @@ Requirements define what must be proven. Evidence determines whether it was prov
 
 - Refresh the control-plane branch before every new run.
 - Refresh requirements and the Monocle Man React contract before expanding system capabilities.
+- Refresh `agent-state/*.json` before issuing or evaluating a dispatcher command.
 - Refresh the skill registry before each new task family or when its recorded hash changes.
 - Refresh benchmark source before every patch.
 - Refresh CI and deployment evidence after every commit.
