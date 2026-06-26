@@ -33,11 +33,11 @@ jobs:
         id: execute
         run: |
           command="$(python3 - <<'PY'
-import json
-with open("agent-state/next-command.json", "r", encoding="utf-8") as handle:
-    print(json.load(handle)["command"])
-PY
-)"
+          import json
+          with open("agent-state/next-command.json", "r", encoding="utf-8") as handle:
+              print(json.load(handle)["command"])
+          PY
+          )"
           if [ "$command" != "echo_hello" ]; then
             echo "unsupported command: $command" >&2
             exit 2
