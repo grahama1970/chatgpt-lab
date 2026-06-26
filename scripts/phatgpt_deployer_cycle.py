@@ -135,6 +135,10 @@ def has_reviewer_pass_comment(pr: dict[str, Any]) -> bool:
         body = str(comment.get("body") or "")
         if "PhatGPT reviewer receipt" in body and "review_pass" in body:
             return True
+        if "PhatGPT reviewer verdict" in body and "`PASS`" in body:
+            return True
+        if "PhatGPT dispatcher" in body and "Verdict: PASS" in body:
+            return True
     return False
 
 

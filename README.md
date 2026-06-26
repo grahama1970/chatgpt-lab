@@ -142,6 +142,8 @@ artifacts/                             CI receipts, screenshots, and reports
 .opencode/agents/                      OpenCode primary dispatcher and subagent prompts
 scripts/phatgpt_local_worker_cycle.py  short-lived PR/issue worker contract validator
 scripts/phatgpt_deployer_cycle.py     dry-run release/deploy gate receipt writer
+scripts/phatgpt_review_deployer_receipt.py read-only deployer receipt reviewer
+scripts/phatgpt_memory_sync.py        optional compact receipt index writer for `$memory`
 agent-state/                           machine-readable controller memory
 ../agent-skills/agents/phatgpt-coder/  mutating event worker contract
 ../agent-skills/agents/phatgpt-reviewer/ read-only event reviewer contract
@@ -193,6 +195,8 @@ The local-worker path remains a deterministic fallback and smoke harness. `scrip
 The shared agent contracts live in `../agent-skills/agents/phatgpt-coder/`, `../agent-skills/agents/phatgpt-reviewer/`, `../agent-skills/agents/phatgpt-researcher/`, and `../agent-skills/agents/phatgpt-deployer/`. The `.opencode/agents/` files are the repo-local OpenCode entrypoint prompts that call those roles. This slice proves pickup/validation/refusal receipts and adds the event-triggered OpenCode entrypoint; a live OpenCode run remains the next gate.
 
 All four shared contracts compose `best-practices-github-ticket`. A ChatGPT/WebGPT PR is not actionable until it contains ticket type, target path, current state, requested outcome, route or agent metadata when known, required proof, non-goals, and a valid `phatgpt-task:v1` block. The coder must lease before mutation; the reviewer must stay read-only and comment every verdict on the GitHub PR; closure requires deterministic proof, deployer receipt review, and reconciled review findings.
+
+Subagent logs and receipts are not stored only in memory. Raw evidence stays in GitHub comments, CI runs, `artifacts/`, and proof files. `$memory` may store compact searchable summaries in the `subagent_memory` collection through `scripts/phatgpt_memory_sync.py`, containing PR number, role, status, receipt path, head SHA, missing gates, and next action. Memory recall is a routing accelerator, not closure proof.
 
 Run the current validator with:
 

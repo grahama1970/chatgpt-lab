@@ -298,6 +298,7 @@ and that the project agent can audit through artifacts.
 | REQ-WEB-016 | The deployer/releaser role must be gate-only and dry-run until separately accepted. | `scripts/phatgpt_deployer_cycle.py` writes `chatgpt_lab.deployer_receipt.v1` with `WOULD_MERGE` or `REFUSED`; it does not edit source or merge. |
 | REQ-WEB-017 | Release completion requires reviewer acceptance of the deployer receipt, not only source-review pass. | Reviewer inspects the deployer receipt and live proof artifacts; failures route back to coder, deployer, or blocked state based on cause. |
 | REQ-WEB-018 | Reviewer may use read-only interaction evidence tools such as `$test-interactions`. | Reviewer commands may capture screenshots, console/network output, and interaction JSON, but must not mutate source or self-fix failures. |
+| REQ-WEB-019 | `$memory` may index subagent receipt summaries but must not replace raw proof artifacts. | `scripts/phatgpt_memory_sync.py` stores compact role/status/receipt-path records in `subagent_memory` while canonical evidence remains in GitHub comments, CI runs, receipts, screenshots, and deployment proof JSON. |
 
 ## Trust Boundary Requirements
 

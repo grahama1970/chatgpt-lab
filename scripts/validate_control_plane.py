@@ -60,6 +60,8 @@ REQUIRED_FILES = (
     "scripts/write_workflow_result.py",
     "scripts/phatgpt_local_worker_cycle.py",
     "scripts/phatgpt_deployer_cycle.py",
+    "scripts/phatgpt_review_deployer_receipt.py",
+    "scripts/phatgpt_memory_sync.py",
     "monocle-man-site/package.json",
     "monocle-man-site/package-lock.json",
     "monocle-man-site/playwright.config.ts",
