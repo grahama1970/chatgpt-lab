@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import fnmatch
 import json
 import re
 import shlex
@@ -83,7 +84,7 @@ def load_gh_json(kind: str, number: int, repo: str) -> tuple[dict[str, Any] | No
             "--repo",
             repo,
             "--json",
-            "number,title,body,labels,headRefName,headRefOid,url,state,isDraft",
+            "number,title,body,labels,headRefName,headRefOid,url,state,isDraft,files",
         ]
     else:
         args = [
@@ -204,6 +205,25 @@ def update_labels(repo: str, kind: str, number: int, *, add: list[str] | None = 
         record["stderr"] = stderr.strip()
         records.append(record)
     return records
+
+
+def path_allowed(path: str, patterns: list[str]) -> bool:
+    for pattern in patterns:
+        if path == pattern or fnmatch.fnmatchcase(path, pattern):
+            return True
+    return False
+
+
+def changed_files_allowlist(task: dict[str, Any], item: dict[str, Any]) -> tuple[bool, list[str], list[str]]:
+    files = item.get("files") or []
+    paths = [
+        file_info["path"]
+        for file_info in files
+        if isinstance(file_info, dict) and isinstance(file_info.get("path"), str)
+    ]
+    allowed = [str(pattern) for pattern in task.get("allowed_paths") or []]
+    outside = [path for path in paths if not path_allowed(path, allowed)]
+    return not outside, paths, outside
 
 
 def comment_body(*, role: str, target: str, status: str, reason: str | None, receipt_path: Path, commands_run: list[dict[str, Any]], next_required_action: str | None) -> str:
@@ -583,14 +603,34 @@ def main() -> int:
             else "Coder or WebGPT must repair the task or implementation evidence."
         )
     elif args.role == "reviewer":
+        files_allowed, actual_files, outside_files = changed_files_allowlist(task, item)
+        commands_run.append(
+            shell_record(
+                "changed_files_allowlist_check",
+                0 if files_allowed else 2,
+                stdout=json.dumps(
+                    {
+                        "actual_files": actual_files,
+                        "outside_allowed_paths": outside_files,
+                    },
+                    sort_keys=True,
+                ),
+            )
+        )
         validation_ok = run_validation_commands(task, commands_run)
-        status = "COMPLETED" if validation_ok else "FAILED"
-        reason = "review_pass" if validation_ok else "review_needs_changes"
-        missing = [] if validation_ok else ["validation_commands_pass"]
+        review_ok = validation_ok and files_allowed
+        status = "COMPLETED" if review_ok else "FAILED"
+        reason = "review_pass" if review_ok else "review_needs_changes"
+        missing = []
+        if not validation_ok:
+            missing.append("validation_commands_pass")
+        if not files_allowed:
+            missing.append("changed_files_within_allowed_paths")
         files_touched = []
-        done_label = ROLE_DONE_LABELS["reviewer"] if validation_ok else ROLE_FAILED_LABELS["reviewer"]
-        commands_run.extend(update_labels(args.repo, kind, number, add=[done_label]))
-        next_required_action = "Merge decision can proceed only after deterministic proof is accepted." if validation_ok else "Coder event worker should address reviewer findings."
+        done_label = ROLE_DONE_LABELS["reviewer"] if review_ok else ROLE_FAILED_LABELS["reviewer"]
+        stale_label = ROLE_FAILED_LABELS["reviewer"] if review_ok else ROLE_DONE_LABELS["reviewer"]
+        commands_run.extend(update_labels(args.repo, kind, number, add=[done_label], remove=[stale_label]))
+        next_required_action = "Merge decision can proceed only after deterministic proof is accepted." if review_ok else "Coder event worker should address reviewer findings."
     else:
         status = "COMPLETED"
         reason = "task_contract_validated"
