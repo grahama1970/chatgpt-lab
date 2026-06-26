@@ -22,6 +22,7 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 | Verified live deployment | `PASS_WITH_THIRD_PARTY_CAVEAT` | `delivery-proof/monocle-man/latest/deployment-proof.json` records `status: PASS`, page URL `https://grahama1970.github.io/chatgpt-lab/`, HTTP 200, hero assertion true, normal animation `spin`, zero console errors, and committed screenshot paths. Caveat: three aborted third-party `youtube-nocookie.com` telemetry requests after modal interaction; no first-party asset failure observed. |
 | Live proof artifact | `READY` | Artifact `monocle-man-live-pages-proof`, ID `7907492328`, digest `sha256:be15b0cf1ad28a650769a2a14f7e07ddc19ac8e36203ed376fe4ac8c44a55a04`, size `5736811`. |
 | GitHub dispatcher agent-state | `READY_NARROW` | WebGPT wrote `agent-state/next-command.json` as commit `1d2a5e58ff185fdbc6e18042cac980cbb41a94c2`; `webgpt-command-dispatcher.yml` run `28238572045` dispatched `agent-dispatch.yml`; executor run `28238575766` passed and committed `agent-state/last-result.json` as `59e44c80d1acb864b6583bd17c1369d873692030`. |
+| Safe mutation command | `LOCAL_PROOF_ONLY` | `apply_text_patch` validates a bounded payload and refuses unsafe paths locally. It still needs a WebGPT-triggered GitHub Actions proof after the command contract lands on `main`. |
 | Local/project-agent involvement | `USED_AS_EXECUTION_BRIDGE` | The migration/proof was reported by the project agent and verified through repo artifacts. This proves the self-contained GitHub Actions path, not pure ChatGPT-Web-only autonomy. |
 | `$ask webgpt` collaboration | `NEEDS_ATTENTION` | Prior plan-collab attempts were blocked by ambiguous ChatGPT tab identity. |
 | Local subagent bridge | `NOT_ESTABLISHED` | Only schema/refusal examples exist. |
@@ -47,10 +48,10 @@ The control plane is active in `grahama1970/chatgpt-lab`. The Monocle Man benchm
 
 ## Immediate blockers to a closed project-agent-replacement claim
 
-1. Run persona-bound `review-design` over committed live screenshots.
-2. Run scoped `review-code` over the migrated `chatgpt-lab` Monocle source and workflows.
-3. Reconcile the three third-party YouTube telemetry aborts as expected/non-blocking or patch the proof filter to classify them explicitly.
-4. Prove a second allowlisted dispatcher command beyond `echo_hello` through the WebGPT file-write bridge.
+1. Prove `apply_text_patch` through the WebGPT file-write bridge with a one-line Monocle change and matching GitHub Actions receipt.
+2. Run persona-bound `review-design` over committed live screenshots if design readiness is claimed.
+3. Run scoped `review-code` over the migrated `chatgpt-lab` Monocle source, workflows, and safe mutation executor.
+4. Reconcile the three third-party YouTube telemetry aborts as expected/non-blocking or patch the proof filter to classify them explicitly.
 5. Invoke `$ask webgpt` through a stable ChatGPT-Lab project binding and preserve artifacts.
 6. Implement the dry-run local-subagent refusal/receipt path for Slice 002.
 7. Implement a bounded loop controller script so ChatGPT invokes a deterministic loop rather than acting as the loop in prose.

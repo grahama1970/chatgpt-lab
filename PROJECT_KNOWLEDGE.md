@@ -8,6 +8,7 @@
 - PhatGPT-LAB is a GitHub-backed control plane for proving ChatGPT/WebGPT can drive bounded software improvement through durable repo state, CI evidence, and iteration records.
 - The project now has a proven WebGPT-to-GitHub-Actions bridge: WebGPT writes `agent-state/next-command.json`; `.github/workflows/webgpt-command-dispatcher.yml` wakes on that path-filtered push; it dispatches `.github/workflows/agent-dispatch.yml`; the executor writes `agent-state/last-result.json`.
 - Direct WebGPT `workflow_dispatch` is unavailable in the current connector, but the file-write bridge works for the bounded `echo_hello` command.
+- The next safe mutation command is `apply_text_patch`: it requires a schema-validated payload, only allows selected `monocle-man-site/**` text files, and refuses unless the old text appears exactly once.
 - The current proof command is `push-proof-002`; `agent-state/last-result.json` records `status: PASS`, run `28238575766`, and result commit `59e44c80d1acb864b6583bd17c1369d873692030`.
 - This proves the narrow GitHub memory/executor loop. It does not prove broad autonomous project ownership, Monocle live deployment, arbitrary command execution, or visual review closure.
 
@@ -21,7 +22,7 @@
 
 ## Open Questions
 
-- [ ] What is the next non-echo allowlisted command to prove through the bridge?
+- [ ] Prove `apply_text_patch` through the WebGPT file-write bridge.
 - [ ] How should iteration records reference WebGPT prompt/response artifacts that live under `artifacts/webgpt/`?
 - [ ] When should Monocle live deployment proof resume after the control-plane bridge is documented?
 
@@ -36,6 +37,7 @@
 | .github/workflows/webgpt-command-dispatcher.yml | Path-filtered proxy that turns WebGPT file writes into workflow dispatches |
 | .github/workflows/agent-dispatch.yml | Bounded executor workflow |
 | scripts/validate_agent_state.py | Validates agent-state command/result contracts |
+| scripts/apply_text_patch.py | Applies one schema-validated exact text replacement for safe mutation tests |
 | docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md | Operating contract for the GitHub memory/executor loop |
 
 ## Infrastructure State

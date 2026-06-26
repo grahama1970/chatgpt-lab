@@ -21,13 +21,21 @@ Prove that ChatGPT Web or WebGPT can use GitHub as durable memory and GitHub Act
 
 ## Slice 002 Command Set
 
-Only one command is allowed in the first proof:
+The first proof allowed only one command:
 
 ```text
 echo_hello
 ```
 
 It proves dispatch, command validation, workflow execution, result writing, artifact upload, and commit-back to the control-plane repository. It does not prove arbitrary local execution, Monocle deployment, screenshot review, or broad project ownership.
+
+The next allowed command is intentionally narrow:
+
+```text
+apply_text_patch
+```
+
+`apply_text_patch` may only mutate allowlisted text files under `monocle-man-site/`. The command payload must validate against `schemas/commands/apply-text-patch.schema.json`, include `exact_old`, `exact_new`, and `expected_replacements: 1`, and produce a touched-file manifest so the executor commits only the intended file plus `agent-state/last-result.json`.
 
 ## Required GitHub REST Surface
 

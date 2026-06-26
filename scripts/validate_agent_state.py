@@ -18,8 +18,31 @@ TARGET_REPOSITORY = "grahama1970/chatgpt-lab"
 DISPATCH_WORKFLOW = "agent-dispatch.yml"
 NEXT_COMMAND_PATH = "agent-state/next-command.json"
 LAST_RESULT_PATH = "agent-state/last-result.json"
-ALLOWED_COMMANDS = {"echo_hello", "validate_control_plane"}
+ALLOWED_COMMANDS = {"echo_hello", "validate_control_plane", "apply_text_patch"}
 RESULT_STATUSES = {"NOT_RUN", "PASS", "FAILED", "REFUSED"}
+APPLY_TEXT_PATCH_SCHEMA = "chatgpt_lab.command.apply_text_patch.v1"
+APPLY_TEXT_PATCH_ALLOWED_PREFIXES = (
+    "monocle-man-site/src/",
+    "monocle-man-site/tests/",
+    "monocle-man-site/scripts/",
+)
+APPLY_TEXT_PATCH_ALLOWED_FILES = {
+    "monocle-man-site/index.html",
+    "monocle-man-site/README.md",
+    "monocle-man-site/package.json",
+    "monocle-man-site/playwright.config.ts",
+    "monocle-man-site/vite.config.js",
+}
+APPLY_TEXT_PATCH_FORBIDDEN_PARTS = {
+    "",
+    ".",
+    "..",
+    "node_modules",
+    "dist",
+    "benchmark-evidence",
+    "test-results",
+    "delivery-proof",
+}
 
 
 def load_json(path: Path) -> Any:
@@ -100,6 +123,47 @@ def validate_skill_router(data: Any) -> list[str]:
     return errors
 
 
+def validate_apply_text_patch_payload(payload: Any) -> list[str]:
+    errors: list[str] = []
+    root = require_object(payload, "next_command.payload", errors)
+    if errors:
+        return errors
+
+    required = ["schema", "path", "exact_old", "exact_new", "expected_replacements"]
+    for key in required:
+        if key not in root:
+            errors.append(f"next_command.payload missing required field: {key}")
+    if root.get("schema") != APPLY_TEXT_PATCH_SCHEMA:
+        errors.append(f"next_command.payload.schema must be {APPLY_TEXT_PATCH_SCHEMA}")
+
+    path = root.get("path")
+    if not is_nonempty_string(path):
+        errors.append("next_command.payload.path must be a non-empty string")
+    else:
+        parts = Path(path).parts
+        if Path(path).is_absolute():
+            errors.append("next_command.payload.path must be relative")
+        if any(part in APPLY_TEXT_PATCH_FORBIDDEN_PARTS for part in parts):
+            errors.append("next_command.payload.path contains a forbidden path segment")
+        if not (
+            path in APPLY_TEXT_PATCH_ALLOWED_FILES
+            or any(path.startswith(prefix) for prefix in APPLY_TEXT_PATCH_ALLOWED_PREFIXES)
+        ):
+            errors.append("next_command.payload.path is outside the apply_text_patch allowlist")
+
+    if not is_nonempty_string(root.get("exact_old")):
+        errors.append("next_command.payload.exact_old must be a non-empty string")
+    if not isinstance(root.get("exact_new"), str):
+        errors.append("next_command.payload.exact_new must be a string")
+    if root.get("expected_replacements") != 1:
+        errors.append("next_command.payload.expected_replacements must be 1")
+
+    extra = sorted(set(root).difference(required))
+    if extra:
+        errors.append("next_command.payload has unexpected fields: " + ", ".join(extra))
+    return errors
+
+
 def validate_next_command(data: Any, expected_command_id: str | None = None) -> list[str]:
     errors: list[str] = []
     root = require_object(data, "next_command", errors)
@@ -128,6 +192,13 @@ def validate_next_command(data: Any, expected_command_id: str | None = None) -> 
         errors.append("next_command.command_id must match workflow input command_id")
     if root.get("command") not in ALLOWED_COMMANDS:
         errors.append(f"next_command.command must be one of {sorted(ALLOWED_COMMANDS)}")
+    if root.get("command") == "apply_text_patch":
+        if "payload" not in root:
+            errors.append("next_command.payload is required for apply_text_patch")
+        else:
+            errors.extend(validate_apply_text_patch_payload(root.get("payload")))
+    elif "payload" in root:
+        errors.append("next_command.payload is only allowed for apply_text_patch")
     if root.get("target_repo") != TARGET_REPOSITORY:
         errors.append(f"next_command.target_repo must be {TARGET_REPOSITORY}")
     if not is_nonempty_string(root.get("target_ref")):

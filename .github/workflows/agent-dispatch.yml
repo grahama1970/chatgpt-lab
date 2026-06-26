@@ -47,6 +47,10 @@ jobs:
               python3 scripts/validate_control_plane.py > stdout.txt 2> stderr.txt
               cat stdout.txt
               ;;
+            apply_text_patch)
+              python3 scripts/apply_text_patch.py > stdout.txt 2> stderr.txt
+              cat stdout.txt
+              ;;
             *)
               echo "unsupported command: $command" >&2
               exit 2
@@ -65,6 +69,7 @@ jobs:
             --status "$status" \
             --stdout "$(cat stdout.txt 2>/dev/null || true)" \
             --stderr "$(cat stderr.txt 2>/dev/null || true)"
+          touch .agent-dispatch-touched-files.txt
           python3 scripts/validate_agent_state.py --command-id "${{ inputs.command_id }}"
 
       - name: Upload dispatch evidence
@@ -76,6 +81,7 @@ jobs:
             agent-state/last-result.json
             stdout.txt
             stderr.txt
+            .agent-dispatch-touched-files.txt
           if-no-files-found: error
           retention-days: 14
 
@@ -85,6 +91,13 @@ jobs:
           git config user.name "PhatGPT-LAB GitHub Actions"
           git config user.email "phatgpt-lab@users.noreply.github.com"
           git add agent-state/last-result.json
+          if [ -f .agent-dispatch-touched-files.txt ]; then
+            while IFS= read -r touched_file; do
+              if [ -n "$touched_file" ]; then
+                git add -- "$touched_file"
+              fi
+            done < .agent-dispatch-touched-files.txt
+          fi
           if git diff --cached --quiet; then
             echo "No result change to commit."
             exit 0

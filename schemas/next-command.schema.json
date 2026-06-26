@@ -17,7 +17,7 @@
   "properties": {
     "schema": { "const": "chatgpt_lab.next_command.v1" },
     "command_id": { "type": "string", "minLength": 1 },
-    "command": { "enum": ["echo_hello", "validate_control_plane"] },
+    "command": { "enum": ["echo_hello", "validate_control_plane", "apply_text_patch"] },
     "target_repo": { "const": "grahama1970/chatgpt-lab" },
     "target_ref": { "type": "string", "minLength": 1 },
     "workflow": { "const": "agent-dispatch.yml" },
@@ -28,7 +28,17 @@
       "contains": { "const": "agent-state/last-result.json" },
       "items": { "type": "string", "minLength": 1 }
     },
-    "stop_condition": { "type": "string", "minLength": 1 }
+    "stop_condition": { "type": "string", "minLength": 1 },
+    "payload": { "type": "object" }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "command": { "const": "apply_text_patch" } } },
+      "then": { "required": ["payload"] },
+      "else": {
+        "not": { "required": ["payload"] }
+      }
+    }
+  ],
   "additionalProperties": false
 }

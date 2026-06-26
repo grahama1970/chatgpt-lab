@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChatGPT-Lab Apply Text Patch Command",
+  "type": "object",
+  "required": [
+    "schema",
+    "path",
+    "exact_old",
+    "exact_new",
+    "expected_replacements"
+  ],
+  "properties": {
+    "schema": { "const": "chatgpt_lab.command.apply_text_patch.v1" },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^monocle-man-site/(src|tests|scripts)/[^\\u0000]*$|^monocle-man-site/(index\\.html|README\\.md|package\\.json|playwright\\.config\\.ts|vite\\.config\\.js)$"
+    },
+    "exact_old": { "type": "string", "minLength": 1 },
+    "exact_new": { "type": "string" },
+    "expected_replacements": { "const": 1 }
+  },
+  "additionalProperties": false
+}
