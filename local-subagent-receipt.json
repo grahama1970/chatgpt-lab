@@ -1,0 +1,40 @@
+{
+  "schema": "chatgpt_lab.local_subagent_receipt.v1",
+  "task_id": "pr-9-youtube-telemetry-classification-coder",
+  "status": "PASS",
+  "controller": "ChatGPT Web",
+  "delegate": "phatgpt-coder (local execution bridge)",
+  "checked_at": "2026-06-26T19:30:00Z",
+  "candidate_commit": "1efbfc747eaf3b7e009f19aa5e6ad2a9463fba1d",
+  "candidate_branch": "chatgpt-classify-youtube-telemetry-20260626",
+  "commands_run": [
+    {
+      "command": "python3 scripts/validate_control_plane.py",
+      "exit_code": 0,
+      "status": "PASS"
+    },
+    {
+      "command": "npm --prefix monocle-man-site run build",
+      "exit_code": 0,
+      "status": "PASS"
+    }
+  ],
+  "files_changed": [
+    "monocle-man-site/PROOF_NETWORK_CLASSIFICATION.md (modified) — removed interaction-timing bullet (line 16), aligned PASS condition with actual gating (line 27)",
+    "local-subagent-receipt.json (deleted) — removed from PR branch; receipts belong in PR comments/artifacts"
+  ],
+  "fixes_applied": [
+    "Fix 1: Removed 'the request is observed during or after the modal/video interaction' condition from PROOF_NETWORK_CLASSIFICATION.md — the classifier is pure host/path/failureText based and does not check interaction phase",
+    "Fix 2: Replaced 'console, and screenshot checks pass' with 'hero_heading_contains_monocle_man, normal_motion_animation_name === spin, blocking_network_errors_count === 0' to match actual workflow gating",
+    "Fix 3: Deleted local-subagent-receipt.json from PR branch — receipts belong in comments/artifacts, not as committed repo root files"
+  ],
+  "verdict": "PASS",
+  "next_owner": "PR author / ChatGPT Web controller — merge if the three fixes and validation evidence are acceptable. Do not claim live-site PASS until post-merge GitHub Pages proof exists.",
+  "blocked": false,
+  "notes": [
+    "validate_control_plane.py PASS — exit 0",
+    "npm run build PASS — exit 0",
+    "Head SHA before coder fixes: 3f94e545764330090836b40b131af1eb97b932f0 — previous 'fix' commit only touched local-subagent-receipt.json and did not actually fix the docs",
+    "Head SHA after coder fixes: 1efbfc747eaf3b7e009f19aa5e6ad2a9463fba1d"
+  ]
+}
