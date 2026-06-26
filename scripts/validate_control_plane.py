@@ -64,8 +64,10 @@ REQUIRED_FILES = (
     ".github/workflows/source-check.yml",
     ".github/workflows/agent-dispatch.yml",
     ".github/workflows/webgpt-command-dispatcher.yml",
+    ".github/workflows/assign-copilot-agent.yml",
     ".github/workflows/monocle-man-benchmark.yml",
     ".github/workflows/monocle-man-pages.yml",
+    "scripts/start_copilot_agent_task.py",
 )
 
 

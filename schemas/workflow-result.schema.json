@@ -19,9 +19,24 @@
   "properties": {
     "schema": { "const": "chatgpt_lab.workflow_result.v1" },
     "command_id": { "type": "string", "minLength": 1 },
-    "status": { "enum": ["NOT_RUN", "PASS", "FAILED", "REFUSED"] },
+    "status": {
+      "enum": [
+        "NOT_RUN",
+        "PASS",
+        "FAILED",
+        "REFUSED",
+        "BLOCKED_CLOUD_AGENT_AUTH",
+        "BLOCKED_CLOUD_AGENT_API",
+        "NEEDS_CHANGES_CODEX_CLOUD_OUTPUT"
+      ]
+    },
     "repository": { "const": "grahama1970/chatgpt-lab" },
-    "workflow": { "const": "agent-dispatch.yml" },
+    "workflow": {
+      "enum": [
+        "agent-dispatch.yml",
+        "assign-copilot-agent.yml"
+      ]
+    },
     "run_id": { "type": ["integer", "null"] },
     "run_attempt": { "type": ["integer", "null"] },
     "head_sha": { "type": ["string", "null"] },

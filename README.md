@@ -137,6 +137,7 @@ artifacts/                             CI receipts, screenshots, and reports
 .github/workflows/source-check.yml     deterministic repository validation
 .github/workflows/agent-dispatch.yml   bounded GitHub Actions executor proof
 .github/workflows/webgpt-command-dispatcher.yml path-filtered WebGPT file-write bridge
+.github/workflows/assign-copilot-agent.yml on-demand Copilot cloud-agent handoff test
 agent-state/                           machine-readable controller memory
 ```
 
@@ -163,6 +164,8 @@ The proven bridge is narrow but no longer read-only: WebGPT writes `agent-state/
 The safe mutation command is `apply_text_patch`. It accepts only a schema-validated payload with an allowlisted `monocle-man-site/**` path, exact old text, exact new text, and `expected_replacements: 1`. The first live command changed `monocle-man-site/src/main.jsx` from `One lens. One side. No compromise.` to `One lens. One side. Evidence over opinion.` and the follow-on checks for commit `064f5fd5b2b52bd1874c205edaeb616f7eae0533` passed: Source Check run `28245666829`, Monocle Benchmark run `28245666824`, and GitHub Pages proof run `28245666963`.
 
 This is not yet a broad autonomous project-ownership claim. The remaining work is to reduce local project-agent involvement, add review receipts, classify third-party network noise, implement the dry-run local-subagent receipt path, and turn the current manual loop into a bounded controller.
+
+The next handoff test is `.github/workflows/assign-copilot-agent.yml`. It is manually triggered with an issue number, calls GitHub's public-preview Agent Tasks API, and writes `agent-state/last-result.json` with either `PASS`, `BLOCKED_CLOUD_AGENT_AUTH`, or `BLOCKED_CLOUD_AGENT_API`. It requires a user-to-server token in the repository secret `COPILOT_AGENT_TASK_TOKEN`; the default `GITHUB_TOKEN` is not sufficient for starting Copilot cloud-agent tasks.
 
 Run the current validator with:
 

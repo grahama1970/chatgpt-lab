@@ -1,6 +1,6 @@
 # Project Knowledge: chatgpt-lab
 
-**Last updated:** 2026-06-26 11:21 EDT by agent
+**Last updated:** 2026-06-26 12:16 EDT by agent
 **Status:** Active development
 
 ## Current Understanding
@@ -14,6 +14,8 @@
 - This proves the narrow GitHub memory/executor loop and one bounded source mutation. It does not prove broad autonomous project ownership, arbitrary command execution, local-subagent delegation, or visual/design review closure.
 - The intended operating model is now explicit: WebGPT controls the task, names required skills/contracts, creates or updates GitHub issues/PRs/tasks, the Codex cloud agent implements GitHub-native code changes, GitHub Actions/Pages produce proof, and PhatGPT-LAB records the iteration.
 - WebGPT deliverables should be executable GitHub work packets, not advisory prose: exact objective, skills, files, validation command, deployment/evidence expectation, and fail-closed verdict rules.
+- The next cloud-agent handoff artifact is `.github/workflows/assign-copilot-agent.yml`. It uses GitHub's public-preview Agent Tasks API to start a Copilot cloud-agent task for a bounded issue and records `agent-state/last-result.json`.
+- The handoff workflow is not proven until `COPILOT_AGENT_TASK_TOKEN` is configured and a run against issue #5 either starts a Copilot task or records `BLOCKED_CLOUD_AGENT_AUTH` / `BLOCKED_CLOUD_AGENT_API`.
 
 ## Recent Decisions
 
@@ -24,6 +26,7 @@
 | 2026-06-26 | Keep `agent-dispatch.yml` as the bounded executor | The proxy only translates a repo-state write into a workflow dispatch; command execution stays allowlisted and validated. |
 | 2026-06-26 | Treat `apply_text_patch` as the first safe mutation command | It gives WebGPT a narrow way to edit source without arbitrary shell access or broad file rewrites. |
 | 2026-06-26 | Use WebGPT as controller and Codex cloud as GitHub-native implementer | The experiment should prove a deployed GitHub/Actions/Pages loop without relying on the local project agent as the implementer. |
+| 2026-06-26 | Draft the minimal Agent Tasks API workflow before a GitHub App design | The next question is only whether PhatGPT-LAB can hand issue #5 to Copilot cloud and observe a receipt; service-account architecture is premature. |
 
 ## Open Questions
 
@@ -32,6 +35,7 @@
 - [ ] Implement Slice 002 dry-run local-subagent refusal/receipt path.
 - [ ] Implement a bounded loop controller so ChatGPT/WebGPT invokes deterministic rounds instead of relying on prose memory.
 - [ ] Prove WebGPT can create the next bounded GitHub issue/PR/task for Codex cloud, Codex can implement it, and Actions/Pages can deploy and preserve evidence.
+- [ ] Configure `COPILOT_AGENT_TASK_TOKEN` and run `Assign Copilot Agent` for issue #5.
 
 ## Key Files
 
@@ -43,8 +47,10 @@
 | agent-state/last-result.json | GitHub Actions result receipt |
 | .github/workflows/webgpt-command-dispatcher.yml | Path-filtered proxy that turns WebGPT file writes into workflow dispatches |
 | .github/workflows/agent-dispatch.yml | Bounded executor workflow |
+| .github/workflows/assign-copilot-agent.yml | Manual Agent Tasks API handoff test for Copilot cloud |
 | scripts/validate_agent_state.py | Validates agent-state command/result contracts |
 | scripts/apply_text_patch.py | Applies one schema-validated exact text replacement for safe mutation tests |
+| scripts/start_copilot_agent_task.py | Starts a bounded Copilot cloud-agent task and writes a fail-closed receipt |
 | docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md | Operating contract for the GitHub memory/executor loop |
 
 ## Infrastructure State

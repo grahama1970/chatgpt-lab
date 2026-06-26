@@ -16,10 +16,19 @@ NEXT_COMMAND_SCHEMA = "chatgpt_lab.next_command.v1"
 WORKFLOW_RESULT_SCHEMA = "chatgpt_lab.workflow_result.v1"
 TARGET_REPOSITORY = "grahama1970/chatgpt-lab"
 DISPATCH_WORKFLOW = "agent-dispatch.yml"
+ALLOWED_RESULT_WORKFLOWS = {"agent-dispatch.yml", "assign-copilot-agent.yml"}
 NEXT_COMMAND_PATH = "agent-state/next-command.json"
 LAST_RESULT_PATH = "agent-state/last-result.json"
 ALLOWED_COMMANDS = {"echo_hello", "validate_control_plane", "apply_text_patch"}
-RESULT_STATUSES = {"NOT_RUN", "PASS", "FAILED", "REFUSED"}
+RESULT_STATUSES = {
+    "NOT_RUN",
+    "PASS",
+    "FAILED",
+    "REFUSED",
+    "BLOCKED_CLOUD_AGENT_AUTH",
+    "BLOCKED_CLOUD_AGENT_API",
+    "NEEDS_CHANGES_CODEX_CLOUD_OUTPUT",
+}
 APPLY_TEXT_PATCH_SCHEMA = "chatgpt_lab.command.apply_text_patch.v1"
 APPLY_TEXT_PATCH_ALLOWED_PREFIXES = (
     "monocle-man-site/src/",
@@ -251,8 +260,11 @@ def validate_result(data: Any, expected_command_id: str | None = None) -> list[s
         errors.append(f"workflow_result.status must be one of {sorted(RESULT_STATUSES)}")
     if root.get("repository") != TARGET_REPOSITORY:
         errors.append(f"workflow_result.repository must be {TARGET_REPOSITORY}")
-    if root.get("workflow") != DISPATCH_WORKFLOW:
-        errors.append(f"workflow_result.workflow must be {DISPATCH_WORKFLOW}")
+    if root.get("workflow") not in ALLOWED_RESULT_WORKFLOWS:
+        errors.append(
+            "workflow_result.workflow must be one of "
+            + ", ".join(sorted(ALLOWED_RESULT_WORKFLOWS))
+        )
     if root.get("output_path") != LAST_RESULT_PATH:
         errors.append(f"workflow_result.output_path must be {LAST_RESULT_PATH}")
     if not isinstance(root.get("stdout"), str):
@@ -275,6 +287,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--command-id")
+    parser.add_argument("--skip-next-command", action="store_true")
     parser.add_argument("--skip-result", action="store_true")
     args = parser.parse_args()
 
@@ -283,10 +296,11 @@ def main() -> int:
     try:
         current = load_json(root / "agent-state/current.json")
         skill_router = load_json(root / "agent-state/skill-router.json")
-        next_command = load_json(root / NEXT_COMMAND_PATH)
         errors.extend(validate_current(current))
         errors.extend(validate_skill_router(skill_router))
-        errors.extend(validate_next_command(next_command, args.command_id))
+        if not args.skip_next_command:
+            next_command = load_json(root / NEXT_COMMAND_PATH)
+            errors.extend(validate_next_command(next_command, args.command_id))
         if not args.skip_result:
             result = load_json(root / LAST_RESULT_PATH)
             errors.extend(validate_result(result, args.command_id))
