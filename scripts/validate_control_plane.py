@@ -15,6 +15,7 @@ COMMIT_ATTRIBUTION_POLICY = "Do not author commits under third-party model names
 FORBIDDEN_LATEST_AUTHOR_TOKENS = ("claude", "anthropic")
 REQUIRED_FILES = (
     "README.md",
+    "PROJECT_KNOWLEDGE.md",
     "AGENTS.md",
     HEADER_PATH,
     "assets/README.md",

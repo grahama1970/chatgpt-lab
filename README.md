@@ -120,6 +120,7 @@ A screenshot cannot prove keyboard behavior. A passing test cannot prove a layou
 
 ```text
 README.md                              human entry point
+PROJECT_KNOWLEDGE.md                   shared human/agent project snapshot
 AGENTS.md                              agent bootstrap and role constraints
 assets/                                repository identity and provenance
 chats/                                 exported or summarized project context
@@ -154,9 +155,11 @@ agent-state/                           machine-readable controller memory
 
 ## Current Status
 
-The control-plane repository, requirements, controller authority, and source-check workflow are established. The full system is not yet a closed loop.
+The control-plane repository, requirements, controller authority, source-check workflow, and WebGPT-to-GitHub-Actions bridge are established.
 
-The next engineering milestone is Slice 001: benchmark Playwright/accessibility/console/screenshot CI in the Monocle Man source repository, followed by one tiny visible ChatGPT-authored change and a complete iteration record. A commit-linked Netlify deployment remains required before live-site claims can pass.
+The proven bridge is narrow: WebGPT writes `agent-state/next-command.json`, GitHub runs `.github/workflows/webgpt-command-dispatcher.yml`, the proxy dispatches `.github/workflows/agent-dispatch.yml`, and the executor commits `agent-state/last-result.json`. The current proof is `push-proof-002`: dispatcher run `28238572045`, executor run `28238575766`, result commit `59e44c80d1acb864b6583bd17c1369d873692030`, and `agent-state/last-result.json` records `status: PASS`.
+
+The next engineering milestone is to add one real but safe allowlisted command beyond `echo_hello` and prove it through the same bridge. A commit-linked live deployment and visual evidence remain required before Monocle live-site claims can pass.
 
 Run the current validator with:
 
