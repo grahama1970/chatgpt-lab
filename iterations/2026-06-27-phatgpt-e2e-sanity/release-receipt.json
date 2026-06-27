@@ -1,0 +1,59 @@
+{
+  "schema": "chatgpt_lab.release_receipt.v1",
+  "role": "deployer",
+  "target": "pr#19",
+  "status": "DEPLOYED",
+  "reason": "post_merge_pages_proof_passed",
+  "pr": {
+    "number": 19,
+    "url": "https://github.com/grahama1970/chatgpt-lab/pull/19",
+    "state": "MERGED",
+    "merged_at": "2026-06-27T19:41:35Z",
+    "reviewed_head_sha": "683eadbf7a92e48c7a0ebc6246d2edfac72669a4",
+    "squash_merge_commit": "c9472f78d5c0e00f7323360328169a343a827fb2"
+  },
+  "pre_merge": {
+    "coder_receipt": "artifacts/local-worker/pr-19/coder-local-subagent-receipt.json",
+    "reviewer_receipt": "artifacts/local-worker/pr-19/reviewer-local-subagent-receipt.json",
+    "deployer_receipt": "artifacts/deployer/pr-19/deployer-receipt.json",
+    "deployer_review_receipt": "artifacts/deployer/pr-19/deployer-review-receipt.json",
+    "deployer_status": "WOULD_MERGE",
+    "reviewer_verdict": "PASS"
+  },
+  "post_merge": {
+    "fix_commit": "c9472f78d5c0e00f7323360328169a343a827fb2",
+    "proof_commit": "c9472f78d5c0e00f7323360328169a343a827fb2",
+    "source_check_run": {
+      "run_id": 28299746541,
+      "conclusion": "success"
+    },
+    "benchmark_run": {
+      "run_id": 28299746548,
+      "conclusion": "success"
+    },
+    "pages_run": {
+      "run_id": 28299746532,
+      "conclusion": "success"
+    },
+    "deployment_proof": {
+      "path": "delivery-proof/monocle-man/latest/deployment-proof.json",
+      "status": "PASS",
+      "page_url": "https://grahama1970.github.io/chatgpt-lab/",
+      "commit": "c9472f78d5c0e00f7323360328169a343a827fb2",
+      "blocking_network_errors_count": 0,
+      "expected_third_party_network_warnings_count": 3,
+      "screenshots": [
+        "delivery-proof/monocle-man/latest/screenshots/live-desktop-full.png",
+        "delivery-proof/monocle-man/latest/screenshots/live-desktop-modal.png",
+        "delivery-proof/monocle-man/latest/screenshots/live-mobile.png",
+        "delivery-proof/monocle-man/latest/screenshots/live-mobile-menu.png"
+      ]
+    }
+  },
+  "labels_added": [
+    "phatgpt-deployed"
+  ],
+  "mocked": false,
+  "live": true,
+  "completed_at": "2026-06-27T19:42:43Z"
+}

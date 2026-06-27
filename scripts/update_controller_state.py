@@ -16,12 +16,12 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE_PATH = ROOT / "controller-state" / "current.json"
-RELEASE_RECEIPT_PATH = ROOT / "iterations" / "2026-06-26-webgpt-mvp-loop-caption-002" / "release-receipt.json"
+RELEASE_RECEIPT_PATH = ROOT / "iterations" / "2026-06-27-phatgpt-e2e-sanity" / "release-receipt.json"
 DEPLOYMENT_PROOF_PATH = ROOT / "delivery-proof" / "monocle-man" / "latest" / "deployment-proof.json"
 SCHEMA = "chatgpt_lab.controller_state.v1"
 REPOSITORY = "grahama1970/chatgpt-lab"
 BRANCH = "main"
-ITERATION_ID = "2026-06-26-webgpt-mvp-loop-caption-002"
+ITERATION_ID = "2026-06-27-phatgpt-e2e-sanity"
 
 
 def load_json(path: Path) -> dict[str, Any]:

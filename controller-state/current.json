@@ -2,18 +2,18 @@
   "schema": "chatgpt_lab.controller_state.v1",
   "repository": "grahama1970/chatgpt-lab",
   "branch": "main",
-  "phase": "release-evidence-repair",
-  "state": "NEEDS_CHANGES",
+  "phase": "awaiting-next-webgpt-task",
+  "state": "READY_FOR_NEXT_TASK",
   "current_iteration": {
-    "iteration_id": "2026-06-26-webgpt-mvp-loop-caption-002",
-    "release_receipt": "iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json",
-    "request": "iterations/2026-06-26-webgpt-mvp-loop-caption-002/request.md"
+    "iteration_id": "2026-06-27-phatgpt-e2e-sanity",
+    "release_receipt": "iterations/2026-06-27-phatgpt-e2e-sanity/release-receipt.json",
+    "request": "iterations/2026-06-27-phatgpt-e2e-sanity/request.md"
   },
   "latest_release": {
     "status": "DEPLOYED",
-    "pr": 10,
-    "merge_commit": "d4c013ce98fd78ef4efcbdc716ec8523db9afaed",
-    "proof_commit": "26b82c4",
+    "pr": 19,
+    "merge_commit": "c9472f78d5c0e00f7323360328169a343a827fb2",
+    "proof_commit": "c9472f78d5c0e00f7323360328169a343a827fb2",
     "proof_path": "delivery-proof/monocle-man/latest/deployment-proof.json",
     "proof_status": "PASS",
     "page_url": "https://grahama1970.github.io/chatgpt-lab/"
@@ -22,7 +22,7 @@
     {
       "name": "release_receipt_deployed",
       "status": "PASS",
-      "evidence": "iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json"
+      "evidence": "iterations/2026-06-27-phatgpt-e2e-sanity/release-receipt.json"
     },
     {
       "name": "pages_proof_pass",
@@ -36,15 +36,14 @@
     },
     {
       "name": "release_commit_matches_proof",
-      "status": "FAIL",
-      "evidence": "iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json#/post_merge/deployment_proof/commit",
-      "reason": "release commit '0d987970d268a212b31683881d2391c0c015a577' != proof commit 'c9472f78d5c0e00f7323360328169a343a827fb2'"
+      "status": "PASS",
+      "evidence": "iterations/2026-06-27-phatgpt-e2e-sanity/release-receipt.json#/post_merge/deployment_proof/commit"
     }
   ],
   "next_action": {
     "owner": "WebGPT",
-    "type": "repair_release_evidence",
-    "instructions": "Repair the failing release evidence gate before creating a new implementation task."
+    "type": "create_bounded_pr_task",
+    "instructions": "Create the next implementation-ready GitHub PR or issue using .github/pull_request_template.md and a valid phatgpt-task:v1 block. Keep scope to one bounded code, proof, or controller improvement."
   },
   "required_inputs": [
     "objective",
@@ -53,6 +52,6 @@
     "expected_evidence",
     "stop_condition"
   ],
-  "stop_condition": "Controller must not advance until release receipt and Pages proof gates all pass.",
+  "stop_condition": "Next task is not actionable until WebGPT or a human creates a GitHub PR/issue with a valid phatgpt-task:v1 block and explicit proof requirements.",
   "updated_at": "2026-06-26T21:30:00Z"
 }
