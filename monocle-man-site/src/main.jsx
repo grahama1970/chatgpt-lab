@@ -211,7 +211,7 @@ function HeroSection({ onOpenVideo }) {
           loading="eager"
           decoding="async"
         />
-        <figcaption>One lens. One side. Sanity beats drift.</figcaption>
+        <figcaption>One lens. One side. Sanity receipts pass.</figcaption>
       </figure>
     </section>
   );
