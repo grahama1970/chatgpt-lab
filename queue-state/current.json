@@ -17,6 +17,15 @@
   ],
   "active_items": [
     {
+      "kind": "pull_request",
+      "number": 16,
+      "url": "https://github.com/grahama1970/chatgpt-lab/pull/16",
+      "title": "Queue state cleanup",
+      "classification": "active-queue-cleanup-review",
+      "reason": "This PR introduces the queue-state snapshot and must be reviewed before its classifications are accepted.",
+      "recommended_action": "Reviewer should confirm or correct the queue classifications before merge."
+    },
+    {
       "kind": "issue",
       "number": 11,
       "url": "https://github.com/grahama1970/chatgpt-lab/issues/11",
