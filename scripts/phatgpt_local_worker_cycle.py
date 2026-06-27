@@ -20,7 +20,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from validate_pr_local_task import validate_task
+try:
+    from validate_pr_local_task import validate_task
+except ModuleNotFoundError:
+    from scripts.validate_pr_local_task import validate_task
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_ROOT = ROOT / "artifacts" / "local-worker"
@@ -36,7 +39,7 @@ ROLE_LABELS = {
 ROLE_DONE_LABELS = {
     "coder": "phatgpt-ready-for-review",
     "reviewer": "phatgpt-pass",
-    "researcher": "phatgpt-local-agent",
+    "researcher": "phatgpt-needs-task",
 }
 ROLE_FAILED_LABELS = {
     "coder": "phatgpt-needs-changes",
@@ -496,6 +499,41 @@ def execute_coder_task(task: dict[str, Any], item: dict[str, Any], commands_run:
     return "COMPLETED", "task_executed_and_pushed", [], changed_files
 
 
+def execute_researcher_task(task: dict[str, Any], commands_run: list[dict[str, Any]]) -> tuple[str, str | None, list[str], list[str], str]:
+    """Validate researcher tasks without falsely promoting them to coder work."""
+    validation_ok = run_validation_commands(task, commands_run)
+    required_outputs = {str(output) for output in task.get("required_outputs") or []}
+    expected_evidence = "\n".join(str(item).lower() for item in task.get("expected_evidence") or [])
+    inventory_required = "capability inventory" in expected_evidence
+    has_inventory_output = any(
+        "capability-inventory" in output or "capability_inventory" in output
+        for output in required_outputs
+    )
+
+    missing: list[str] = []
+    if not validation_ok:
+        missing.append("validation_commands_pass")
+    if inventory_required and not has_inventory_output:
+        missing.append("capability_inventory_artifact")
+
+    if missing:
+        return (
+            "REFUSED",
+            "researcher_evidence_missing",
+            missing,
+            [],
+            "Researcher task must return the requested evidence before coder routing; add a capability inventory artifact/output or run a researcher that can collect it.",
+        )
+
+    return (
+        "COMPLETED",
+        "researcher_evidence_collected",
+        [],
+        [],
+        "WebGPT may use the researcher evidence to choose the next bounded task.",
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo", default=DEFAULT_REPO)
@@ -699,12 +737,17 @@ def main() -> int:
         commands_run.extend(update_labels(args.repo, kind, number, add=[done_label], remove=[stale_label]))
         next_required_action = "Merge decision can proceed only after deterministic proof is accepted." if review_ok else "Coder event worker should address reviewer findings."
     else:
-        status = "COMPLETED"
-        reason = "task_contract_validated"
-        missing = []
-        files_touched = []
-        commands_run.extend(update_labels(args.repo, kind, number, add=[ROLE_DONE_LABELS["researcher"]]))
-        next_required_action = "Coder event worker may process this implementation-ready task."
+        status, reason, missing, files_touched, next_required_action = execute_researcher_task(task, commands_run)
+        label_to_add = ROLE_DONE_LABELS["researcher"] if status == "COMPLETED" else ROLE_FAILED_LABELS["researcher"]
+        commands_run.extend(
+            update_labels(
+                args.repo,
+                kind,
+                number,
+                add=[label_to_add],
+                remove=["phatgpt-local-agent"],
+            )
+        )
 
     receipt = write_receipt(
         role=args.role,

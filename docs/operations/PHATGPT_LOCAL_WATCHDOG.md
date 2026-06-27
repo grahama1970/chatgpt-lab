@@ -58,6 +58,13 @@ targets with assignees, and then runs the highest-priority eligible lane.
 | `phatgpt-coder` | `phatgpt-local-agent` | PR | `scripts/phatgpt_local_worker_cycle.py --role coder` |
 | `phatgpt-researcher` | `phatgpt-needs-task` | issue, then PR | `scripts/phatgpt_local_worker_cycle.py --role researcher` |
 
+Researcher output is evidence-gated. A researcher receipt that only says the
+task contract is valid is not enough to add `phatgpt-local-agent` or route to
+coder. If a researcher task asks for a local capability inventory, source
+inspection, or other evidence collection, the worker must produce the requested
+artifact/comment or return `REFUSED` with the missing evidence and keep the item
+in `phatgpt-needs-task`.
+
 ## Watchdog
 
 Dry-run one selection:
@@ -104,4 +111,6 @@ artifacts/watchdog/watchdog-<timestamp>.json
   suggestion is advisory only and must not be executed.
 - If task language maps to more than one non-research role, the selector routes
   to `phatgpt-researcher` for task splitting or refusal.
+- If the researcher validates a task block but does not produce the requested
+  evidence artifact, it must not promote the item to coder.
 - The watchdog processes at most one target per run.

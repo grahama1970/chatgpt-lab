@@ -9,7 +9,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from validate_agent_state import validate_apply_text_patch_payload
+try:
+    from validate_agent_state import validate_apply_text_patch_payload
+except ModuleNotFoundError:
+    from scripts.validate_agent_state import validate_apply_text_patch_payload
 
 TASK_SCHEMA = "chatgpt_lab.pr_local_task.v1"
 RECEIPT_SCHEMA = "chatgpt_lab.local_subagent_receipt.v1"

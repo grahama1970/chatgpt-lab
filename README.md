@@ -195,6 +195,13 @@ The local-worker path remains a deterministic fallback and smoke harness. `scrip
 - `phatgpt-researcher`: prepares or refuses implementation-ready task blocks when the PR is too vague for the coder.
 - `phatgpt-deployer`: selects one `phatgpt-ready-to-deploy` PR, checks merge/release gates in dry-run mode, writes `WOULD_MERGE` or `REFUSED`, and leaves source fixes to coder and receipt review to reviewer.
 
+The researcher lane is not allowed to promote work to coder just because a task
+block validates. For evidence-collection tasks, such as local capability
+inventory requests, the researcher must return the requested evidence artifact
+or fail closed and leave the item in `phatgpt-needs-task`. Coder routing begins
+only after the issue/PR has actual implementation-ready evidence, not after a
+contract-only receipt.
+
 For ChatGPT Pro/WebGPT to act as the control surface, a local pickup loop must
 exist. `scripts/phatgpt_subagent_selector.py` reads the authoritative live
 subagent contracts from `/home/graham/workspace/experiments/agent-skills/agents`
