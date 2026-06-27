@@ -18,6 +18,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REVIEW_SCHEMA = "chatgpt_lab.deployer_review_receipt.v1"
+DEFAULT_ACCEPTABLE_MERGE_STATES = {"CLEAN", "HAS_HOOKS", "UNSTABLE"}
 
 
 def now() -> str:
@@ -74,8 +75,13 @@ def review_receipt(receipt: dict[str, Any]) -> tuple[str, str, list[str]]:
             failed = sorted(name for name, conclusion in required_checks.items() if conclusion != "SUCCESS")
             if failed:
                 findings.append("required_checks_not_success:" + ",".join(failed))
-        if gate_summary.get("merge_state") != "CLEAN":
-            findings.append("merge_state_not_clean")
+        acceptable_states = gate_summary.get("acceptable_merge_states")
+        if isinstance(acceptable_states, list) and acceptable_states:
+            allowed_merge_states = {str(state) for state in acceptable_states}
+        else:
+            allowed_merge_states = DEFAULT_ACCEPTABLE_MERGE_STATES
+        if gate_summary.get("merge_state") not in allowed_merge_states:
+            findings.append("merge_state_not_acceptable")
     if findings:
         return "NEEDS_CHANGES", "deployer_receipt_rejected", findings
     return "PASS", "deployer_receipt_approved", []

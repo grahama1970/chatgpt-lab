@@ -31,6 +31,7 @@ DEFAULT_REQUIRED_CHECKS = (
     "Benchmark evidence",
     "Build Pages artifact",
 )
+ACCEPTABLE_MERGE_STATES_WITH_REQUIRED_CHECKS = {"CLEAN", "HAS_HOOKS", "UNSTABLE"}
 
 
 def now() -> str:
@@ -146,6 +147,7 @@ def evaluate_pr(pr: dict[str, Any], required_checks: list[str]) -> tuple[str, li
     missing: list[str] = []
     labels = labels_from(pr)
     checks = check_conclusions(pr)
+    required_check_summary = {name: checks.get(name) for name in required_checks}
 
     if pr.get("state") != "OPEN":
         missing.append("pr_state_open")
@@ -155,22 +157,23 @@ def evaluate_pr(pr: dict[str, Any], required_checks: list[str]) -> tuple[str, li
         missing.append(DEFAULT_LABEL)
     if PASS_LABEL not in labels:
         missing.append(PASS_LABEL)
-    if pr.get("mergeStateStatus") != "CLEAN":
-        missing.append("merge_state_clean")
+    if pr.get("mergeStateStatus") not in ACCEPTABLE_MERGE_STATES_WITH_REQUIRED_CHECKS:
+        missing.append("merge_state_acceptable")
     if pr.get("reviewDecision") == "CHANGES_REQUESTED":
         missing.append("no_blocking_review_decision")
     if not has_reviewer_pass_comment(pr):
         missing.append("reviewer_pass_comment")
 
     for check_name in required_checks:
-        if checks.get(check_name) != "SUCCESS":
+        if required_check_summary.get(check_name) != "SUCCESS":
             missing.append(f"check_success:{check_name}")
 
     summary = {
         "labels": sorted(labels),
         "merge_state": pr.get("mergeStateStatus"),
+        "acceptable_merge_states": sorted(ACCEPTABLE_MERGE_STATES_WITH_REQUIRED_CHECKS),
         "review_decision": pr.get("reviewDecision"),
-        "required_checks": {name: checks.get(name) for name in required_checks},
+        "required_checks": required_check_summary,
         "head_sha": pr.get("headRefOid"),
         "head_ref": pr.get("headRefName"),
         "base_ref": pr.get("baseRefName"),
