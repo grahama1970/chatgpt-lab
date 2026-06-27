@@ -1,0 +1,38 @@
+{
+  "schema": "tau.human_goal_change.v1",
+  "github": {
+    "repo": "grahama1970/chatgpt-lab",
+    "target": "issue#1"
+  },
+  "goal": {
+    "goal_id": "goal-2026-06-greenfield-001",
+    "goal_version": 1,
+    "goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5"
+  },
+  "previous_subagent": "human",
+  "context": {
+    "summary": "The human wants to create a new immutable goal version.",
+    "artifacts": [
+      "github-comment:issue#1"
+    ]
+  },
+  "new_goal": {
+    "text": "New immutable goal text for a future version.",
+    "success_criteria": [
+      "New criterion"
+    ],
+    "constraints": [],
+    "non_goals": []
+  },
+  "rationale": "Goal changes must be explicit and reconciled.",
+  "next_agent": {
+    "name": "goal-guardian",
+    "executor": "either",
+    "reason": "Goal changes must be reconciled before further work."
+  },
+  "required_evidence": [
+    "new goal capsule",
+    "ticket reconciliation receipt"
+  ],
+  "stop_condition": "Goal guardian posts a reconciliation receipt."
+}

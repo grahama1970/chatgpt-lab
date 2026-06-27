@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/tau-human-goal-change.schema.json",
+  "title": "Tau Human Goal Change",
+  "type": "object",
+  "required": [
+    "schema",
+    "github",
+    "goal",
+    "previous_subagent",
+    "context",
+    "new_goal",
+    "rationale",
+    "next_agent",
+    "required_evidence",
+    "stop_condition"
+  ],
+  "properties": {
+    "schema": {"const": "tau.human_goal_change.v1"},
+    "github": {
+      "type": "object",
+      "required": ["repo", "target"],
+      "properties": {
+        "repo": {"type": "string", "minLength": 1},
+        "target": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "goal": {
+      "type": "object",
+      "required": ["goal_id", "goal_version", "goal_hash"],
+      "properties": {
+        "goal_id": {"type": "string", "minLength": 1},
+        "goal_version": {"type": "integer", "minimum": 1},
+        "goal_hash": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "previous_subagent": {"type": "string", "minLength": 1},
+    "context": {
+      "type": "object",
+      "required": ["summary", "artifacts"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1},
+        "artifacts": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "new_goal": {
+      "type": "object",
+      "required": ["text", "success_criteria", "constraints", "non_goals"],
+      "properties": {
+        "text": {"type": "string", "minLength": 1},
+        "success_criteria": {"type": "array", "items": {"type": "string"}},
+        "constraints": {"type": "array", "items": {"type": "string"}},
+        "non_goals": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "rationale": {"type": "string", "minLength": 1},
+    "next_agent": {
+      "type": "object",
+      "required": ["name", "reason"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "executor": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "required_evidence": {"type": "array", "items": {"type": "string"}},
+    "stop_condition": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": true
+}

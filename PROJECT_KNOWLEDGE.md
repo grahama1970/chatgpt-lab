@@ -1,6 +1,6 @@
 # Project Knowledge: chatgpt-lab
 
-**Last updated:** 2026-06-26 18:02 EDT by agent
+**Last updated:** 2026-06-27 by agent
 **Status:** Active development
 
 ## Current Understanding
@@ -29,6 +29,7 @@
 - The next protocol slice is goal locking. PR 1 is contract-only: `goals/current.json` stores the active human-approved immutable goal, `schemas/goal-capsule.schema.json`, `schemas/agent-handoff.schema.json`, `schemas/human-interjection.schema.json`, and `schemas/generated-ticket.schema.json` define the durable contract, and `scripts/validate_goal_capsule.py` plus `scripts/validate_agent_ticket_contracts.py` validate examples before any orchestrator, cron, GitHub mutation, lease acquisition, or WebGPT runtime call is added.
 - PR 2 is constrained to dry-run route parsing over local GitHub issue-thread fixtures. `scripts/agent_ticket_route.py route-fixture` reads fixture JSON, extracts embedded goal-locked contract blocks, checks trusted-human authority, validates active goal hash and explicit `next.subagent`, enforces goal-change-to-goal-guardian routing, detects legacy `phatgpt-task:v1` as non-routable, and emits `chatgpt_lab.route_decision.v1` with `would_mutate: false`.
 - PR 13 schema normalization adds `schemas/agent-common.schema.json` and explicit `github` projection blocks to actionable contracts. The projection is validation-only: schemas and Python validators check that `next:<subagent>` and `executor:<executor>` labels match the JSON route and that generated ticket create fields match the ticket draft, but no code applies labels, posts comments, or creates tickets.
+- PR 14 should add the compact Tau authoring contract for agents that should not emit verbose GitHub projection JSON. `tau.agent_handoff.v1`, `tau.generated_ticket.v1`, and `tau.human_goal_change.v1` keep only GitHub target, goal hash, previous subagent, context, result or ticket/new-goal payload, rationale, next agent, required evidence, and stop condition. Tau validators derive dry-run route labels and enforce goal/authority rules; they do not mutate GitHub.
 - WebGPT-created PRs must use `.github/pull_request_template.md`. The `target.pr` field can be `null` when the task block lives in the PR being processed, which avoids requiring WebGPT to know the PR number before opening the PR.
 - The OpenCode GitHub event workflow model is configured through repository variables. Current smoke configuration uses `PHATGPT_OPENCODE_MODEL=opencode/deepseek-v4-flash-free` and `PHATGPT_OPENCODE_VARIANT=medium`; earlier `opencode/gpt-5.5` attempts were blocked by account balance, and unqualified `gpt-5.5` failed CLI validation because OpenCode requires `provider/model`.
 - The local `opencode serve` broker surface is reachable through the scillm-managed Docker service. `docker-opencode-serve-1` was rebuilt/recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, returns `401 Unauthorized` without Basic auth, and `http://127.0.0.1:4001/v1/scillm/opencode/health` returns `status: ok`, `health.healthy: true`, OpenCode `1.17.12`. Tailscale is active at `100.102.12.64`, but `opencode serve` and scillm are bound to localhost, so remote Tailscale broker access is intentionally not proven or exposed for this MVP.
@@ -55,6 +56,7 @@
 | 2026-06-27 | Start the goal-locked harness as contracts and validators only | The immutable human goal, explicit `next.subagent`, and fail-closed WebGPT/handoff contracts must validate before runtime orchestration, cron, leases, or GitHub mutation are introduced. |
 | 2026-06-27 | Make PR 2 dry-run route parsing over local issue-thread fixtures only | The router should answer what the orchestrator would do without posting comments, editing labels, creating tickets, acquiring leases, dispatching agents, calling WebGPT, installing cron, or triggering workflows. |
 | 2026-06-27 | Add GitHub projection as a validation contract before mutation | Agent, human, and WebGPT JSON should be almost isomorphic to GitHub create/comment/label operations, but the harness must validate projections before any future orchestrator applies them. |
+| 2026-06-27 | Split compact Tau authoring from strict internal projection contracts | Smaller agents and WebGPT should emit a short handoff/ticket/goal-change JSON; Tau derives labels and validates authority while the stricter `chatgpt_lab.*` schemas remain the normalized internal contract. |
 
 ## Open Questions
 
@@ -64,6 +66,7 @@
 - [ ] Prove the goal-locked harness PR 1 contract slice: goal capsule hash, human interjection, generated ticket, agent handoff examples, validators, and Source Check integration only.
 - [ ] Prove the goal-locked harness PR 2 dry-run route parser: issue-thread fixtures, trusted-human authority, active goal hash, explicit `next.subagent`, goal-change routing, legacy detection, and `route_decision.v1` output with no GitHub mutation.
 - [ ] Prove PR 13 schema normalization: common definitions, GitHub projection fields, projection-label validation, generated-ticket create-field matching, and no runtime mutation.
+- [ ] Prove PR 14 compact Tau contracts: short agent-facing handoff/ticket/goal-change examples, Tau validators, route-decision normalization, fail-closed goal/agent/authority tests, and no GitHub mutation.
 - [x] Add a bounded controller state file and Source Check gate: `controller-state/current.json` is generated from release proof and `scripts/update_controller_state.py --check` fails on drift.
 - [x] Prove WebGPT can create a bounded GitHub PR with a valid `phatgpt-task:v1` block: PR #10 (`webgpt-mvp-loop-caption-002`) was created by WebGPT, carried the task block, triggered the PhatGPT OpenCode event worker, and reached dry-run deployer `WOULD_MERGE` after real GitHub checks passed on the latest head.
 - [x] Prove the PR #10 release lane through real merge and post-merge live Pages proof: squash merge `d4c013ce98fd78ef4efcbdc716ec8523db9afaed`, Pages run `28265880104`, proof commit `26b82c4`, and release receipt `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
@@ -99,6 +102,8 @@
 | scripts/validate_agent_ticket_contracts.py | Validates goal-locked handoff, human interjection, and generated-ticket examples |
 | scripts/agent_ticket_route.py | Dry-run route parser for local GitHub issue-thread fixtures |
 | scripts/validate_agent_ticket_route.py | Validates route parser fixtures and expected route decisions |
+| scripts/tau_contracts.py | Validates compact Tau agent-facing contracts and normalizes them to dry-run route decisions |
+| scripts/validate_tau_contracts.py | Validates compact Tau examples |
 | .github/workflows/opencode-phatgpt.yml | GitHub-event OpenCode dispatcher workflow for the PhatGPT MVP |
 | .opencode/agents/phatgpt-dispatcher.md | Primary OpenCode event router |
 | .opencode/agents/phatgpt-coder.md | Repo-local OpenCode coder subagent prompt |
@@ -113,6 +118,9 @@
 | schemas/generated-ticket.schema.json | Machine-readable WebGPT-generated ticket proposal contract |
 | schemas/route-decision.schema.json | Machine-readable dry-run route/refusal decision contract |
 | schemas/github-thread-fixture.schema.json | Machine-readable local GitHub issue/PR thread fixture contract |
+| schemas/tau-agent-handoff.schema.json | Compact agent-facing handoff contract |
+| schemas/tau-generated-ticket.schema.json | Compact WebGPT/ChatGPT ticket-draft contract |
+| schemas/tau-human-goal-change.schema.json | Compact trusted-human goal-change contract |
 | ../agent-skills/agents/phatgpt-coder/ | Shared mutating coder subagent contract for the MVP loop |
 | ../agent-skills/agents/phatgpt-reviewer/ | Shared read-only reviewer subagent contract for the MVP loop |
 | ../agent-skills/agents/phatgpt-researcher/ | Shared optional researcher/task-spec subagent contract for the MVP loop |
