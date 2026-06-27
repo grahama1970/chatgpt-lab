@@ -12,7 +12,18 @@
   "latest_release": {
     "status": "DEPLOYED",
     "pr": 10,
+    "merged_pr": {
+      "number": 10,
+      "url": "https://github.com/grahama1970/chatgpt-lab/pull/10",
+      "state": "MERGED",
+      "merged_at": "2026-06-26T21:15:17Z",
+      "reviewed_head_sha": "1bdc732c671ceedeed728e01c498b50ed24ccd78",
+      "merge_commit": "d4c013ce98fd78ef4efcbdc716ec8523db9afaed"
+    },
     "merge_commit": "d4c013ce98fd78ef4efcbdc716ec8523db9afaed",
+    "evidence_commit": "0d987970d268a212b31683881d2391c0c015a577",
+    "evidence_pages_run": 28265880104,
+    "release_receipt": "iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json",
     "proof_commit": "26b82c4",
     "proof_path": "delivery-proof/monocle-man/latest/deployment-proof.json",
     "proof_status": "PASS",
@@ -38,6 +49,11 @@
       "name": "release_commit_matches_proof",
       "status": "PASS",
       "evidence": "iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json#/post_merge/deployment_proof/commit"
+    },
+    {
+      "name": "release_identity_explicit",
+      "status": "PASS",
+      "evidence": "iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json"
     }
   ],
   "next_action": {
