@@ -1,1 +1,3 @@
 controller reconciliation task
+
+next bounded task: update controller state so merged PR identity and accepted release identity are separate fields.
