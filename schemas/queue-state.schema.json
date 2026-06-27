@@ -1,0 +1,32 @@
+{
+  "title": "Queue State",
+  "type": "object",
+  "required": [
+    "schema",
+    "repository",
+    "branch",
+    "goal",
+    "state",
+    "phase",
+    "active_items",
+    "stale_or_superseded_items",
+    "next_action",
+    "stop_condition",
+    "updated_at"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.queue_state.v1"},
+    "repository": {"type": "string"},
+    "branch": {"type": "string"},
+    "goal": {"type": "object"},
+    "state": {"type": "string"},
+    "phase": {"type": "string"},
+    "source_of_truth": {"type": "array"},
+    "active_items": {"type": "array"},
+    "stale_or_superseded_items": {"type": "array"},
+    "next_action": {"type": "object"},
+    "stop_condition": {"type": "string"},
+    "updated_at": {"type": "string"}
+  },
+  "additionalProperties": false
+}
