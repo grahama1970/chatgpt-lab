@@ -30,6 +30,11 @@ try:
 except ModuleNotFoundError:
     from scripts.phatgpt_capability_inventory import collect_capability_inventory
 
+try:
+    from phatgpt_stress_test_plan import collect_stress_test_plan
+except ModuleNotFoundError:
+    from scripts.phatgpt_stress_test_plan import collect_stress_test_plan
+
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_ROOT = ROOT / "artifacts" / "local-worker"
 RECEIPT_SCHEMA = "chatgpt_lab.local_subagent_receipt.v1"
@@ -296,6 +301,15 @@ def write_receipt(
     ]
     if target is not None:
         artifacts.append(str(target_path.relative_to(ROOT)))
+    primary_artifact_names = {
+        receipt_path.name,
+        latest_receipt_path.name,
+        manifest_path.name,
+        target_path.name,
+    }
+    for sidecar in sorted(out_dir.glob("*.json")):
+        if sidecar.name not in primary_artifact_names:
+            artifacts.append(str(sidecar.relative_to(ROOT)))
 
     receipt = {
         "schema": RECEIPT_SCHEMA,
@@ -519,18 +533,39 @@ def execute_researcher_task(
     validation_ok = run_validation_commands(task, commands_run)
     required_outputs = {str(output) for output in task.get("required_outputs") or []}
     expected_evidence = "\n".join(str(item).lower() for item in task.get("expected_evidence") or [])
+    researcher_contract_text = "\n".join(
+        [
+            str(task.get("objective") or "").lower(),
+            expected_evidence,
+            str(task.get("stop_condition") or "").lower(),
+            "\n".join(str(output).lower() for output in required_outputs),
+        ]
+    )
     inventory_required = "capability inventory" in expected_evidence
     has_inventory_output = any(
         "capability-inventory" in output or "capability_inventory" in output
         for output in required_outputs
     )
     inventory_path = ARTIFACT_ROOT / f"{kind}-{number}" / "capability-inventory.json"
+    stress_plan_required = (
+        "stress-test plan" in researcher_contract_text
+        or "stress test plan" in researcher_contract_text
+        or "stress-test-plan" in researcher_contract_text
+        or "stress_test_plan" in researcher_contract_text
+    )
+    has_stress_plan_output = any(
+        "stress-test-plan" in output or "stress_test_plan" in output
+        for output in required_outputs
+    )
+    stress_plan_path = ARTIFACT_ROOT / f"{kind}-{number}" / "stress-test-plan.json"
 
     missing: list[str] = []
     if not validation_ok:
         missing.append("validation_commands_pass")
     if inventory_required and not has_inventory_output:
         missing.append("capability_inventory_artifact")
+    if stress_plan_required and not has_stress_plan_output:
+        missing.append("stress_test_plan_artifact")
     if inventory_required and has_inventory_output and not inventory_path.is_file():
         try:
             generated_inventory_path, inventory_commands = collect_capability_inventory(ROOT, ARTIFACT_ROOT, kind, number)
@@ -540,6 +575,15 @@ def execute_researcher_task(
         except Exception as exc:  # pragma: no cover - fail-closed guardrail
             commands_run.append(shell_record("collect_capability_inventory", 2, stderr=repr(exc)))
             missing.append("capability_inventory_artifact_missing")
+    if stress_plan_required and has_stress_plan_output and not stress_plan_path.is_file():
+        try:
+            generated_plan_path, plan_commands = collect_stress_test_plan(ROOT, ARTIFACT_ROOT, kind, number)
+            commands_run.extend(plan_commands)
+            if not generated_plan_path.is_file():
+                missing.append("stress_test_plan_artifact_missing")
+        except Exception as exc:  # pragma: no cover - fail-closed guardrail
+            commands_run.append(shell_record("collect_stress_test_plan", 2, stderr=repr(exc)))
+            missing.append("stress_test_plan_artifact_missing")
 
     if missing:
         return (

@@ -121,6 +121,96 @@ class PhatgptLocalWorkerCycleTest(unittest.TestCase):
         self.assertEqual(files_touched, [])
         self.assertIn("researcher evidence", next_required_action)
 
+    def test_researcher_refuses_stress_plan_task_without_declared_output(self):
+        commands_run = []
+        task = {
+            "allowed_commands": ["python3 -c pass"],
+            "validation_commands": ["python3 -c pass"],
+            "required_outputs": ["local-subagent-receipt.json"],
+            "expected_evidence": [
+                "stress-test plan for Embry OS / SPARTA Explorer greenfield loop"
+            ],
+        }
+
+        status, reason, missing, files_touched, next_required_action = worker.execute_researcher_task(
+            task,
+            commands_run,
+            kind="issue",
+            number=20,
+        )
+
+        self.assertEqual(status, "REFUSED")
+        self.assertEqual(reason, "researcher_evidence_missing")
+        self.assertIn("stress_test_plan_artifact", missing)
+        self.assertEqual(files_touched, [])
+        self.assertIn("before coder routing", next_required_action)
+
+    def test_researcher_collects_missing_stress_plan_artifact(self):
+        commands_run = []
+        task = {
+            "allowed_commands": ["python3 -c pass"],
+            "validation_commands": ["python3 -c pass"],
+            "required_outputs": ["local-subagent-receipt.json", "stress-test-plan.json"],
+            "expected_evidence": [
+                "stress-test plan for Embry OS / SPARTA Explorer greenfield loop"
+            ],
+        }
+
+        with TemporaryDirectory() as tmp:
+            artifact_root = Path(tmp)
+
+            def fake_collect(_root, out_root, kind, number):
+                out_dir = out_root / f"{kind}-{number}"
+                out_dir.mkdir(parents=True, exist_ok=True)
+                path = out_dir / "stress-test-plan.json"
+                path.write_text("{}\n", encoding="utf-8")
+                return path, [{"command": "fake_collect_stress_test_plan", "exit_code": 0}]
+
+            with patch.object(worker, "ARTIFACT_ROOT", artifact_root), patch.object(worker, "collect_stress_test_plan", side_effect=fake_collect):
+                status, reason, missing, files_touched, next_required_action = worker.execute_researcher_task(
+                    task,
+                    commands_run,
+                    kind="issue",
+                    number=20,
+                )
+
+        self.assertEqual(status, "COMPLETED")
+        self.assertEqual(reason, "researcher_evidence_collected")
+        self.assertEqual(missing, [])
+        self.assertEqual(files_touched, [])
+        self.assertIn("researcher evidence", next_required_action)
+
+    def test_researcher_completes_only_when_stress_plan_artifact_exists(self):
+        commands_run = []
+        task = {
+            "allowed_commands": ["python3 -c pass"],
+            "validation_commands": ["python3 -c pass"],
+            "required_outputs": ["local-subagent-receipt.json", "stress-test-plan.json"],
+            "expected_evidence": [
+                "stress-test plan for Embry OS / SPARTA Explorer greenfield loop"
+            ],
+        }
+
+        with TemporaryDirectory() as tmp:
+            artifact_root = Path(tmp)
+            plan_dir = artifact_root / "issue-20"
+            plan_dir.mkdir()
+            plan_dir.joinpath("stress-test-plan.json").write_text("{}\n", encoding="utf-8")
+            with patch.object(worker, "ARTIFACT_ROOT", artifact_root), patch.object(worker, "collect_stress_test_plan") as collect:
+                status, reason, missing, files_touched, next_required_action = worker.execute_researcher_task(
+                    task,
+                    commands_run,
+                    kind="issue",
+                    number=20,
+                )
+
+        collect.assert_not_called()
+        self.assertEqual(status, "COMPLETED")
+        self.assertEqual(reason, "researcher_evidence_collected")
+        self.assertEqual(missing, [])
+        self.assertEqual(files_touched, [])
+        self.assertIn("researcher evidence", next_required_action)
+
     def test_write_receipt_preserves_role_specific_receipts_and_latest_alias(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -164,6 +254,31 @@ class PhatgptLocalWorkerCycleTest(unittest.TestCase):
         self.assertIn('"reason": "review_pass"', reviewer_data)
         self.assertIn('"role": "reviewer"', latest_data)
         self.assertIn("reviewer-local-subagent-receipt.json", latest_data)
+
+    def test_write_receipt_includes_existing_sidecar_json_artifacts(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            artifact_root = root / "artifacts" / "local-worker"
+            sidecar_dir = artifact_root / "issue-20"
+            sidecar_dir.mkdir(parents=True)
+            sidecar_dir.joinpath("stress-test-plan.json").write_text("{}\n", encoding="utf-8")
+            with patch.object(worker, "ROOT", root), patch.object(worker, "ARTIFACT_ROOT", artifact_root):
+                receipt_path = worker.write_receipt(
+                    role="researcher",
+                    kind="issue",
+                    number=20,
+                    task_id="stress-001",
+                    status="COMPLETED",
+                    reason="researcher_evidence_collected",
+                    missing=[],
+                    next_required_action="WebGPT may use the researcher evidence.",
+                    commands_run=[],
+                    target=None,
+                )
+
+            receipt = receipt_path.read_text(encoding="utf-8")
+
+        self.assertIn("artifacts/local-worker/issue-20/stress-test-plan.json", receipt)
 
 
 if __name__ == "__main__":
