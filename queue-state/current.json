@@ -7,35 +7,25 @@
     "goal_version": 1,
     "goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5"
   },
-  "state": "NEEDS_REVIEW",
-  "phase": "queue-cleanup-review",
+  "state": "READY_FOR_NEXT_TASK",
+  "phase": "awaiting-next-webgpt-task",
   "source_of_truth": [
     "goals/current.json",
     "controller-state/current.json",
     "PROJECT_KNOWLEDGE.md",
     "GitHub open issues and pull requests"
   ],
-  "active_items": [
-    {
-      "kind": "pull_request",
-      "number": 16,
-      "url": "https://github.com/grahama1970/chatgpt-lab/pull/16",
-      "title": "Queue state cleanup",
-      "classification": "active-queue-cleanup-review",
-      "reason": "This PR introduces the queue-state snapshot and must be reviewed before its classifications are accepted.",
-      "recommended_action": "Reviewer should confirm or correct the queue classifications before merge."
-    },
+  "active_items": [],
+  "stale_or_superseded_items": [
     {
       "kind": "issue",
       "number": 11,
       "url": "https://github.com/grahama1970/chatgpt-lab/issues/11",
       "title": "Bounded task: controller handoff reconciliation",
-      "classification": "needs-human-or-reviewer-triage",
-      "reason": "Created during controller handoff reconciliation but lacks a complete actionable Tau or phatgpt task block in the issue body.",
-      "recommended_action": "Convert into a valid generated ticket or close as superseded after reviewer approval."
-    }
-  ],
-  "stale_or_superseded_items": [
+      "classification": "superseded-by-merged-queue-cleanup",
+      "reason": "Issue #11 was repaired with a valid phatgpt-task block, then superseded by merged PR #16, which introduced the queue-state snapshot and received reviewer PASS before merge.",
+      "recommended_action": "Human or WebGPT may close as superseded after confirming no separate follow-up remains."
+    },
     {
       "kind": "issue",
       "number": 5,
@@ -65,10 +55,10 @@
     }
   ],
   "next_action": {
-    "owner": "reviewer",
-    "type": "read_only_queue_review",
-    "instructions": "Review this queue classification. Do not close or mutate GitHub issues or PRs from this PR. Comment PASS or NEEDS_CHANGES with exact stale item corrections."
+    "owner": "WebGPT",
+    "type": "create_bounded_pr_or_issue",
+    "instructions": "Read goals/current.json, controller-state/current.json, queue-state/current.json, and recent merged PR evidence. Create the next bounded GitHub issue or PR with valid best-practices-github-ticket metadata and a phatgpt-task:v1 or compact Tau contract block. Do not use stale or superseded items as active work unless the human explicitly reactivates them."
   },
-  "stop_condition": "Do not advance to a new implementation loop until the active queue is reviewed and stale/superseded items are either approved for cleanup or explicitly retained.",
-  "updated_at": "2026-06-27T00:00:00Z"
+  "stop_condition": "Stop when WebGPT creates a bounded issue or PR whose task block validates and whose next owner is explicit.",
+  "updated_at": "2026-06-27T15:33:00Z"
 }
