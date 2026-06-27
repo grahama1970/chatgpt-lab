@@ -14,6 +14,7 @@
     "evidence",
     "required_evidence",
     "next",
+    "github",
     "stop_condition"
   ],
   "properties": {
@@ -56,6 +57,9 @@
         "labels": {"type": "array", "items": {"type": "string"}}
       },
       "additionalProperties": false
+    },
+    "github": {
+      "$ref": "agent-common.schema.json#/$defs/githubProjection"
     },
     "stop_condition": {"type": "string", "minLength": 1}
   },

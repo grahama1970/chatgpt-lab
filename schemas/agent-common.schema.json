@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/agent-common.schema.json",
+  "title": "PhatGPT-LAB Agent Harness Common Definitions",
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-fA-F]{64}$"
+    },
+    "routableSubagent": {
+      "enum": [
+        "human",
+        "goal-guardian",
+        "webgpt-ticket-author",
+        "coder",
+        "reviewer",
+        "releaser"
+      ]
+    },
+    "executor": {
+      "enum": [
+        "github-actions",
+        "local",
+        "either",
+        "human"
+      ]
+    },
+    "githubTarget": {
+      "type": "object",
+      "required": [
+        "repository",
+        "kind",
+        "number"
+      ],
+      "properties": {
+        "repository": {
+          "const": "grahama1970/chatgpt-lab"
+        },
+        "kind": {
+          "enum": [
+            "issue",
+            "pr"
+          ]
+        },
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "githubCreate": {
+      "type": "object",
+      "required": [
+        "kind",
+        "title",
+        "body",
+        "labels"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "issue",
+            "pr"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "body": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "labels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "githubComment": {
+      "type": "object",
+      "required": [
+        "body"
+      ],
+      "properties": {
+        "body": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      },
+      "additionalProperties": false
+    },
+    "githubLabels": {
+      "type": "object",
+      "required": [
+        "add",
+        "remove"
+      ],
+      "properties": {
+        "add": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "remove": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "githubProjection": {
+      "type": "object",
+      "required": [
+        "target",
+        "create",
+        "comment",
+        "labels"
+      ],
+      "properties": {
+        "target": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/githubTarget"
+            }
+          ]
+        },
+        "create": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/githubCreate"
+            }
+          ]
+        },
+        "comment": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/githubComment"
+            }
+          ]
+        },
+        "labels": {
+          "$ref": "#/$defs/githubLabels"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

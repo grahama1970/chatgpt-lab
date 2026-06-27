@@ -51,8 +51,27 @@
     "executor": "either",
     "reason": "The next action is read-only validation of the contract slice.",
     "labels": [
-      "next:reviewer"
+      "next:reviewer",
+      "executor:either"
     ]
+  },
+  "github": {
+    "target": {
+      "repository": "grahama1970/chatgpt-lab",
+      "kind": "issue",
+      "number": 1
+    },
+    "create": null,
+    "comment": {
+      "body": "Agent handoff: reviewer completed contract validation and routes to reviewer for read-only follow-up."
+    },
+    "labels": {
+      "add": [
+        "next:reviewer",
+        "executor:either"
+      ],
+      "remove": []
+    }
   },
   "stop_condition": "Reviewer posts a schema-valid receipt with PASS, NEEDS_CHANGES, BLOCKED, or INSUFFICIENT_EVIDENCE."
 }

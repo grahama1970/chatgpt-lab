@@ -11,6 +11,7 @@
     "decision",
     "course_correction",
     "next",
+    "github",
     "required_evidence",
     "stop_condition"
   ],
@@ -62,6 +63,9 @@
         "labels": {"type": "array", "items": {"type": "string"}}
       },
       "additionalProperties": false
+    },
+    "github": {
+      "$ref": "agent-common.schema.json#/$defs/githubProjection"
     },
     "required_evidence": {"type": "array", "items": {"type": "string"}},
     "stop_condition": {"type": "string", "minLength": 1}

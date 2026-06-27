@@ -26,8 +26,27 @@
     "executor": "human",
     "reason": "The system is intentionally paused.",
     "labels": [
-      "next:human"
+      "next:human",
+      "executor:human"
     ]
+  },
+  "github": {
+    "target": {
+      "repository": "grahama1970/chatgpt-lab",
+      "kind": "issue",
+      "number": 1
+    },
+    "create": null,
+    "comment": {
+      "body": "Human interjection: pause the harness until a new valid human_interjection.v1 is posted."
+    },
+    "labels": {
+      "add": [
+        "next:human",
+        "executor:human"
+      ],
+      "remove": []
+    }
   },
   "required_evidence": [
     "human resume interjection"

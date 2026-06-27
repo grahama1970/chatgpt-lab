@@ -23,9 +23,40 @@
       "current_state": "contracts-only PR 1"
     },
     "rationale": "The protocol must validate before any automation is allowed to mutate tickets.",
+    "next": {
+      "subagent": "reviewer",
+      "executor": "either",
+      "reason": "Reviewer should inspect the generated ticket contract before runtime behavior exists.",
+      "labels": [
+        "next:reviewer",
+        "executor:either"
+      ]
+    },
     "next_subagent": "reviewer",
     "required_result": "A read-only review verdict backed by validator command results.",
     "stop_condition": "Reviewer posts a receipt and the source-check workflow passes."
+  },
+  "github": {
+    "target": null,
+    "create": {
+      "kind": "issue",
+      "title": "Validate goal-locked harness contracts",
+      "body": "Validate the PR 1 contract slice without adding runtime behavior.",
+      "labels": [
+        "agent-work",
+        "next:reviewer",
+        "executor:either",
+        "ticket:review"
+      ]
+    },
+    "comment": null,
+    "labels": {
+      "add": [
+        "next:reviewer",
+        "executor:either"
+      ],
+      "remove": []
+    }
   },
   "goal_amendment_proposal": null
 }
