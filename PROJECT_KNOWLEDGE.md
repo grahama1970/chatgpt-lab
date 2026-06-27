@@ -18,6 +18,7 @@
 - The handoff workflow is not proven until `COPILOT_AGENT_TASK_TOKEN` is configured and a run against issue #5 either starts a Copilot task or records `BLOCKED_CLOUD_AGENT_AUTH` / `BLOCKED_CLOUD_AGENT_API`.
 - The local-worker architecture should reject vague PRs/issues before doing work. `scripts/phatgpt_local_worker_cycle.py` now provides the first dry-run slice: inspect one GitHub PR/issue, require a `phatgpt-task:v1` JSON block, validate allowed commands/paths/evidence/stop condition, and write a local-subagent receipt.
 - The preferred MVP trigger is GitHub event or `opencode serve` -> OpenCode primary dispatcher -> role subagent. Cron/local worker execution remains a fallback watchdog and deterministic smoke harness, not the primary architecture.
+- ChatGPT Pro/WebGPT can only be the durable control surface if a local pickup loop exists. `scripts/phatgpt_subagent_selector.py` reads live subagent contracts from `/home/graham/workspace/experiments/agent-skills/agents`; `$memory` recall can advise task-to-subagent selection, but it is not authoritative and suggestions must validate against the live registry. `scripts/phatgpt_watchdog_cycle.py` processes at most one eligible lane per run, and `scripts/install_phatgpt_watchdog_cron.sh` installs the five-minute local watchdog when explicitly run.
 - The MVP event loop uses four shared agent contracts under `/home/graham/workspace/experiments/agent-skills/agents`: `phatgpt-coder` for the only mutating implementation role, `phatgpt-reviewer` for read-only pass/needs-changes/blocked review, `phatgpt-researcher` for optional task-block preparation/refusal, and `phatgpt-deployer` for dry-run release/deploy gate receipts.
 - The PhatGPT coder, reviewer, researcher, and deployer must follow `best-practices-github-ticket`: ticket type, target, route/agent metadata, required proof, lease-before-work, separate repair/review/release, proof-based comments/closure, and reviewer PR comments as the trace.
 - Subagent receipt summaries may be mirrored into `$memory` collection `subagent_memory` for recall, but canonical proof remains GitHub PR comments, CI run IDs, raw receipt files, screenshots, and deployment proof JSON.
@@ -100,6 +101,10 @@
 | scripts/phatgpt_deployer_cycle.py | Dry-run release/deploy gate checker that writes deployer receipts |
 | scripts/phatgpt_review_deployer_receipt.py | Read-only reviewer for deployer receipts |
 | scripts/phatgpt_memory_sync.py | Optional compact `$memory` index writer for receipt summaries |
+| scripts/phatgpt_subagent_selector.py | Selects executable PhatGPT lanes from live `agent-skills/agents` contracts, with optional advisory `$memory` recall |
+| scripts/phatgpt_watchdog_cycle.py | Runs one local watchdog lane per invocation |
+| scripts/run_phatgpt_watchdog.sh | Cron-safe wrapper for one watchdog tick |
+| scripts/install_phatgpt_watchdog_cron.sh | Explicit installer for the five-minute local watchdog cron |
 | scripts/update_controller_state.py | Generates/checks `controller-state/current.json` from tracked release proof |
 | scripts/validate_goal_capsule.py | Validates `goals/current.json` and its deterministic goal hash |
 | scripts/validate_agent_ticket_contracts.py | Validates goal-locked handoff, human interjection, and generated-ticket examples |

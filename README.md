@@ -195,6 +195,15 @@ The local-worker path remains a deterministic fallback and smoke harness. `scrip
 - `phatgpt-researcher`: prepares or refuses implementation-ready task blocks when the PR is too vague for the coder.
 - `phatgpt-deployer`: selects one `phatgpt-ready-to-deploy` PR, checks merge/release gates in dry-run mode, writes `WOULD_MERGE` or `REFUSED`, and leaves source fixes to coder and receipt review to reviewer.
 
+For ChatGPT Pro/WebGPT to act as the control surface, a local pickup loop must
+exist. `scripts/phatgpt_subagent_selector.py` reads the authoritative live
+subagent contracts from `/home/graham/workspace/experiments/agent-skills/agents`
+and maps them to executable lanes. `$memory` recall may be used to ask "for task
+X, which subagent should we choose?", but memory is advisory only; the selector
+executes only registry-backed lanes. `scripts/phatgpt_watchdog_cycle.py` runs one
+bounded lane per invocation, and `scripts/install_phatgpt_watchdog_cron.sh`
+installs the five-minute cron watchdog when explicitly run.
+
 The shared agent contracts live in `../agent-skills/agents/phatgpt-coder/`, `../agent-skills/agents/phatgpt-reviewer/`, `../agent-skills/agents/phatgpt-researcher/`, and `../agent-skills/agents/phatgpt-deployer/`. The `.opencode/agents/` files are the repo-local OpenCode entrypoint prompts that call those roles. This slice proves pickup/validation/refusal receipts, the event-triggered OpenCode entrypoint, a WebGPT-created PR reaching dry-run deployer `WOULD_MERGE`, a real squash merge, and post-merge GitHub Pages proof. The tracked release receipt is `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
 
 The local `opencode serve` control surface has been checked through the scillm-managed Docker service. `docker-opencode-serve-1` is recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, enforces Basic auth with `401` on unauthenticated root requests, and reports healthy through `http://127.0.0.1:4001/v1/scillm/opencode/health` with OpenCode `1.17.12`. Tailscale is active on this machine at `100.102.12.64`, but both `opencode serve` and scillm are bound to localhost, so they are not exposed as remote Tailscale services. That is acceptable for the current MVP because the proven loop is GitHub-event driven; exposing the broker over Tailscale is a separate future gate.
