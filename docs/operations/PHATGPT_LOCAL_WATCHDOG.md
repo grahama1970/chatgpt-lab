@@ -34,6 +34,17 @@ python3 scripts/phatgpt_subagent_selector.py \
   --json
 ```
 
+The selector also has a deterministic task-text recommender. It returns:
+
+- `phatgpt-coder` for bounded code/file mutation language.
+- `phatgpt-reviewer` for read-only validation/review language.
+- `phatgpt-deployer` for release, merge, or deploy-gate language.
+- `phatgpt-researcher` when the task is vague or mixes multiple roles.
+
+Mixed-role examples such as "implement and review" or "validate deployment
+proof" intentionally route to `phatgpt-researcher` so the task can be split or
+refused instead of guessing.
+
 The selector maps live contracts to executable lanes. The watchdog does not
 blindly process the newest GitHub item. It scans the `grahama1970/chatgpt-lab`
 queue for lane labels, skips targets listed as stale or superseded in
@@ -91,4 +102,6 @@ artifacts/watchdog/watchdog-<timestamp>.json
   `memory.status: UNAVAILABLE`.
 - If `$memory` suggests a subagent not present in the live registry, the
   suggestion is advisory only and must not be executed.
+- If task language maps to more than one non-research role, the selector routes
+  to `phatgpt-researcher` for task splitting or refusal.
 - The watchdog processes at most one target per run.

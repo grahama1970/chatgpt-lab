@@ -65,6 +65,33 @@ class PhatgptWatchdogCycleTest(unittest.TestCase):
         recommendation = selector.recommend_subagent("Figure out what the next task should be.")
         self.assertEqual(recommendation["recommended_subagent"], "phatgpt-researcher")
 
+    def test_task_recommendation_routes_mixed_roles_to_researcher(self):
+        recommendation = selector.recommend_subagent("Implement a patch and review it for PASS.")
+        self.assertEqual(recommendation["recommended_subagent"], "phatgpt-researcher")
+        self.assertEqual(recommendation["reason"], "ambiguous_multi_role_task_requires_researcher_refusal_or_task_split")
+
+    def test_task_recommendation_includes_matched_intents(self):
+        recommendation = selector.recommend_subagent("Validate the deployment proof.")
+        self.assertIn("phatgpt-deployer", recommendation["matched_intents"])
+        self.assertIn("phatgpt-reviewer", recommendation["matched_intents"])
+        self.assertEqual(recommendation["recommended_subagent"], "phatgpt-researcher")
+
+    def test_compact_memory_item_truncates_large_fields(self):
+        compact = selector.compact_memory_item(
+            {
+                "_key": "k",
+                "_source": "lessons",
+                "problem": "p" * 500,
+                "solution": "s" * 500,
+                "tags": list("abcdefghijk"),
+                "scores": {"bm25": 1.0, "dense": 0.5, "extra": "drop"},
+            }
+        )
+        self.assertEqual(len(compact["problem"]), 300)
+        self.assertEqual(len(compact["solution"]), 300)
+        self.assertEqual(len(compact["tags"]), 8)
+        self.assertNotIn("extra", compact["scores"])
+
     def test_format_command_substitutes_repo_and_label(self):
         command = watchdog.format_command(["--repo", "{repo}", "--label", "{label}"], "owner/repo", "ready")
         self.assertEqual(command, ["--repo", "owner/repo", "--label", "ready"])

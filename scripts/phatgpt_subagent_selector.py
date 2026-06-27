@@ -19,6 +19,62 @@ from typing import Any
 
 DEFAULT_AGENT_ROOT = Path("/home/graham/workspace/experiments/agent-skills/agents")
 MEMORY_URL = "http://127.0.0.1:8601/recall"
+MAX_MEMORY_ITEMS = 3
+
+ROLE_INTENTS = {
+    "phatgpt-deployer": {
+        "reason": "release_or_deploy_gate_task",
+        "patterns": [
+            r"\bdeploy(?:ment)?\b",
+            r"\brelease\b",
+            r"\bmerge\b",
+            r"\bpages proof\b",
+            r"\bready-to-deploy\b",
+            r"\bready to deploy\b",
+        ],
+    },
+    "phatgpt-reviewer": {
+        "reason": "read_only_review_or_validation_task",
+        "patterns": [
+            r"\breview\b",
+            r"\bverify\b",
+            r"\bvalidate\b",
+            r"\bvalidation\b",
+            r"\bpass/fail\b",
+            r"\bread-only\b",
+            r"\bread only\b",
+            r"\bqa\b",
+            r"\bcheck evidence\b",
+        ],
+    },
+    "phatgpt-coder": {
+        "reason": "bounded_code_mutation_task",
+        "patterns": [
+            r"\bimplement\b",
+            r"\bedit\b",
+            r"\bchange\b",
+            r"\bpatch\b",
+            r"\bcode\b",
+            r"\bfix\b",
+            r"\bmutate\b",
+            r"\bupdate file\b",
+        ],
+    },
+    "phatgpt-researcher": {
+        "reason": "research_or_task_preparation_task",
+        "patterns": [
+            r"\bresearch\b",
+            r"\binventory\b",
+            r"\binspect\b",
+            r"\bprepare\b",
+            r"\btask block\b",
+            r"\blocal context\b",
+            r"\bwhich subagent\b",
+            r"\bchoose agent\b",
+            r"\bclarify\b",
+        ],
+    },
+}
 
 ROLE_CONFIG = {
     "phatgpt-deployer": {
@@ -178,6 +234,26 @@ def build_lanes(agent_root: Path = DEFAULT_AGENT_ROOT) -> list[dict[str, Any]]:
     return sorted(lanes, key=lambda lane: int(lane["priority"]))
 
 
+def compact_memory_item(item: dict[str, Any]) -> dict[str, Any]:
+    compact: dict[str, Any] = {
+        "key": item.get("_key"),
+        "source": item.get("_source"),
+        "tags": item.get("tags", [])[:8] if isinstance(item.get("tags"), list) else [],
+    }
+    for key in ("problem", "solution", "title"):
+        value = item.get(key)
+        if isinstance(value, str) and value.strip():
+            compact[key] = value.strip()[:300]
+    scores = item.get("scores")
+    if isinstance(scores, dict):
+        compact["scores"] = {
+            key: scores.get(key)
+            for key in ("bm25", "dense", "graph", "freshness")
+            if key in scores
+        }
+    return compact
+
+
 def memory_recall_subagent(task: str, timeout_seconds: float = 2.0) -> dict[str, Any]:
     """Ask memory for advisory subagent routing evidence.
 
@@ -222,8 +298,25 @@ def memory_recall_subagent(task: str, timeout_seconds: float = 2.0) -> dict[str,
         "status": "FOUND" if data.get("found") else "NO_MATCH",
         "confidence": data.get("confidence"),
         "should_scan": data.get("should_scan"),
-        "items": data.get("items", [])[:5],
+        "items": [
+            compact_memory_item(item)
+            for item in (data.get("items", [])[:MAX_MEMORY_ITEMS] if isinstance(data.get("items"), list) else [])
+            if isinstance(item, dict)
+        ],
     }
+
+
+def match_role_intents(task: str) -> dict[str, list[str]]:
+    normalized = task.lower()
+    matches: dict[str, list[str]] = {}
+    for agent_id, intent in ROLE_INTENTS.items():
+        hits = []
+        for pattern in intent["patterns"]:
+            if re.search(pattern, normalized):
+                hits.append(pattern)
+        if hits:
+            matches[agent_id] = hits
+    return matches
 
 
 def recommend_subagent(task: str, memory: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -233,28 +326,32 @@ def recommend_subagent(task: str, memory: dict[str, Any] | None = None) -> dict[
     but keyword intent keeps broad project-knowledge records from voting for a
     role just because they mention every role.
     """
-    normalized = task.lower()
-    if any(word in normalized for word in ["deploy", "release", "merge", "pages proof", "ready-to-deploy"]):
-        agent = "phatgpt-deployer"
-        reason = "release_or_deploy_gate_task"
-    elif any(word in normalized for word in ["review", "verify", "validate", "pass/fail", "read-only", "read only"]):
-        agent = "phatgpt-reviewer"
-        reason = "read_only_review_or_validation_task"
-    elif any(word in normalized for word in ["implement", "edit", "change", "patch", "code", "fix", "mutate"]):
-        agent = "phatgpt-coder"
-        reason = "bounded_code_mutation_task"
-    elif any(word in normalized for word in ["research", "inventory", "inspect", "prepare", "task block", "local context"]):
+    matches = match_role_intents(task)
+    non_research_matches = [agent_id for agent_id in matches if agent_id != "phatgpt-researcher"]
+    if len(non_research_matches) > 1:
         agent = "phatgpt-researcher"
-        reason = "research_or_task_preparation_task"
+        reason = "ambiguous_multi_role_task_requires_researcher_refusal_or_task_split"
+        confidence = 0.4
+    elif non_research_matches:
+        agent = non_research_matches[0]
+        reason = ROLE_INTENTS[agent]["reason"]
+        confidence = 0.8
+    elif "phatgpt-researcher" in matches:
+        agent = "phatgpt-researcher"
+        reason = ROLE_INTENTS[agent]["reason"]
+        confidence = 0.75
     else:
         agent = "phatgpt-researcher"
         reason = "ambiguous_task_defaults_to_researcher_for_refusal_or_task_contract"
+        confidence = 0.3
 
     return {
         "schema": "chatgpt_lab.subagent_recommendation.v1",
         "task": task,
         "recommended_subagent": agent,
         "reason": reason,
+        "confidence": confidence,
+        "matched_intents": matches,
         "memory_status": (memory or {}).get("status"),
         "memory_confidence": (memory or {}).get("confidence"),
     }
