@@ -1,0 +1,57 @@
+{
+  "schema": "chatgpt_lab.local_subagent_receipt.v1",
+  "task_id": "pr-16-queue-state-review-001",
+  "status": "PASS",
+  "controller": "PhatGPT-LAB event dispatcher",
+  "role": "reviewer",
+  "target": {
+    "repository": "grahama1970/chatgpt-lab",
+    "pr": 16,
+    "branch": "webgpt-queue-state-cleanup-20260627",
+    "commit": "84a27fd4b0c3d26f31cca8efcf1c609386607622"
+  },
+  "commands_run": [
+    "python3 scripts/validate_queue_state.py",
+    "python3 scripts/validate_control_plane.py",
+    "python3 scripts/validate_agent_state.py",
+    "python3 scripts/update_controller_state.py --check",
+    "python3 scripts/validate_goal_capsule.py",
+    "python3 scripts/validate_agent_ticket_contracts.py",
+    "python3 scripts/validate_agent_ticket_route.py",
+    "python3 scripts/validate_tau_contracts.py",
+    "python3 scripts/validate_agent_ticket_orchestrator.py",
+    "python3 -m unittest discover -s tests",
+    "git diff --check",
+    "gh pr view --json body"
+  ],
+  "files_reviewed": [
+    ".github/workflows/source-check.yml",
+    "docs/architecture/ACTIVE_QUEUE_POLICY.md",
+    "queue-state/current.json",
+    "schemas/queue-state.schema.json",
+    "scripts/validate_queue_state.py"
+  ],
+  "evidence_checked": [
+    "PR body contains best-practices-github-ticket metadata",
+    "PR body contains valid phatgpt-task:v1 block",
+    "queue-state/current.json includes PR #16 as active",
+    "queue-state/current.json classifies issue #11 and stale/superseded items with reasons",
+    "validate_queue_state.py exits 0 with status PASS",
+    "All 10 validation commands pass",
+    "27/27 unit tests pass"
+  ],
+  "findings": [
+    "Metadata repaired: PR body now has ticket contract and phatgpt-task:v1 block",
+    "Queue state well-formed: schema, validator, and business-logic checks all pass",
+    "All validation scripts and unit tests pass without regression"
+  ],
+  "non_blocking_observations": [
+    "Schema missing $schema/$id headers (cosmetic, other schemas have them)",
+    "Validator duplicates some structural checks that schema covers"
+  ],
+  "verdict": "PASS",
+  "next_owner": "coder-or-human",
+  "evidence_chain": "PR body → queue-state/current.json → validate_queue_state.py PASS → control-plane/all validators PASS → unittest 27/27 PASS → VERDICT: PASS",
+  "comment_url": "https://github.com/grahama1970/chatgpt-lab/pull/16#issuecomment-4818579696",
+  "completed_at": "2026-06-27T15:05:00Z"
+}
