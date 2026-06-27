@@ -1,0 +1,25 @@
+{
+  "schema": "chatgpt_lab.github_thread_fixture.v1",
+  "kind": "issue",
+  "number": 4,
+  "title": "Generated ticket goal mismatch refuses",
+  "author": "grahama1970",
+  "labels": [
+    "agent-work",
+    "next:webgpt-ticket-author"
+  ],
+  "body": "Initial issue body for generated-ticket route parsing.",
+  "comments": [
+    {
+      "id": 4001,
+      "author": "webgpt",
+      "author_association": "NONE",
+      "created_at": "2026-06-27T00:00:00Z",
+      "body": "```json\n{\n  \"schema\": \"chatgpt_lab.generated_ticket.v1\",\n  \"goal\": {\n    \"goal_id\": \"goal-2026-06-greenfield-001\",\n    \"goal_version\": 1,\n    \"goal_hash\": \"sha256:0000000000000000000000000000000000000000000000000000000000000000\",\n    \"immutable_goal_preserved\": true\n  },\n  \"ticket\": {\n    \"kind\": \"issue\",\n    \"title\": \"Invalid generated ticket\",\n    \"body\": \"This generated ticket has the wrong goal hash.\",\n    \"labels\": [\"agent-work\", \"next:reviewer\"]\n  },\n  \"handoff\": {\n    \"original_goal\": \"Build a goal-locked, GitHub-ticket-driven agentic harness for grahama1970/chatgpt-lab that can explore and solve greenfield problems where the problem and solution are not known in advance. GitHub Issues, Pull Requests, comments, labels, schemas, receipts, and artifacts are the durable control surface. Humans, ChatGPT/WebGPT, local cron, GitHub Actions, and bounded subagents may add tickets or handoffs, but every actionable handoff must preserve the active human-approved goal, include original goal, fresh context, requested work or results, rationale, required evidence, stop condition, and exactly one next subagent. Only the human may create a new immutable goal version or alter success criteria; agents may only propose amendments. Local cron and GitHub Actions must cooperate through shared validators, leases, receipts, and one orchestrator. The system must fail closed when routing, authority, goal hash, or proof is missing.\",\n    \"fresh_context\": {},\n    \"rationale\": \"This should fail due to the goal hash mismatch.\",\n    \"next_subagent\": \"reviewer\",\n    \"required_result\": \"Refusal.\",\n    \"stop_condition\": \"Parser refuses the mismatch.\"\n  },\n  \"goal_amendment_proposal\": null\n}\n```"
+    }
+  ],
+  "expected_decision": {
+    "status": "REFUSED",
+    "reason": "invalid_actionable_block"
+  }
+}

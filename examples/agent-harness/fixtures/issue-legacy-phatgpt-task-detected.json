@@ -1,0 +1,17 @@
+{
+  "schema": "chatgpt_lab.github_thread_fixture.v1",
+  "kind": "issue",
+  "number": 5,
+  "title": "Legacy PhatGPT task is detected but not routed",
+  "author": "grahama1970",
+  "labels": [
+    "agent-work",
+    "phatgpt-local-agent"
+  ],
+  "body": "<!-- phatgpt-task:v1\n{\"schema\":\"chatgpt_lab.pr_local_task.v1\",\"task_id\":\"legacy-example\"}\n-->",
+  "comments": [],
+  "expected_decision": {
+    "status": "REFUSED",
+    "reason": "legacy_phatgpt_task_detected_but_not_routable_in_this_slice"
+  }
+}

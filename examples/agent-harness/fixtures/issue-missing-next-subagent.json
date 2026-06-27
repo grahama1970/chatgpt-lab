@@ -1,0 +1,24 @@
+{
+  "schema": "chatgpt_lab.github_thread_fixture.v1",
+  "kind": "issue",
+  "number": 3,
+  "title": "Missing next subagent refuses",
+  "author": "grahama1970",
+  "labels": [
+    "agent-work"
+  ],
+  "body": "Initial issue body for missing route parsing.",
+  "comments": [
+    {
+      "id": 3001,
+      "author": "grahama1970",
+      "author_association": "OWNER",
+      "created_at": "2026-06-27T00:00:00Z",
+      "body": "```json\n{\n  \"schema\": \"chatgpt_lab.human_interjection.v1\",\n  \"authority\": \"human\",\n  \"channel\": \"github\",\n  \"goal\": {\n    \"goal_id\": \"goal-2026-06-greenfield-001\",\n    \"current_goal_version\": 1,\n    \"current_goal_hash\": \"sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5\",\n    \"goal_action\": \"preserve\"\n  },\n  \"decision\": {\n    \"type\": \"pause\",\n    \"summary\": \"Pause without a route.\",\n    \"rationale\": \"This fixture intentionally omits next.subagent.\"\n  },\n  \"new_goal_version\": null,\n  \"course_correction\": {\n    \"what_changes\": \"Nothing should execute.\",\n    \"what_does_not_change\": \"The immutable goal remains unchanged.\",\n    \"non_goals\": []\n  },\n  \"required_evidence\": [],\n  \"stop_condition\": \"Parser refuses missing next.subagent.\"\n}\n```"
+    }
+  ],
+  "expected_decision": {
+    "status": "REFUSED",
+    "reason": "invalid_actionable_block"
+  }
+}

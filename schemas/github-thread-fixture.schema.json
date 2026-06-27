@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/github-thread-fixture.schema.json",
+  "title": "PhatGPT-LAB GitHub Thread Fixture",
+  "type": "object",
+  "required": [
+    "schema",
+    "kind",
+    "number",
+    "title",
+    "author",
+    "labels",
+    "body",
+    "comments"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.github_thread_fixture.v1"},
+    "kind": {"enum": ["issue", "pr"]},
+    "number": {"type": "integer", "minimum": 1},
+    "title": {"type": "string", "minLength": 1},
+    "author": {"type": "string", "minLength": 1},
+    "labels": {"type": "array", "items": {"type": "string"}},
+    "body": {"type": "string"},
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "author", "author_association", "created_at", "body"],
+        "properties": {
+          "id": {"type": "integer", "minimum": 1},
+          "author": {"type": "string", "minLength": 1},
+          "author_association": {"type": "string", "minLength": 1},
+          "created_at": {"type": "string", "minLength": 1},
+          "body": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "expected_decision": {
+      "type": "object",
+      "properties": {
+        "status": {"enum": ["ROUTE", "REFUSED", "BLOCKED", "NOOP"]},
+        "reason": {"type": "string"},
+        "next_subagent": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
