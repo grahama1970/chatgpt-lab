@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/route-decision.schema.json",
+  "title": "PhatGPT-LAB Dry-Run Route Decision",
+  "type": "object",
+  "required": [
+    "schema",
+    "status",
+    "mode",
+    "would_mutate",
+    "source",
+    "goal",
+    "next",
+    "reasons",
+    "missing",
+    "errors"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.route_decision.v1"},
+    "status": {"enum": ["ROUTE", "REFUSED", "BLOCKED", "NOOP"]},
+    "mode": {"const": "dry_run"},
+    "would_mutate": {"const": false},
+    "source": {
+      "type": "object",
+      "required": ["kind", "number", "selected_comment_id", "selected_schema"],
+      "properties": {
+        "kind": {"enum": ["issue", "pr"]},
+        "number": {"type": "integer", "minimum": 1},
+        "selected_comment_id": {"type": ["integer", "null"]},
+        "selected_schema": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "goal": {
+      "type": "object",
+      "required": ["goal_id", "goal_version", "goal_hash", "matched_active_goal"],
+      "properties": {
+        "goal_id": {"type": ["string", "null"]},
+        "goal_version": {"type": ["integer", "null"]},
+        "goal_hash": {"type": ["string", "null"]},
+        "matched_active_goal": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "next": {
+      "type": ["object", "null"],
+      "required": ["subagent", "executor", "labels"],
+      "properties": {
+        "subagent": {"type": "string"},
+        "executor": {"type": "string"},
+        "labels": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "reason": {"type": "string"},
+    "next_required_action": {"type": "string"},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "missing": {"type": "array", "items": {"type": "string"}},
+    "errors": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
