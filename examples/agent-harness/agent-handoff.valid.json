@@ -1,0 +1,58 @@
+{
+  "schema": "chatgpt_lab.agent_handoff.v1",
+  "goal": {
+    "goal_id": "goal-2026-06-greenfield-001",
+    "goal_version": 1,
+    "goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5",
+    "immutable_goal_preserved": true
+  },
+  "run": {
+    "run_id": "agent-run-example-001",
+    "actor_type": "subagent",
+    "actor": "reviewer",
+    "attempt": 1
+  },
+  "original_goal": "Build a goal-locked, GitHub-ticket-driven agentic harness for grahama1970/chatgpt-lab that can explore and solve greenfield problems where the problem and solution are not known in advance. GitHub Issues, Pull Requests, comments, labels, schemas, receipts, and artifacts are the durable control surface. Humans, ChatGPT/WebGPT, local cron, GitHub Actions, and bounded subagents may add tickets or handoffs, but every actionable handoff must preserve the active human-approved goal, include original goal, fresh context, requested work or results, rationale, required evidence, stop condition, and exactly one next subagent. Only the human may create a new immutable goal version or alter success criteria; agents may only propose amendments. Local cron and GitHub Actions must cooperate through shared validators, leases, receipts, and one orchestrator. The system must fail closed when routing, authority, goal hash, or proof is missing.",
+  "fresh_context": {
+    "current_ticket": "issue#1",
+    "knowns": [
+      "PR 1 is contracts-only."
+    ],
+    "unknowns": [],
+    "assumptions": [],
+    "artifact_refs": [
+      "goals/current.json"
+    ]
+  },
+  "results": {
+    "status": "COMPLETED",
+    "summary": "Contract examples validate against the active goal.",
+    "changed_files": [],
+    "commands_run": [
+      "python3 scripts/validate_agent_ticket_contracts.py"
+    ],
+    "artifacts": [
+      "examples/agent-harness/agent-handoff.valid.json"
+    ]
+  },
+  "rationale": "A reviewer should inspect the contract slice before any runtime behavior is added.",
+  "evidence": [
+    {
+      "type": "file",
+      "path": "goals/current.json"
+    }
+  ],
+  "required_evidence": [
+    "validator receipt",
+    "source-check result"
+  ],
+  "next": {
+    "subagent": "reviewer",
+    "executor": "either",
+    "reason": "The next action is read-only validation of the contract slice.",
+    "labels": [
+      "next:reviewer"
+    ]
+  },
+  "stop_condition": "Reviewer posts a schema-valid receipt with PASS, NEEDS_CHANGES, BLOCKED, or INSUFFICIENT_EVIDENCE."
+}

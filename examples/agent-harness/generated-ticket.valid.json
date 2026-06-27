@@ -1,0 +1,31 @@
+{
+  "schema": "chatgpt_lab.generated_ticket.v1",
+  "goal": {
+    "goal_id": "goal-2026-06-greenfield-001",
+    "goal_version": 1,
+    "goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5",
+    "immutable_goal_preserved": true
+  },
+  "ticket": {
+    "kind": "issue",
+    "title": "Validate goal-locked harness contracts",
+    "body": "Validate the PR 1 contract slice without adding runtime behavior.",
+    "labels": [
+      "agent-work",
+      "next:reviewer",
+      "executor:either",
+      "ticket:review"
+    ]
+  },
+  "handoff": {
+    "original_goal": "Build a goal-locked, GitHub-ticket-driven agentic harness for grahama1970/chatgpt-lab that can explore and solve greenfield problems where the problem and solution are not known in advance. GitHub Issues, Pull Requests, comments, labels, schemas, receipts, and artifacts are the durable control surface. Humans, ChatGPT/WebGPT, local cron, GitHub Actions, and bounded subagents may add tickets or handoffs, but every actionable handoff must preserve the active human-approved goal, include original goal, fresh context, requested work or results, rationale, required evidence, stop condition, and exactly one next subagent. Only the human may create a new immutable goal version or alter success criteria; agents may only propose amendments. Local cron and GitHub Actions must cooperate through shared validators, leases, receipts, and one orchestrator. The system must fail closed when routing, authority, goal hash, or proof is missing.",
+    "fresh_context": {
+      "current_state": "contracts-only PR 1"
+    },
+    "rationale": "The protocol must validate before any automation is allowed to mutate tickets.",
+    "next_subagent": "reviewer",
+    "required_result": "A read-only review verdict backed by validator command results.",
+    "stop_condition": "Reviewer posts a receipt and the source-check workflow passes."
+  },
+  "goal_amendment_proposal": null
+}

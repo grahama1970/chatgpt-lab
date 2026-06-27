@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/agent-handoff.schema.json",
+  "title": "PhatGPT-LAB Agent Handoff",
+  "type": "object",
+  "required": [
+    "schema",
+    "goal",
+    "run",
+    "original_goal",
+    "fresh_context",
+    "results",
+    "rationale",
+    "evidence",
+    "required_evidence",
+    "next",
+    "stop_condition"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.agent_handoff.v1"},
+    "goal": {
+      "type": "object",
+      "required": ["goal_id", "goal_version", "goal_hash", "immutable_goal_preserved"],
+      "properties": {
+        "goal_id": {"type": "string", "minLength": 1},
+        "goal_version": {"type": "integer", "minimum": 1},
+        "goal_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "immutable_goal_preserved": {"const": true}
+      },
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "required": ["run_id", "actor_type", "actor", "attempt"],
+      "properties": {
+        "run_id": {"type": "string", "minLength": 1},
+        "actor_type": {"enum": ["human", "webgpt", "subagent", "github-actions", "local-cron"]},
+        "actor": {"type": "string", "minLength": 1},
+        "attempt": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "original_goal": {"type": "string", "minLength": 1},
+    "fresh_context": {"type": "object"},
+    "results": {"type": "object"},
+    "rationale": {"type": "string", "minLength": 1},
+    "evidence": {"type": "array", "items": {"type": "object"}},
+    "required_evidence": {"type": "array", "items": {"type": "string"}},
+    "next": {
+      "type": "object",
+      "required": ["subagent", "executor", "reason"],
+      "properties": {
+        "subagent": {"enum": ["human", "goal-guardian", "webgpt-ticket-author", "coder", "reviewer", "releaser"]},
+        "executor": {"enum": ["github-actions", "local", "either", "human"]},
+        "reason": {"type": "string", "minLength": 1},
+        "labels": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "stop_condition": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

@@ -134,6 +134,7 @@ schemas/                               machine-readable evidence contracts
 scripts/                               validation and maintenance tools
 iterations/                            durable per-run evidence records
 artifacts/                             CI receipts, screenshots, and reports
+goals/current.json                     active human-approved immutable goal capsule
 .github/workflows/source-check.yml     deterministic repository validation
 .github/workflows/agent-dispatch.yml   bounded GitHub Actions executor proof
 .github/workflows/webgpt-command-dispatcher.yml path-filtered WebGPT file-write bridge
@@ -146,6 +147,7 @@ scripts/phatgpt_review_deployer_receipt.py read-only deployer receipt reviewer
 	scripts/phatgpt_memory_sync.py        optional compact receipt index writer for `$memory`
 	agent-state/                           machine-readable controller memory
 	controller-state/current.json          evidence-derived next-action state
+	docs/requirements/GOAL_LOCKED_AGENT_HARNESS.md contracts-only goal-lock slice
 	../agent-skills/agents/phatgpt-coder/  mutating event worker contract
 ../agent-skills/agents/phatgpt-reviewer/ read-only event reviewer contract
 ../agent-skills/agents/phatgpt-researcher/ optional task-spec researcher contract
@@ -198,6 +200,8 @@ The shared agent contracts live in `../agent-skills/agents/phatgpt-coder/`, `../
 The local `opencode serve` control surface has been checked through the scillm-managed Docker service. `docker-opencode-serve-1` is recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, enforces Basic auth with `401` on unauthenticated root requests, and reports healthy through `http://127.0.0.1:4001/v1/scillm/opencode/health` with OpenCode `1.17.12`. Tailscale is active on this machine at `100.102.12.64`, but both `opencode serve` and scillm are bound to localhost, so they are not exposed as remote Tailscale services. That is acceptable for the current MVP because the proven loop is GitHub-event driven; exposing the broker over Tailscale is a separate future gate.
 
 The bounded controller state is `controller-state/current.json`. It is generated from durable evidence, not hand-written status prose. `scripts/update_controller_state.py --check` derives the current state from `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json` and `delivery-proof/monocle-man/latest/deployment-proof.json`; Source Check fails if the checked-in controller state drifts. The current state is `READY_FOR_NEXT_TASK`, with `next_action.type: create_bounded_pr_task`.
+
+The next protocol slice is goal locking. `goals/current.json` stores the active human-approved immutable goal and deterministic goal hash. `docs/requirements/GOAL_LOCKED_AGENT_HARNESS.md` defines the contracts for human interjections, WebGPT-generated tickets, and subagent handoffs. In the first slice these are validation-only contracts: no orchestrator, cron, GitHub mutation, WebGPT browser call, or runtime label change is added until the schemas, examples, and validators pass source check.
 
 All four shared contracts compose `best-practices-github-ticket`. A ChatGPT/WebGPT PR is not actionable until it contains ticket type, target path, current state, requested outcome, route or agent metadata when known, required proof, non-goals, and a valid `phatgpt-task:v1` block. The coder must lease before mutation; the reviewer must stay read-only and comment every verdict on the GitHub PR; closure requires deterministic proof, deployer receipt review, and reconciled review findings.
 

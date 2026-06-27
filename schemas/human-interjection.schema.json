@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/human-interjection.schema.json",
+  "title": "PhatGPT-LAB Human Interjection",
+  "type": "object",
+  "required": [
+    "schema",
+    "authority",
+    "channel",
+    "goal",
+    "decision",
+    "course_correction",
+    "next",
+    "required_evidence",
+    "stop_condition"
+  ],
+  "properties": {
+    "schema": {"const": "chatgpt_lab.human_interjection.v1"},
+    "authority": {"const": "human"},
+    "channel": {"enum": ["github", "chatgpt-interface"]},
+    "goal": {
+      "type": "object",
+      "required": ["goal_id", "current_goal_version", "current_goal_hash", "goal_action"],
+      "properties": {
+        "goal_id": {"type": "string", "minLength": 1},
+        "current_goal_version": {"type": "integer", "minimum": 1},
+        "current_goal_hash": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "goal_action": {"enum": ["preserve", "create_new_version", "accept_amendment", "reject_amendment"]}
+      },
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "required": ["type", "summary", "rationale"],
+      "properties": {
+        "type": {"enum": ["course_correct", "reprioritize", "pause", "resume", "reject_branch", "approve_branch", "create_ticket", "route_ticket", "stop"]},
+        "summary": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "new_goal_version": {
+      "type": ["object", "null"]
+    },
+    "course_correction": {
+      "type": "object",
+      "required": ["what_changes", "what_does_not_change", "non_goals"],
+      "properties": {
+        "what_changes": {"type": "string"},
+        "what_does_not_change": {"type": "string", "minLength": 1},
+        "non_goals": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "next": {
+      "type": "object",
+      "required": ["subagent", "executor", "reason"],
+      "properties": {
+        "subagent": {"enum": ["human", "goal-guardian", "webgpt-ticket-author", "coder", "reviewer", "releaser"]},
+        "executor": {"enum": ["github-actions", "local", "either", "human"]},
+        "reason": {"type": "string", "minLength": 1},
+        "labels": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "required_evidence": {"type": "array", "items": {"type": "string"}},
+    "stop_condition": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

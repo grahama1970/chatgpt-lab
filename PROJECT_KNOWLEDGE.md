@@ -26,6 +26,7 @@
 - PR #10 is the first valid WebGPT-created loop proof. WebGPT created branch `webgpt-mvp-loop-caption-002` and a valid PR task block; OpenCode applied the bounded Monocle caption change; local reviewer re-ran checks on the PR branch; a local rebase from a non-`github-actions[bot]` identity cleared the `action_required` check state; the dry-run deployer reached `WOULD_MERGE` on head `1bdc732c671ceedeed728e01c498b50ed24ccd78`; PR #10 was squash-merged as `d4c013ce98fd78ef4efcbdc716ec8523db9afaed`; and post-merge Pages proof passed for classifier commit `0d987970d268a212b31683881d2391c0c015a577`.
 - The PR #10 post-merge proof run is `28265880104`; `delivery-proof/monocle-man/latest/deployment-proof.json` records `status: PASS`, `blocking_network_errors_count: 0`, `expected_third_party_network_warnings_count: 4`, and screenshots for desktop, modal, mobile, and mobile menu. The tracked release receipt is `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
 - `controller-state/current.json` is the evidence-derived bounded controller surface. It is generated and checked by `scripts/update_controller_state.py` from the PR #10 release receipt and live Pages proof; the current state is `READY_FOR_NEXT_TASK`, and the next action is for WebGPT to create a bounded PR/issue with a valid `phatgpt-task:v1` block.
+- The next protocol slice is goal locking. PR 1 is contract-only: `goals/current.json` stores the active human-approved immutable goal, `schemas/goal-capsule.schema.json`, `schemas/agent-handoff.schema.json`, `schemas/human-interjection.schema.json`, and `schemas/generated-ticket.schema.json` define the durable contract, and `scripts/validate_goal_capsule.py` plus `scripts/validate_agent_ticket_contracts.py` validate examples before any orchestrator, cron, GitHub mutation, lease acquisition, or WebGPT runtime call is added.
 - WebGPT-created PRs must use `.github/pull_request_template.md`. The `target.pr` field can be `null` when the task block lives in the PR being processed, which avoids requiring WebGPT to know the PR number before opening the PR.
 - The OpenCode GitHub event workflow model is configured through repository variables. Current smoke configuration uses `PHATGPT_OPENCODE_MODEL=opencode/deepseek-v4-flash-free` and `PHATGPT_OPENCODE_VARIANT=medium`; earlier `opencode/gpt-5.5` attempts were blocked by account balance, and unqualified `gpt-5.5` failed CLI validation because OpenCode requires `provider/model`.
 - The local `opencode serve` broker surface is reachable through the scillm-managed Docker service. `docker-opencode-serve-1` was rebuilt/recreated from `docker-opencode-serve`, listens on `127.0.0.1:4098`, returns `401 Unauthorized` without Basic auth, and `http://127.0.0.1:4001/v1/scillm/opencode/health` returns `status: ok`, `health.healthy: true`, OpenCode `1.17.12`. Tailscale is active at `100.102.12.64`, but `opencode serve` and scillm are bound to localhost, so remote Tailscale broker access is intentionally not proven or exposed for this MVP.
@@ -49,12 +50,14 @@
 | 2026-06-26 | Treat `opencode serve` as locally available and Tailscale exposure as a future gate | The proven MVP loop uses GitHub events, not remote broker calls; the scillm-managed Docker service is healthy on localhost, while Tailscale exposure remains intentionally unproven because the services bind to `127.0.0.1`. |
 | 2026-06-26 | Classify Google `/js/th/` embed-helper aborts as expected third-party warnings | Live Pages proof showed the YouTube no-cookie embed can abort a Google helper script during modal lifecycle; first-party failures and unrelated third-party failures remain blocking. |
 | 2026-06-26 | Add evidence-derived `controller-state/current.json` as the repeatable next-action surface | WebGPT should not infer the next move from prose; Source Check now validates that controller state matches tracked release and Pages proof evidence. |
+| 2026-06-27 | Start the goal-locked harness as contracts and validators only | The immutable human goal, explicit `next.subagent`, and fail-closed WebGPT/handoff contracts must validate before runtime orchestration, cron, leases, or GitHub mutation are introduced. |
 
 ## Open Questions
 
 - [ ] Add code-review and design-review receipts for the migrated Monocle source, workflows, and live screenshots.
 - [x] Classify YouTube/no-cookie embed lifecycle aborts, including the observed Google `/js/th/` helper script abort, as expected third-party warnings while preserving fail-closed first-party network handling.
 - [ ] Implement Slice 002 dry-run local-subagent refusal/receipt path.
+- [ ] Prove the goal-locked harness PR 1 contract slice: goal capsule hash, human interjection, generated ticket, agent handoff examples, validators, and Source Check integration only.
 - [x] Add a bounded controller state file and Source Check gate: `controller-state/current.json` is generated from release proof and `scripts/update_controller_state.py --check` fails on drift.
 - [x] Prove WebGPT can create a bounded GitHub PR with a valid `phatgpt-task:v1` block: PR #10 (`webgpt-mvp-loop-caption-002`) was created by WebGPT, carried the task block, triggered the PhatGPT OpenCode event worker, and reached dry-run deployer `WOULD_MERGE` after real GitHub checks passed on the latest head.
 - [x] Prove the PR #10 release lane through real merge and post-merge live Pages proof: squash merge `d4c013ce98fd78ef4efcbdc716ec8523db9afaed`, Pages run `28265880104`, proof commit `26b82c4`, and release receipt `iterations/2026-06-26-webgpt-mvp-loop-caption-002/release-receipt.json`.
@@ -74,6 +77,7 @@
 | agent-state/next-command.json | WebGPT-writable command envelope |
 | agent-state/last-result.json | GitHub Actions result receipt |
 | controller-state/current.json | Evidence-derived current controller state and next action |
+| goals/current.json | Active human-approved immutable goal capsule and deterministic goal hash |
 | .github/workflows/webgpt-command-dispatcher.yml | Path-filtered proxy that turns WebGPT file writes into workflow dispatches |
 | .github/workflows/agent-dispatch.yml | Bounded executor workflow |
 | .github/workflows/assign-copilot-agent.yml | Manual Agent Tasks API handoff test for Copilot cloud |
@@ -85,6 +89,8 @@
 | scripts/phatgpt_review_deployer_receipt.py | Read-only reviewer for deployer receipts |
 | scripts/phatgpt_memory_sync.py | Optional compact `$memory` index writer for receipt summaries |
 | scripts/update_controller_state.py | Generates/checks `controller-state/current.json` from tracked release proof |
+| scripts/validate_goal_capsule.py | Validates `goals/current.json` and its deterministic goal hash |
+| scripts/validate_agent_ticket_contracts.py | Validates goal-locked handoff, human interjection, and generated-ticket examples |
 | .github/workflows/opencode-phatgpt.yml | GitHub-event OpenCode dispatcher workflow for the PhatGPT MVP |
 | .opencode/agents/phatgpt-dispatcher.md | Primary OpenCode event router |
 | .opencode/agents/phatgpt-coder.md | Repo-local OpenCode coder subagent prompt |
@@ -92,11 +98,16 @@
 | .opencode/agents/phatgpt-researcher.md | Repo-local OpenCode researcher subagent prompt |
 | .opencode/agents/phatgpt-deployer.md | Repo-local OpenCode deployer subagent prompt |
 | schemas/pr-local-task.schema.json | Machine-readable `phatgpt-task:v1` PR/issue task contract |
+| schemas/goal-capsule.schema.json | Machine-readable active-goal capsule contract |
+| schemas/agent-handoff.schema.json | Machine-readable subagent handoff contract |
+| schemas/human-interjection.schema.json | Machine-readable human authority and route contract |
+| schemas/generated-ticket.schema.json | Machine-readable WebGPT-generated ticket proposal contract |
 | ../agent-skills/agents/phatgpt-coder/ | Shared mutating coder subagent contract for the MVP loop |
 | ../agent-skills/agents/phatgpt-reviewer/ | Shared read-only reviewer subagent contract for the MVP loop |
 | ../agent-skills/agents/phatgpt-researcher/ | Shared optional researcher/task-spec subagent contract for the MVP loop |
 | ../agent-skills/agents/phatgpt-deployer/ | Shared dry-run deployer/releaser subagent contract for the MVP loop |
 | docs/requirements/WEBGPT_PROJECT_AGENT_OPERATING_MODEL.md | Operating contract for the GitHub memory/executor loop |
+| docs/requirements/GOAL_LOCKED_AGENT_HARNESS.md | Contracts-only goal-lock harness slice |
 
 ## Infrastructure State
 

@@ -1,0 +1,36 @@
+{
+  "schema": "chatgpt_lab.human_interjection.v1",
+  "authority": "human",
+  "channel": "github",
+  "goal": {
+    "goal_id": "goal-2026-06-greenfield-001",
+    "current_goal_version": 1,
+    "current_goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5",
+    "goal_action": "preserve"
+  },
+  "decision": {
+    "type": "pause",
+    "summary": "Pause the harness until the human gives a new instruction.",
+    "rationale": "The human is intentionally stopping autonomous routing."
+  },
+  "new_goal_version": null,
+  "course_correction": {
+    "what_changes": "No further agent route may execute until the human resumes.",
+    "what_does_not_change": "The active immutable goal and success criteria remain unchanged.",
+    "non_goals": [
+      "Do not infer a new next task from private chat history."
+    ]
+  },
+  "next": {
+    "subagent": "human",
+    "executor": "human",
+    "reason": "The system is intentionally paused.",
+    "labels": [
+      "next:human"
+    ]
+  },
+  "required_evidence": [
+    "human resume interjection"
+  ],
+  "stop_condition": "Human posts a new valid human_interjection.v1."
+}

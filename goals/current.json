@@ -1,0 +1,39 @@
+{
+  "schema": "chatgpt_lab.goal_capsule.v1",
+  "goal_id": "goal-2026-06-greenfield-001",
+  "version": 1,
+  "status": "active",
+  "owner": "human",
+  "immutable_goal": "Build a goal-locked, GitHub-ticket-driven agentic harness for grahama1970/chatgpt-lab that can explore and solve greenfield problems where the problem and solution are not known in advance. GitHub Issues, Pull Requests, comments, labels, schemas, receipts, and artifacts are the durable control surface. Humans, ChatGPT/WebGPT, local cron, GitHub Actions, and bounded subagents may add tickets or handoffs, but every actionable handoff must preserve the active human-approved goal, include original goal, fresh context, requested work or results, rationale, required evidence, stop condition, and exactly one next subagent. Only the human may create a new immutable goal version or alter success criteria; agents may only propose amendments. Local cron and GitHub Actions must cooperate through shared validators, leases, receipts, and one orchestrator. The system must fail closed when routing, authority, goal hash, or proof is missing.",
+  "success_criteria": [
+    "A schema-valid goal capsule exists and has a deterministic goal hash.",
+    "A schema-valid human interjection can preserve or version the goal.",
+    "A schema-valid handoff always includes original goal, fresh context, results or requested work, rationale, required evidence, stop condition, and exactly one next subagent.",
+    "Non-human actors cannot mutate the immutable goal or success criteria.",
+    "Missing next.subagent fails closed.",
+    "Generated WebGPT tickets can propose next work but cannot bypass validation.",
+    "Cron and GitHub Actions are designed to share one orchestrator and coordinate through leases and receipts before any runtime implementation is added."
+  ],
+  "constraints": [
+    "PR 1 may add schemas, examples, documentation, validator scripts, unit tests, and source-check integration only.",
+    "PR 1 must not add orchestrator tick loops, cron installers, GitHub issue mutation, lease acquisition, subagent dispatch, WebGPT browser calls, runtime label changes, or new autonomous runtime behavior.",
+    "ChatGPT-interface instructions become authoritative only after they are written into GitHub or repo state as human-approved artifacts."
+  ],
+  "non_goals": [
+    "Do not implement live autonomous dispatch in the first PR.",
+    "Do not install cron in the first PR.",
+    "Do not allow agents to change the immutable goal.",
+    "Do not treat ChatGPT/WebGPT output as proof without durable evidence.",
+    "Do not add broad new specialist roles before the core protocol is proven."
+  ],
+  "human_change_required_for": [
+    "changing immutable_goal",
+    "removing success criteria",
+    "broadening scope",
+    "weakening evidence requirements",
+    "declaring final success"
+  ],
+  "created_by": "human",
+  "created_at": "2026-06-27T00:00:00Z",
+  "goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5"
+}

@@ -25,6 +25,11 @@ jobs:
           cat artifacts/agent-state-validation.json
           python3 scripts/update_controller_state.py --check > artifacts/controller-state-validation.json
           cat artifacts/controller-state-validation.json
+          python3 scripts/validate_goal_capsule.py > artifacts/goal-capsule-validation.json
+          cat artifacts/goal-capsule-validation.json
+          python3 scripts/validate_agent_ticket_contracts.py > artifacts/agent-ticket-contract-validation.json
+          cat artifacts/agent-ticket-contract-validation.json
+          python3 -m unittest discover -s tests
 
       - name: Upload validation receipt
         if: always()
@@ -35,5 +40,7 @@ jobs:
             artifacts/control-plane-validation.json
             artifacts/agent-state-validation.json
             artifacts/controller-state-validation.json
+            artifacts/goal-capsule-validation.json
+            artifacts/agent-ticket-contract-validation.json
           if-no-files-found: error
           retention-days: 14
