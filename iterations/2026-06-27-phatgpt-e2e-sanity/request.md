@@ -10,3 +10,8 @@ The intended lane sequence is:
 4. Reviewer reviews the deployer receipt.
 
 The PR must not be merged as part of the sanity check.
+
+During the sanity run, the local artifact check exposed a receipt-collision bug:
+coder and reviewer lanes wrote the same `local-subagent-receipt.json` path. The
+bugfix preserves role-specific receipts and keeps the legacy latest receipt path
+as a compatibility alias.

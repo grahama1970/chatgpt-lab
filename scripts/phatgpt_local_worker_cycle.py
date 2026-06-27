@@ -281,7 +281,8 @@ def write_receipt(
     slug = f"{kind}-{number}"
     out_dir = ARTIFACT_ROOT / slug
     out_dir.mkdir(parents=True, exist_ok=True)
-    receipt_path = out_dir / "local-subagent-receipt.json"
+    receipt_path = out_dir / f"{role}-local-subagent-receipt.json"
+    latest_receipt_path = out_dir / "local-subagent-receipt.json"
     target_path = out_dir / "target.json"
     manifest_path = out_dir / "artifact-manifest.json"
 
@@ -290,6 +291,7 @@ def write_receipt(
 
     artifacts = [
         str(receipt_path.relative_to(ROOT)),
+        str(latest_receipt_path.relative_to(ROOT)),
         str(manifest_path.relative_to(ROOT)),
     ]
     if target is not None:
@@ -314,10 +316,12 @@ def write_receipt(
         "role": role,
         "target": f"{kind}#{number}",
         "receipt": str(receipt_path.relative_to(ROOT)),
+        "latest_receipt": str(latest_receipt_path.relative_to(ROOT)),
         "artifacts": artifacts,
         "generated_at": completed_at,
     }
     receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    latest_receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return receipt_path
 
