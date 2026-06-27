@@ -65,6 +65,15 @@ inspection, or other evidence collection, the worker must produce the requested
 artifact/comment or return `REFUSED` with the missing evidence and keep the item
 in `phatgpt-needs-task`.
 
+The fallback researcher has one proven read-only evidence primitive:
+`scripts/phatgpt_capability_inventory.py`. It uses memory-first recall, validates
+known local paths under `/home/graham/workspace/experiments`, scans
+`agent-skills/agents` for evidence-gate risk patterns, and writes
+`artifacts/local-worker/<target>/capability-inventory.json`. Promote this into a
+shared `agent-skills` skill only after reviewer acceptance of the live issue
+artifact. On completion, the worker adds `phatgpt-research-complete` and removes
+`phatgpt-needs-task` so the watchdog does not repeatedly process the same item.
+
 ## Watchdog
 
 Dry-run one selection:
@@ -112,5 +121,7 @@ artifacts/watchdog/watchdog-<timestamp>.json
 - If task language maps to more than one non-research role, the selector routes
   to `phatgpt-researcher` for task splitting or refusal.
 - If the researcher validates a task block but does not produce the requested
-  evidence artifact, it must not promote the item to coder.
+  evidence artifact, it must not promote the item to coder. If the task requests
+  a capability inventory and declares `capability-inventory.json`, the worker
+  attempts the read-only inventory primitive before refusing.
 - The watchdog processes at most one target per run.

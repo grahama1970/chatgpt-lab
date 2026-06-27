@@ -25,6 +25,11 @@ try:
 except ModuleNotFoundError:
     from scripts.validate_pr_local_task import validate_task
 
+try:
+    from phatgpt_capability_inventory import collect_capability_inventory
+except ModuleNotFoundError:
+    from scripts.phatgpt_capability_inventory import collect_capability_inventory
+
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_ROOT = ROOT / "artifacts" / "local-worker"
 RECEIPT_SCHEMA = "chatgpt_lab.local_subagent_receipt.v1"
@@ -39,7 +44,7 @@ ROLE_LABELS = {
 ROLE_DONE_LABELS = {
     "coder": "phatgpt-ready-for-review",
     "reviewer": "phatgpt-pass",
-    "researcher": "phatgpt-needs-task",
+    "researcher": "phatgpt-research-complete",
 }
 ROLE_FAILED_LABELS = {
     "coder": "phatgpt-needs-changes",
@@ -523,7 +528,14 @@ def execute_researcher_task(
     if inventory_required and not has_inventory_output:
         missing.append("capability_inventory_artifact")
     if inventory_required and has_inventory_output and not inventory_path.is_file():
-        missing.append("capability_inventory_artifact_missing")
+        try:
+            generated_inventory_path, inventory_commands = collect_capability_inventory(ROOT, ARTIFACT_ROOT, kind, number)
+            commands_run.extend(inventory_commands)
+            if not generated_inventory_path.is_file():
+                missing.append("capability_inventory_artifact_missing")
+        except Exception as exc:  # pragma: no cover - fail-closed guardrail
+            commands_run.append(shell_record("collect_capability_inventory", 2, stderr=repr(exc)))
+            missing.append("capability_inventory_artifact_missing")
 
     if missing:
         return (
@@ -748,13 +760,16 @@ def main() -> int:
     else:
         status, reason, missing, files_touched, next_required_action = execute_researcher_task(task, commands_run, kind=kind, number=number)
         label_to_add = ROLE_DONE_LABELS["researcher"] if status == "COMPLETED" else ROLE_FAILED_LABELS["researcher"]
+        labels_to_remove = ["phatgpt-local-agent"]
+        if status == "COMPLETED":
+            labels_to_remove.append(ROLE_LABELS["researcher"])
         commands_run.extend(
             update_labels(
                 args.repo,
                 kind,
                 number,
                 add=[label_to_add],
-                remove=["phatgpt-local-agent"],
+                remove=labels_to_remove,
             )
         )
 

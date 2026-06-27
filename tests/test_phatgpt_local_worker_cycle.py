@@ -42,18 +42,53 @@ class PhatgptLocalWorkerCycleTest(unittest.TestCase):
             ],
         }
 
-        status, reason, missing, files_touched, next_required_action = worker.execute_researcher_task(
-            task,
-            commands_run,
-            kind="issue",
-            number=18,
-        )
+        with TemporaryDirectory() as tmp, patch.object(worker, "ARTIFACT_ROOT", Path(tmp)), patch.object(worker, "collect_capability_inventory", side_effect=RuntimeError("collector unavailable")):
+            status, reason, missing, files_touched, next_required_action = worker.execute_researcher_task(
+                task,
+                commands_run,
+                kind="issue",
+                number=18,
+            )
 
         self.assertEqual(status, "REFUSED")
         self.assertEqual(reason, "researcher_evidence_missing")
         self.assertIn("capability_inventory_artifact_missing", missing)
         self.assertEqual(files_touched, [])
         self.assertIn("before coder routing", next_required_action)
+
+    def test_researcher_collects_missing_inventory_artifact(self):
+        commands_run = []
+        task = {
+            "allowed_commands": ["python3 -c pass"],
+            "validation_commands": ["python3 -c pass"],
+            "required_outputs": ["local-subagent-receipt.json", "capability-inventory.json"],
+            "expected_evidence": [
+                "capability inventory covers F36 plant, Embry OS, pdf-lab, SPARTA/QRA, Lean4, graph-memory, watch, and agent-skills"
+            ],
+        }
+
+        with TemporaryDirectory() as tmp:
+            artifact_root = Path(tmp)
+            def fake_collect(_root, out_root, kind, number):
+                out_dir = out_root / f"{kind}-{number}"
+                out_dir.mkdir(parents=True, exist_ok=True)
+                path = out_dir / "capability-inventory.json"
+                path.write_text("{}\n", encoding="utf-8")
+                return path, [{"command": "fake_collect_capability_inventory", "exit_code": 0}]
+
+            with patch.object(worker, "ARTIFACT_ROOT", artifact_root), patch.object(worker, "collect_capability_inventory", side_effect=fake_collect):
+                status, reason, missing, files_touched, next_required_action = worker.execute_researcher_task(
+                    task,
+                    commands_run,
+                    kind="issue",
+                    number=18,
+                )
+
+        self.assertEqual(status, "COMPLETED")
+        self.assertEqual(reason, "researcher_evidence_collected")
+        self.assertEqual(missing, [])
+        self.assertEqual(files_touched, [])
+        self.assertIn("researcher evidence", next_required_action)
 
     def test_researcher_completes_only_when_inventory_artifact_exists(self):
         commands_run = []
@@ -71,7 +106,7 @@ class PhatgptLocalWorkerCycleTest(unittest.TestCase):
             inventory_dir = artifact_root / "issue-18"
             inventory_dir.mkdir()
             inventory_dir.joinpath("capability-inventory.json").write_text("{}\n", encoding="utf-8")
-            with patch.object(worker, "ARTIFACT_ROOT", artifact_root):
+            with patch.object(worker, "ARTIFACT_ROOT", artifact_root), patch.object(worker, "collect_capability_inventory") as collect:
                 status, reason, missing, files_touched, next_required_action = worker.execute_researcher_task(
                     task,
                     commands_run,
@@ -79,6 +114,7 @@ class PhatgptLocalWorkerCycleTest(unittest.TestCase):
                     number=18,
                 )
 
+        collect.assert_not_called()
         self.assertEqual(status, "COMPLETED")
         self.assertEqual(reason, "researcher_evidence_collected")
         self.assertEqual(missing, [])

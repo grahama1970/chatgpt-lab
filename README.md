@@ -198,9 +198,16 @@ The local-worker path remains a deterministic fallback and smoke harness. `scrip
 The researcher lane is not allowed to promote work to coder just because a task
 block validates. For evidence-collection tasks, such as local capability
 inventory requests, the researcher must return the requested evidence artifact
-or fail closed and leave the item in `phatgpt-needs-task`. Coder routing begins
-only after the issue/PR has actual implementation-ready evidence, not after a
-contract-only receipt.
+or fail closed and leave the item in `phatgpt-needs-task`. The fallback worker
+now has a read-only inventory primitive in `scripts/phatgpt_capability_inventory.py`:
+it uses `$memory` recall first, validates local project paths, scans
+`agent-skills/agents` for evidence-gate risk patterns, and writes
+`artifacts/local-worker/<target>/capability-inventory.json`. Issue #18 is the
+live proof path for this behavior. A completed researcher inventory is labeled
+`phatgpt-research-complete` and removed from `phatgpt-needs-task` so the
+watchdog does not keep reprocessing the same evidence item. Coder routing
+begins only after the issue/PR has actual implementation-ready evidence, not
+after a contract-only receipt.
 
 For ChatGPT Pro/WebGPT to act as the control surface, a local pickup loop must
 exist. `scripts/phatgpt_subagent_selector.py` reads the authoritative live
