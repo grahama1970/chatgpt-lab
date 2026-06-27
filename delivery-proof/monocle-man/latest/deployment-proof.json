@@ -3,10 +3,10 @@
   "status": "PASS",
   "page_url": "https://grahama1970.github.io/chatgpt-lab/",
   "branch": "main",
-  "commit": "0d987970d268a212b31683881d2391c0c015a577",
-  "run_id": "28265880104",
+  "commit": "c9472f78d5c0e00f7323360328169a343a827fb2",
+  "run_id": "28299746532",
   "run_attempt": "1",
-  "checked_at": "2026-06-26T21:20:05.694Z",
+  "checked_at": "2026-06-27T19:42:43.884Z",
   "http_status_before_browser": 200,
   "assertions": {
     "hero_heading_contains_monocle_man": true,
@@ -14,7 +14,7 @@
     "normal_motion_animation_duration": "20s",
     "normal_motion_animation_iteration_count": "infinite",
     "blocking_network_errors_count": 0,
-    "expected_third_party_network_warnings_count": 4
+    "expected_third_party_network_warnings_count": 3
   },
   "screenshots": {
     "desktop_full": "screenshots/live-desktop-full.png",
@@ -27,26 +27,12 @@
   "expected_third_party_network_warnings": [
     {
       "viewport": "desktop",
-      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=l2Zxd6ryJ1MAptph&el=embedded&ns=yt&fexp=v1%2C24004644%2C27058999%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C6258%2C16948%2C69795%2C30907%2C2877%2C12228%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5236%2C4438%2C3341%2C13110%2C2978%2C9404%2C23826%2C9500%2C1840%2C45716%2C7916%2C5243%2C453%2C30488%2C5021%2C9970%2C3324%2C7295%2C4200%2C457%2C29656%2C17715%2C6633%2C249%2C82%2C17369%2C12591%2C7524%2C6033%2C315%2C853%2C372%2C490%2C2325%2C2629%2C2315%2C16624%2C8868%2C3475%2C5353%2C1900%2C7967%2C1096%2C499%2C927%2C192%2C2057%2C187%2C86%2C8117%2C1142%2C2550%2C7345%2C1877%2C2365%2C1354%2C866%2C2104%2C20864%2C3972%2C3613%2C310%2C822%2C10482%2C2&cl=936900853&seq=1&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.000:N,0.022:B,0.116:ER&cat=streaming&cmt=0.022:0.000,0.116:0.000,0.116:0.000&bat=0.116:1:1&vis=0.116:0&bh=0.116:0.000&qclc=ChBsMlp4ZDZyeUoxTUFwdHBoEAE",
+      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=L0C2aoC2Ma--Ir8f&el=embedded&ns=yt&fexp=v1%2C24004644%2C494890%2C26564109%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C23206%2C35403%2C65299%2C2877%2C9731%2C2497%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5237%2C7779%2C16087%2C9404%2C23826%2C9500%2C1840%2C45716%2C10930%2C2229%2C451%2C30489%2C5022%2C9970%2C3325%2C7294%2C4199%2C459%2C29655%2C17715%2C6633%2C249%2C82%2C4405%2C12965%2C12590%2C3228%2C4296%2C6033%2C317%2C851%2C372%2C490%2C2324%2C2630%2C2314%2C16625%2C8868%2C3475%2C5353%2C1900%2C2274%2C13%2C2197%2C3483%2C1096%2C499%2C927%2C2249%2C273%2C8117%2C528%2C614%2C2550%2C7346%2C1876%2C2368%2C2217%2C13161%2C13779%2C3613%2C446%2C564%2C122&cl=936900853&seq=1&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.000:N,0.032:B,0.119:ER&cat=streaming&cmt=0.032:0.000,0.119:0.000,0.119:0.000&bat=0.119:1:1&vis=0.119:0&bh=0.119:0.000&qclc=ChBMMEMyYW9DMk1hLS1JcjhmEAE",
       "origin": "https://www.youtube-nocookie.com",
       "host": "www.youtube-nocookie.com",
       "pathname": "/api/stats/qoe",
       "method": "POST",
       "resourceType": "fetch",
-      "failureText": "net::ERR_ABORTED",
-      "firstParty": false,
-      "classification": "expected_third_party_youtube_abort",
-      "blocking": false,
-      "reason": "YouTube privacy-enhanced embed helper request aborted during modal/video lifecycle; no first-party asset failure."
-    },
-    {
-      "viewport": "desktop",
-      "url": "https://www.youtube-nocookie.com/youtubei/v1/next?prettyPrint=false",
-      "origin": "https://www.youtube-nocookie.com",
-      "host": "www.youtube-nocookie.com",
-      "pathname": "/youtubei/v1/next",
-      "method": "POST",
-      "resourceType": "xhr",
       "failureText": "net::ERR_ABORTED",
       "firstParty": false,
       "classification": "expected_third_party_youtube_abort",
@@ -69,7 +55,7 @@
     },
     {
       "viewport": "desktop",
-      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=l2Zxd6ryJ1MAptph&el=embedded&ns=yt&fexp=v1%2C24004644%2C27058999%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C6258%2C16948%2C69795%2C30907%2C2877%2C12228%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5236%2C4438%2C3341%2C13110%2C2978%2C9404%2C23826%2C9500%2C1840%2C45716%2C7916%2C5243%2C453%2C30488%2C5021%2C9970%2C3324%2C7295%2C4200%2C457%2C29656%2C17715%2C6633%2C249%2C82%2C17369%2C12591%2C7524%2C6033%2C315%2C853%2C372%2C490%2C2325%2C2629%2C2315%2C16624%2C8868%2C3475%2C5353%2C1900%2C7967%2C1096%2C499%2C927%2C192%2C2057%2C187%2C86%2C8117%2C1142%2C2550%2C7345%2C1877%2C2365%2C1354%2C866%2C2104%2C20864%2C3972%2C3613%2C310%2C822%2C10482%2C2&cl=936900853&seq=2&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.766:ER&user_intent=0.007&bat=0.766:1:1&cmt=0.766:0.000&bh=0.766:0.000&qclc=ChBsMlp4ZDZyeUoxTUFwdHBoEAI",
+      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=L0C2aoC2Ma--Ir8f&el=embedded&ns=yt&fexp=v1%2C24004644%2C494890%2C26564109%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C23206%2C35403%2C65299%2C2877%2C9731%2C2497%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5237%2C7779%2C16087%2C9404%2C23826%2C9500%2C1840%2C45716%2C10930%2C2229%2C451%2C30489%2C5022%2C9970%2C3325%2C7294%2C4199%2C459%2C29655%2C17715%2C6633%2C249%2C82%2C4405%2C12965%2C12590%2C3228%2C4296%2C6033%2C317%2C851%2C372%2C490%2C2324%2C2630%2C2314%2C16625%2C8868%2C3475%2C5353%2C1900%2C2274%2C13%2C2197%2C3483%2C1096%2C499%2C927%2C2249%2C273%2C8117%2C528%2C614%2C2550%2C7346%2C1876%2C2368%2C2217%2C13161%2C13779%2C3613%2C446%2C564%2C122&cl=936900853&seq=2&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.835:ER&user_intent=0.012&bat=0.835:1:1&cmt=0.835:0.000&bh=0.835:0.000&qclc=ChBMMEMyYW9DMk1hLS1JcjhmEAI",
       "origin": "https://www.youtube-nocookie.com",
       "host": "www.youtube-nocookie.com",
       "pathname": "/api/stats/qoe",
@@ -85,23 +71,12 @@
   "network_errors": [
     {
       "viewport": "desktop",
-      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=l2Zxd6ryJ1MAptph&el=embedded&ns=yt&fexp=v1%2C24004644%2C27058999%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C6258%2C16948%2C69795%2C30907%2C2877%2C12228%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5236%2C4438%2C3341%2C13110%2C2978%2C9404%2C23826%2C9500%2C1840%2C45716%2C7916%2C5243%2C453%2C30488%2C5021%2C9970%2C3324%2C7295%2C4200%2C457%2C29656%2C17715%2C6633%2C249%2C82%2C17369%2C12591%2C7524%2C6033%2C315%2C853%2C372%2C490%2C2325%2C2629%2C2315%2C16624%2C8868%2C3475%2C5353%2C1900%2C7967%2C1096%2C499%2C927%2C192%2C2057%2C187%2C86%2C8117%2C1142%2C2550%2C7345%2C1877%2C2365%2C1354%2C866%2C2104%2C20864%2C3972%2C3613%2C310%2C822%2C10482%2C2&cl=936900853&seq=1&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.000:N,0.022:B,0.116:ER&cat=streaming&cmt=0.022:0.000,0.116:0.000,0.116:0.000&bat=0.116:1:1&vis=0.116:0&bh=0.116:0.000&qclc=ChBsMlp4ZDZyeUoxTUFwdHBoEAE",
+      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=L0C2aoC2Ma--Ir8f&el=embedded&ns=yt&fexp=v1%2C24004644%2C494890%2C26564109%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C23206%2C35403%2C65299%2C2877%2C9731%2C2497%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5237%2C7779%2C16087%2C9404%2C23826%2C9500%2C1840%2C45716%2C10930%2C2229%2C451%2C30489%2C5022%2C9970%2C3325%2C7294%2C4199%2C459%2C29655%2C17715%2C6633%2C249%2C82%2C4405%2C12965%2C12590%2C3228%2C4296%2C6033%2C317%2C851%2C372%2C490%2C2324%2C2630%2C2314%2C16625%2C8868%2C3475%2C5353%2C1900%2C2274%2C13%2C2197%2C3483%2C1096%2C499%2C927%2C2249%2C273%2C8117%2C528%2C614%2C2550%2C7346%2C1876%2C2368%2C2217%2C13161%2C13779%2C3613%2C446%2C564%2C122&cl=936900853&seq=1&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.000:N,0.032:B,0.119:ER&cat=streaming&cmt=0.032:0.000,0.119:0.000,0.119:0.000&bat=0.119:1:1&vis=0.119:0&bh=0.119:0.000&qclc=ChBMMEMyYW9DMk1hLS1JcjhmEAE",
       "origin": "https://www.youtube-nocookie.com",
       "host": "www.youtube-nocookie.com",
       "pathname": "/api/stats/qoe",
       "method": "POST",
       "resourceType": "fetch",
-      "failureText": "net::ERR_ABORTED",
-      "firstParty": false
-    },
-    {
-      "viewport": "desktop",
-      "url": "https://www.youtube-nocookie.com/youtubei/v1/next?prettyPrint=false",
-      "origin": "https://www.youtube-nocookie.com",
-      "host": "www.youtube-nocookie.com",
-      "pathname": "/youtubei/v1/next",
-      "method": "POST",
-      "resourceType": "xhr",
       "failureText": "net::ERR_ABORTED",
       "firstParty": false
     },
@@ -118,7 +93,7 @@
     },
     {
       "viewport": "desktop",
-      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=l2Zxd6ryJ1MAptph&el=embedded&ns=yt&fexp=v1%2C24004644%2C27058999%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C6258%2C16948%2C69795%2C30907%2C2877%2C12228%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5236%2C4438%2C3341%2C13110%2C2978%2C9404%2C23826%2C9500%2C1840%2C45716%2C7916%2C5243%2C453%2C30488%2C5021%2C9970%2C3324%2C7295%2C4200%2C457%2C29656%2C17715%2C6633%2C249%2C82%2C17369%2C12591%2C7524%2C6033%2C315%2C853%2C372%2C490%2C2325%2C2629%2C2315%2C16624%2C8868%2C3475%2C5353%2C1900%2C7967%2C1096%2C499%2C927%2C192%2C2057%2C187%2C86%2C8117%2C1142%2C2550%2C7345%2C1877%2C2365%2C1354%2C866%2C2104%2C20864%2C3972%2C3613%2C310%2C822%2C10482%2C2&cl=936900853&seq=2&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.766:ER&user_intent=0.007&bat=0.766:1:1&cmt=0.766:0.000&bh=0.766:0.000&qclc=ChBsMlp4ZDZyeUoxTUFwdHBoEAI",
+      "url": "https://www.youtube-nocookie.com/api/stats/qoe?cpn=L0C2aoC2Ma--Ir8f&el=embedded&ns=yt&fexp=v1%2C24004644%2C494890%2C26564109%2C34656%2C124674%2C117689%2C9252%2C3479%2C13030%2C23206%2C35403%2C65299%2C2877%2C9731%2C2497%2C25059%2C4174%2C30446%2C18706%2C21437%2C4571%2C5237%2C7779%2C16087%2C9404%2C23826%2C9500%2C1840%2C45716%2C10930%2C2229%2C451%2C30489%2C5022%2C9970%2C3325%2C7294%2C4199%2C459%2C29655%2C17715%2C6633%2C249%2C82%2C4405%2C12965%2C12590%2C3228%2C4296%2C6033%2C317%2C851%2C372%2C490%2C2324%2C2630%2C2314%2C16625%2C8868%2C3475%2C5353%2C1900%2C2274%2C13%2C2197%2C3483%2C1096%2C499%2C927%2C2249%2C273%2C8117%2C528%2C614%2C2550%2C7346%2C1876%2C2368%2C2217%2C13161%2C13779%2C3613%2C446%2C564%2C122&cl=936900853&seq=2&event=streamingstats&docid=NBxByrz5BRE&cbr=HeadlessChrome&cbrver=149.0.7827.55&c=WEB_EMBEDDED_PLAYER&cver=2.20260626.01.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP&vps=0.835:ER&user_intent=0.012&bat=0.835:1:1&cmt=0.835:0.000&bh=0.835:0.000&qclc=ChBMMEMyYW9DMk1hLS1JcjhmEAI",
       "origin": "https://www.youtube-nocookie.com",
       "host": "www.youtube-nocookie.com",
       "pathname": "/api/stats/qoe",
