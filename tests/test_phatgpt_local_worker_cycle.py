@@ -121,6 +121,50 @@ class PhatgptLocalWorkerCycleTest(unittest.TestCase):
         self.assertEqual(files_touched, [])
         self.assertIn("researcher evidence", next_required_action)
 
+    def test_write_receipt_preserves_role_specific_receipts_and_latest_alias(self):
+        with TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            artifact_root = root / "artifacts" / "local-worker"
+            with patch.object(worker, "ROOT", root), patch.object(worker, "ARTIFACT_ROOT", artifact_root):
+                coder_receipt = worker.write_receipt(
+                    role="coder",
+                    kind="pr",
+                    number=19,
+                    task_id="sanity-001",
+                    status="COMPLETED",
+                    reason="task_executed_and_pushed",
+                    missing=[],
+                    next_required_action="Reviewer should inspect this PR.",
+                    commands_run=[],
+                    target=None,
+                )
+                reviewer_receipt = worker.write_receipt(
+                    role="reviewer",
+                    kind="pr",
+                    number=19,
+                    task_id="sanity-001",
+                    status="COMPLETED",
+                    reason="review_pass",
+                    missing=[],
+                    next_required_action="Deployer should check release gates.",
+                    commands_run=[],
+                    target=None,
+                )
+
+            latest_receipt = artifact_root / "pr-19" / "local-subagent-receipt.json"
+            coder_data = coder_receipt.read_text(encoding="utf-8")
+            reviewer_data = reviewer_receipt.read_text(encoding="utf-8")
+            latest_data = latest_receipt.read_text(encoding="utf-8")
+
+        self.assertEqual(coder_receipt.name, "coder-local-subagent-receipt.json")
+        self.assertEqual(reviewer_receipt.name, "reviewer-local-subagent-receipt.json")
+        self.assertIn('"role": "coder"', coder_data)
+        self.assertIn('"reason": "task_executed_and_pushed"', coder_data)
+        self.assertIn('"role": "reviewer"', reviewer_data)
+        self.assertIn('"reason": "review_pass"', reviewer_data)
+        self.assertIn('"role": "reviewer"', latest_data)
+        self.assertIn("reviewer-local-subagent-receipt.json", latest_data)
+
 
 if __name__ == "__main__":
     unittest.main()
