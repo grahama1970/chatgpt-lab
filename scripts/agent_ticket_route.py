@@ -21,6 +21,12 @@ from goal_contracts import (
     validate_goal_capsule,
     validate_human_interjection,
 )
+from tau_contracts import (
+    TAU_AGENT_HANDOFF_SCHEMA,
+    TAU_GENERATED_TICKET_SCHEMA,
+    TAU_HUMAN_GOAL_CHANGE_SCHEMA,
+    validate_tau_contract,
+)
 
 ROUTE_DECISION_SCHEMA = "chatgpt_lab.route_decision.v1"
 THREAD_FIXTURE_SCHEMA = "chatgpt_lab.github_thread_fixture.v1"
@@ -29,6 +35,14 @@ CONTRACT_SCHEMAS = {
     HUMAN_INTERJECTION_SCHEMA,
     HANDOFF_SCHEMA,
     GENERATED_TICKET_SCHEMA,
+    TAU_AGENT_HANDOFF_SCHEMA,
+    TAU_GENERATED_TICKET_SCHEMA,
+    TAU_HUMAN_GOAL_CHANGE_SCHEMA,
+}
+TAU_SCHEMAS = {
+    TAU_AGENT_HANDOFF_SCHEMA,
+    TAU_GENERATED_TICKET_SCHEMA,
+    TAU_HUMAN_GOAL_CHANGE_SCHEMA,
 }
 
 
@@ -138,8 +152,11 @@ def _newest_valid_candidate(candidates: list[dict[str, Any]], active_goal: dict[
     validation_errors: list[str] = []
     priority = {
         HUMAN_INTERJECTION_SCHEMA: 3,
+        TAU_HUMAN_GOAL_CHANGE_SCHEMA: 3,
         HANDOFF_SCHEMA: 2,
+        TAU_AGENT_HANDOFF_SCHEMA: 2,
         GENERATED_TICKET_SCHEMA: 1,
+        TAU_GENERATED_TICKET_SCHEMA: 1,
     }
 
     ordered = sorted(
@@ -153,6 +170,9 @@ def _newest_valid_candidate(candidates: list[dict[str, Any]], active_goal: dict[
         if schema == HUMAN_INTERJECTION_SCHEMA and candidate.get("author") not in trusted_humans:
             validation_errors.append("human_interjection author is not trusted: " + str(candidate.get("author")))
             continue
+        if schema == TAU_HUMAN_GOAL_CHANGE_SCHEMA and candidate.get("author") not in trusted_humans:
+            validation_errors.append("tau_human_goal_change author is not trusted: " + str(candidate.get("author")))
+            continue
         if schema == HUMAN_INTERJECTION_SCHEMA:
             errors = validate_human_interjection(block, active_goal)
             goal_action = block.get("goal", {}).get("goal_action") if isinstance(block.get("goal"), dict) else None
@@ -163,6 +183,8 @@ def _newest_valid_candidate(candidates: list[dict[str, Any]], active_goal: dict[
             errors = validate_agent_handoff(block, active_goal)
         elif schema == GENERATED_TICKET_SCHEMA:
             errors = validate_generated_ticket(block, active_goal)
+        elif schema in TAU_SCHEMAS:
+            errors, _decision = validate_tau_contract(block, active_goal, trusted_human=str(candidate.get("author") or ""))
         else:
             continue
 
@@ -175,6 +197,22 @@ def _newest_valid_candidate(candidates: list[dict[str, Any]], active_goal: dict[
 def _decision_from_block(fixture: dict[str, Any], candidate: dict[str, Any], active_goal: dict[str, Any]) -> dict[str, Any]:
     block = candidate["block"]
     schema = block["schema"]
+    if schema in TAU_SCHEMAS:
+        errors, tau_decision = validate_tau_contract(block, active_goal, trusted_human=str(candidate.get("author") or ""))
+        if errors or tau_decision is None:
+            decision = _base_decision(fixture)
+            decision["status"] = "REFUSED"
+            decision["reason"] = "invalid_tau_block"
+            decision["errors"] = errors
+            return decision
+        tau_decision["source"] = {
+            "kind": fixture.get("kind"),
+            "number": fixture.get("number"),
+            "selected_comment_id": candidate.get("comment_id"),
+            "selected_schema": schema,
+        }
+        tau_decision["reasons"].append("selected latest valid compact Tau block")
+        return tau_decision
     decision = _base_decision(fixture)
     decision["status"] = "ROUTE"
     decision["source"]["selected_comment_id"] = candidate.get("comment_id")

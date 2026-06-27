@@ -1,0 +1,20 @@
+{
+  "number": 13,
+  "title": "Add GitHub projection contracts to goal harness schemas",
+  "author": {
+    "login": "grahama1970"
+  },
+  "labels": [],
+  "body": "# Summary\n\nAdd PR 13 of the goal-locked harness: shared common schema definitions and explicit GitHub projection fields for actionable agent, human, and WebGPT JSON contracts.\n\n<!-- phatgpt-task:v1\n{\"schema\":\"chatgpt_lab.pr_local_task.v1\",\"task_id\":\"legacy-pr-13\"}\n-->",
+  "comments": [
+    {
+      "id": 13001,
+      "author": {
+        "login": "github-actions"
+      },
+      "authorAssociation": "NONE",
+      "createdAt": "2026-06-27T13:54:16Z",
+      "body": "Reviewer PASS comment without a goal-harness schema block."
+    }
+  ]
+}
