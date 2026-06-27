@@ -499,7 +499,13 @@ def execute_coder_task(task: dict[str, Any], item: dict[str, Any], commands_run:
     return "COMPLETED", "task_executed_and_pushed", [], changed_files
 
 
-def execute_researcher_task(task: dict[str, Any], commands_run: list[dict[str, Any]]) -> tuple[str, str | None, list[str], list[str], str]:
+def execute_researcher_task(
+    task: dict[str, Any],
+    commands_run: list[dict[str, Any]],
+    *,
+    kind: str,
+    number: int,
+) -> tuple[str, str | None, list[str], list[str], str]:
     """Validate researcher tasks without falsely promoting them to coder work."""
     validation_ok = run_validation_commands(task, commands_run)
     required_outputs = {str(output) for output in task.get("required_outputs") or []}
@@ -509,12 +515,15 @@ def execute_researcher_task(task: dict[str, Any], commands_run: list[dict[str, A
         "capability-inventory" in output or "capability_inventory" in output
         for output in required_outputs
     )
+    inventory_path = ARTIFACT_ROOT / f"{kind}-{number}" / "capability-inventory.json"
 
     missing: list[str] = []
     if not validation_ok:
         missing.append("validation_commands_pass")
     if inventory_required and not has_inventory_output:
         missing.append("capability_inventory_artifact")
+    if inventory_required and has_inventory_output and not inventory_path.is_file():
+        missing.append("capability_inventory_artifact_missing")
 
     if missing:
         return (
@@ -737,7 +746,7 @@ def main() -> int:
         commands_run.extend(update_labels(args.repo, kind, number, add=[done_label], remove=[stale_label]))
         next_required_action = "Merge decision can proceed only after deterministic proof is accepted." if review_ok else "Coder event worker should address reviewer findings."
     else:
-        status, reason, missing, files_touched, next_required_action = execute_researcher_task(task, commands_run)
+        status, reason, missing, files_touched, next_required_action = execute_researcher_task(task, commands_run, kind=kind, number=number)
         label_to_add = ROLE_DONE_LABELS["researcher"] if status == "COMPLETED" else ROLE_FAILED_LABELS["researcher"]
         commands_run.extend(
             update_labels(
