@@ -33,6 +33,8 @@ jobs:
           cat artifacts/agent-ticket-route-validation.json
           python3 scripts/validate_tau_contracts.py > artifacts/tau-contract-validation.json
           cat artifacts/tau-contract-validation.json
+          python3 scripts/validate_agent_ticket_orchestrator.py > artifacts/agent-ticket-orchestrator-validation.json
+          cat artifacts/agent-ticket-orchestrator-validation.json
           python3 -m unittest discover -s tests
 
       - name: Upload validation receipt
@@ -48,5 +50,6 @@ jobs:
             artifacts/agent-ticket-contract-validation.json
             artifacts/agent-ticket-route-validation.json
             artifacts/tau-contract-validation.json
+            artifacts/agent-ticket-orchestrator-validation.json
           if-no-files-found: error
           retention-days: 14

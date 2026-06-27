@@ -1,0 +1,24 @@
+{
+  "number": 14,
+  "title": "Review compact Tau route parsing from GitHub state",
+  "author": {
+    "login": "grahama1970"
+  },
+  "labels": [
+    {
+      "name": "agent-work"
+    }
+  ],
+  "body": "Issue body without an actionable harness block.",
+  "comments": [
+    {
+      "id": 14001,
+      "author": {
+        "login": "github-actions"
+      },
+      "authorAssociation": "NONE",
+      "createdAt": "2026-06-27T14:20:00Z",
+      "body": "{\"schema\":\"tau.agent_handoff.v1\",\"github\":{\"repo\":\"grahama1970/chatgpt-lab\",\"target\":\"issue#14\"},\"goal\":{\"goal_id\":\"goal-2026-06-greenfield-001\",\"goal_version\":1,\"goal_hash\":\"sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5\"},\"previous_subagent\":\"reviewer\",\"context\":{\"summary\":\"The compact Tau contract has been reviewed from GitHub state.\",\"artifacts\":[\"github-run:example\"]},\"result\":{\"status\":\"COMPLETED\",\"summary\":\"The reviewer found the contract ready for the next dry-run route check.\",\"evidence\":[\"python3 scripts/validate_tau_contracts.py: PASS\"]},\"rationale\":\"The next step is controller dry-run routing over GitHub state.\",\"next_agent\":{\"name\":\"goal-guardian\",\"reason\":\"The goal-locked route needs independent goal alignment before any runtime mutation slice.\"},\"required_evidence\":[\"route decision JSON\",\"no-mutation validation\"],\"stop_condition\":\"Goal guardian posts PASS, NEEDS_CHANGES, BLOCKED, or INSUFFICIENT_EVIDENCE.\"}"
+    }
+  ]
+}
