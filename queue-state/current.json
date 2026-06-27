@@ -1,0 +1,65 @@
+{
+  "schema": "chatgpt_lab.queue_state.v1",
+  "repository": "grahama1970/chatgpt-lab",
+  "branch": "main",
+  "goal": {
+    "goal_id": "goal-2026-06-greenfield-001",
+    "goal_version": 1,
+    "goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5"
+  },
+  "state": "NEEDS_REVIEW",
+  "phase": "queue-cleanup-review",
+  "source_of_truth": [
+    "goals/current.json",
+    "controller-state/current.json",
+    "PROJECT_KNOWLEDGE.md",
+    "GitHub open issues and pull requests"
+  ],
+  "active_items": [
+    {
+      "kind": "issue",
+      "number": 11,
+      "url": "https://github.com/grahama1970/chatgpt-lab/issues/11",
+      "title": "Bounded task: controller handoff reconciliation",
+      "classification": "needs-human-or-reviewer-triage",
+      "reason": "Created during controller handoff reconciliation but lacks a complete actionable Tau or phatgpt task block in the issue body.",
+      "recommended_action": "Convert into a valid generated ticket or close as superseded after reviewer approval."
+    }
+  ],
+  "stale_or_superseded_items": [
+    {
+      "kind": "issue",
+      "number": 5,
+      "url": "https://github.com/grahama1970/chatgpt-lab/issues/5",
+      "title": "Codex cloud task: classify third-party YouTube telemetry aborts in live proof",
+      "classification": "superseded-by-merged-work",
+      "reason": "Telemetry classification was implemented and later repaired through merged PR and release evidence; keeping the issue open can confuse the controller.",
+      "recommended_action": "Reviewer or human should close as superseded or rewrite as a new specific follow-up."
+    },
+    {
+      "kind": "pull_request",
+      "number": 7,
+      "url": "https://github.com/grahama1970/chatgpt-lab/pull/7",
+      "title": "Classify expected YouTube telemetry aborts in live Pages proof output",
+      "classification": "superseded-by-merged-work",
+      "reason": "A later merged path produced accepted live proof fields for network classification.",
+      "recommended_action": "Reviewer or human should close as superseded after confirming no unique changes remain."
+    },
+    {
+      "kind": "pull_request",
+      "number": 8,
+      "url": "https://github.com/grahama1970/chatgpt-lab/pull/8",
+      "title": "PhatGPT MVP: apply Monocle caption task",
+      "classification": "historical-proof-open-pr",
+      "reason": "The caption/task proof was later represented by PR 10 and release receipts; the open PR should not be treated as the next active controller task without review.",
+      "recommended_action": "Reviewer or human should close as superseded or convert to a historical evidence note."
+    }
+  ],
+  "next_action": {
+    "owner": "reviewer",
+    "type": "read_only_queue_review",
+    "instructions": "Review this queue classification. Do not close or mutate GitHub issues or PRs from this PR. Comment PASS or NEEDS_CHANGES with exact stale item corrections."
+  },
+  "stop_condition": "Do not advance to a new implementation loop until the active queue is reviewed and stale/superseded items are either approved for cleanup or explicitly retained.",
+  "updated_at": "2026-06-27T00:00:00Z"
+}
