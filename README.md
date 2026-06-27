@@ -207,6 +207,8 @@ The next dry-run route slice reads only local GitHub issue-thread fixtures under
 
 The shared JSON contract is intentionally close to GitHub's ticket/comment/label model. `schemas/agent-common.schema.json` defines common route, executor, and GitHub projection shapes; actionable `agent_handoff`, `human_interjection`, and `generated_ticket` blocks include a `github` projection that states the intended create/comment/label changes. Current code validates this projection but does not apply it.
 
+The agent-facing Tau contract is the compact authoring layer for smaller local models and WebGPT responses. Agents write `tau.agent_handoff.v1`, `tau.generated_ticket.v1`, or `tau.human_goal_change.v1` with only the GitHub target, active goal hash, previous subagent, context, result or ticket/new-goal payload, rationale, next agent, required evidence, and stop condition. `scripts/tau_contracts.py` validates that small shape, checks the active goal, recognizes previous and next agents, defaults the executor when omitted, derives `next:*` and `executor:*` labels for dry-run decisions, and refuses unauthorized goal changes. The stricter `chatgpt_lab.*` projection schemas remain the internal normalized contract for later orchestrator slices.
+
 All four shared contracts compose `best-practices-github-ticket`. A ChatGPT/WebGPT PR is not actionable until it contains ticket type, target path, current state, requested outcome, route or agent metadata when known, required proof, non-goals, and a valid `phatgpt-task:v1` block. The coder must lease before mutation; the reviewer must stay read-only and comment every verdict on the GitHub PR; closure requires deterministic proof, deployer receipt review, and reconciled review findings.
 
 Subagent logs and receipts are not stored only in memory. Raw evidence stays in GitHub comments, CI runs, `artifacts/`, and proof files. `$memory` may store compact searchable summaries in the `subagent_memory` collection through `scripts/phatgpt_memory_sync.py`, containing PR number, role, status, receipt path, head SHA, missing gates, and next action. Memory recall is a routing accelerator, not closure proof.
@@ -216,6 +218,7 @@ Run the current validator with:
 ```bash
 python3 scripts/validate_control_plane.py
 python3 scripts/validate_agent_state.py
+python3 scripts/validate_tau_contracts.py
 python3 scripts/update_controller_state.py --check
 ```
 

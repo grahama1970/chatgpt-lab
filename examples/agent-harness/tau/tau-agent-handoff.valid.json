@@ -1,0 +1,36 @@
+{
+  "schema": "tau.agent_handoff.v1",
+  "github": {
+    "repo": "grahama1970/chatgpt-lab",
+    "target": "issue#1"
+  },
+  "goal": {
+    "goal_id": "goal-2026-06-greenfield-001",
+    "goal_version": 1,
+    "goal_hash": "sha256:607ad418a0ccc0499b8b069225794d51f3a5e985825e5ef324bcba0df2c555a5"
+  },
+  "previous_subagent": "coder",
+  "context": {
+    "summary": "A bounded implementation task completed and needs independent validation.",
+    "artifacts": [
+      "commit:example"
+    ]
+  },
+  "result": {
+    "status": "COMPLETED",
+    "summary": "The coder changed one allowed file and produced local evidence.",
+    "evidence": [
+      "python3 scripts/validate_control_plane.py: PASS"
+    ]
+  },
+  "rationale": "The next step is read-only validation by a reviewer.",
+  "next_agent": {
+    "name": "reviewer",
+    "reason": "Implementation work needs independent validation."
+  },
+  "required_evidence": [
+    "reviewer verdict",
+    "validation command output"
+  ],
+  "stop_condition": "Reviewer posts PASS, NEEDS_CHANGES, BLOCKED, or INSUFFICIENT_EVIDENCE."
+}

@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://grahama1970.github.io/chatgpt-lab/schemas/tau-generated-ticket.schema.json",
+  "title": "Tau Generated Ticket",
+  "type": "object",
+  "required": [
+    "schema",
+    "github",
+    "goal",
+    "previous_subagent",
+    "context",
+    "ticket",
+    "requested_work",
+    "rationale",
+    "next_agent",
+    "required_evidence",
+    "stop_condition",
+    "goal_amendment_proposal"
+  ],
+  "properties": {
+    "schema": {"const": "tau.generated_ticket.v1"},
+    "github": {
+      "type": "object",
+      "required": ["repo"],
+      "properties": {
+        "repo": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "goal": {
+      "type": "object",
+      "required": ["goal_id", "goal_version", "goal_hash"],
+      "properties": {
+        "goal_id": {"type": "string", "minLength": 1},
+        "goal_version": {"type": "integer", "minimum": 1},
+        "goal_hash": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "previous_subagent": {"type": "string", "minLength": 1},
+    "context": {
+      "type": "object",
+      "required": ["summary", "artifacts"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1},
+        "artifacts": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "ticket": {
+      "type": "object",
+      "required": ["kind", "title", "body"],
+      "properties": {
+        "kind": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "body": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "requested_work": {"type": "string", "minLength": 1},
+    "rationale": {"type": "string", "minLength": 1},
+    "next_agent": {
+      "type": "object",
+      "required": ["name", "reason"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "executor": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "required_evidence": {"type": "array", "items": {"type": "string"}},
+    "stop_condition": {"type": "string", "minLength": 1},
+    "goal_amendment_proposal": {"type": ["object", "null"]}
+  },
+  "additionalProperties": true
+}
