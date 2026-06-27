@@ -18,7 +18,10 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from phatgpt_subagent_selector import DEFAULT_AGENT_ROOT, build_lanes
+try:
+    from phatgpt_subagent_selector import DEFAULT_AGENT_ROOT, build_lanes
+except ModuleNotFoundError:
+    from scripts.phatgpt_subagent_selector import DEFAULT_AGENT_ROOT, build_lanes
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT_ROOT = ROOT / "artifacts" / "watchdog"

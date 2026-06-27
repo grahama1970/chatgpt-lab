@@ -7,24 +7,49 @@ from scripts import phatgpt_watchdog_cycle as watchdog
 
 
 class PhatgptWatchdogCycleTest(unittest.TestCase):
+    def make_agent_root(self):
+        tmp = TemporaryDirectory()
+        root = Path(tmp.name)
+        for agent_id in [
+            "phatgpt-deployer",
+            "phatgpt-reviewer",
+            "phatgpt-coder",
+            "phatgpt-researcher",
+        ]:
+            agent_dir = root / agent_id
+            agent_dir.mkdir()
+            agent_dir.joinpath("AGENTS.md").write_text(
+                f"---\nid: {agent_id}\ntitle: {agent_id}\nkind: worker\n---\n# {agent_id}\n",
+                encoding="utf-8",
+            )
+        return tmp, root
+
     def test_lane_priority_selects_deployer_before_reviewer(self):
-        lanes = selector.build_lanes()
+        tmp, root = self.make_agent_root()
+        self.addCleanup(tmp.cleanup)
+        lanes = selector.build_lanes(root)
         self.assertGreaterEqual(len(lanes), 4)
         self.assertEqual(lanes[0]["name"], "deployer")
         self.assertEqual(lanes[1]["name"], "reviewer")
         self.assertEqual(lanes[2]["name"], "coder")
 
     def test_researcher_scans_issue_before_pr(self):
-        names = [lane["name"] for lane in selector.build_lanes()]
+        tmp, root = self.make_agent_root()
+        self.addCleanup(tmp.cleanup)
+        names = [lane["name"] for lane in selector.build_lanes(root)]
         self.assertLess(names.index("researcher-issue"), names.index("researcher-pr"))
 
     def test_lane_commands_delegate_to_existing_workers(self):
-        commands = [" ".join(lane["command"]) for lane in selector.build_lanes()]
+        tmp, root = self.make_agent_root()
+        self.addCleanup(tmp.cleanup)
+        commands = [" ".join(lane["command"]) for lane in selector.build_lanes(root)]
         self.assertTrue(any("scripts/phatgpt_deployer_cycle.py" in command for command in commands))
         self.assertTrue(any("scripts/phatgpt_local_worker_cycle.py" in command for command in commands))
 
     def test_lanes_are_sourced_from_agent_contracts(self):
-        lanes = selector.build_lanes()
+        tmp, root = self.make_agent_root()
+        self.addCleanup(tmp.cleanup)
+        lanes = selector.build_lanes(root)
         self.assertTrue(all(lane["selector_source"] == "agent-skills/agents" for lane in lanes))
         self.assertTrue(all(lane["contract_path"].endswith("AGENTS.md") for lane in lanes))
 
