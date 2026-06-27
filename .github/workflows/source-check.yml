@@ -25,6 +25,8 @@ jobs:
           cat artifacts/agent-state-validation.json
           python3 scripts/update_controller_state.py --check > artifacts/controller-state-validation.json
           cat artifacts/controller-state-validation.json
+          python3 scripts/validate_queue_state.py > artifacts/queue-state-validation.json
+          cat artifacts/queue-state-validation.json
           python3 scripts/validate_goal_capsule.py > artifacts/goal-capsule-validation.json
           cat artifacts/goal-capsule-validation.json
           python3 scripts/validate_agent_ticket_contracts.py > artifacts/agent-ticket-contract-validation.json
@@ -42,14 +44,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: chatgpt-lab-control-plane-validation
-          path: |
-            artifacts/control-plane-validation.json
-            artifacts/agent-state-validation.json
-            artifacts/controller-state-validation.json
-            artifacts/goal-capsule-validation.json
-            artifacts/agent-ticket-contract-validation.json
-            artifacts/agent-ticket-route-validation.json
-            artifacts/tau-contract-validation.json
-            artifacts/agent-ticket-orchestrator-validation.json
+          path: artifacts
           if-no-files-found: error
           retention-days: 14
