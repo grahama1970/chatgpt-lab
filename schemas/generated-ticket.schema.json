@@ -8,6 +8,7 @@
     "goal",
     "ticket",
     "handoff",
+    "github",
     "goal_amendment_proposal"
   ],
   "properties": {
@@ -45,11 +46,25 @@
         "original_goal": {"type": "string", "minLength": 1},
         "fresh_context": {"type": "object"},
         "rationale": {"type": "string", "minLength": 1},
+        "next": {
+          "type": "object",
+          "required": ["subagent", "executor", "reason", "labels"],
+          "properties": {
+            "subagent": {"enum": ["human", "goal-guardian", "webgpt-ticket-author", "coder", "reviewer", "releaser"]},
+            "executor": {"enum": ["github-actions", "local", "either", "human"]},
+            "reason": {"type": "string", "minLength": 1},
+            "labels": {"type": "array", "items": {"type": "string"}}
+          },
+          "additionalProperties": false
+        },
         "next_subagent": {"enum": ["human", "goal-guardian", "webgpt-ticket-author", "coder", "reviewer", "releaser"]},
         "required_result": {"type": "string", "minLength": 1},
         "stop_condition": {"type": "string", "minLength": 1}
       },
       "additionalProperties": false
+    },
+    "github": {
+      "$ref": "agent-common.schema.json#/$defs/githubProjection"
     },
     "goal_amendment_proposal": {
       "type": ["object", "null"]

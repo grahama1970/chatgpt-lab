@@ -186,9 +186,15 @@ def _decision_from_block(fixture: dict[str, Any], candidate: dict[str, Any], act
         "matched_active_goal": True,
     }
     if schema == GENERATED_TICKET_SCHEMA:
-        subagent = block["handoff"]["next_subagent"]
-        labels = block["ticket"].get("labels", [])
-        executor = "either"
+        next_block = block["handoff"].get("next")
+        if isinstance(next_block, dict):
+            subagent = next_block["subagent"]
+            labels = next_block.get("labels", block["ticket"].get("labels", []))
+            executor = next_block["executor"]
+        else:
+            subagent = block["handoff"]["next_subagent"]
+            labels = block["ticket"].get("labels", [])
+            executor = "either"
     else:
         next_block = block["next"]
         subagent = next_block["subagent"]

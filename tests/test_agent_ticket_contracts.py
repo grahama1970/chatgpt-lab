@@ -55,12 +55,21 @@ class AgentTicketContractTests(unittest.TestCase):
         mutated = copy.deepcopy(self.generated_ticket)
         mutated["goal_amendment_proposal"] = {"summary": "Change the goal."}
         mutated["handoff"]["next_subagent"] = "coder"
+        mutated["handoff"]["next"]["subagent"] = "coder"
         mutated["ticket"]["labels"] = ["agent-work", "next:coder"]
+        mutated["github"]["create"]["labels"] = ["agent-work", "next:coder"]
+        mutated["github"]["labels"]["add"] = ["next:coder", "executor:either"]
         errors = validate_generated_ticket(mutated, self.goal)
         self.assertIn(
             "generated_ticket with goal_amendment_proposal must route to human or goal-guardian",
             errors,
         )
+
+    def test_github_projection_must_match_next_route(self) -> None:
+        mutated = copy.deepcopy(self.handoff)
+        mutated["github"]["labels"]["add"] = ["next:coder", "executor:either"]
+        errors = validate_agent_handoff(mutated, self.goal)
+        self.assertIn("handoff.github.labels.add must include next:reviewer", errors)
 
 
 if __name__ == "__main__":

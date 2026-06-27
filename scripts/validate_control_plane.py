@@ -42,6 +42,7 @@ REQUIRED_FILES = (
     "controller-state/current.json",
     "schemas/agent-state.schema.json",
     "schemas/controller-state.schema.json",
+    "schemas/agent-common.schema.json",
     "schemas/goal-capsule.schema.json",
     "schemas/agent-handoff.schema.json",
     "schemas/human-interjection.schema.json",

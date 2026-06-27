@@ -153,6 +153,61 @@ def validate_next(data: Any, prefix: str) -> list[str]:
     return errors
 
 
+def validate_github_projection(data: Any, prefix: str, expected_next: dict[str, Any] | None, ticket: dict[str, Any] | None = None) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(data, dict):
+        return [f"{prefix} must be an object"]
+    required = ["target", "create", "comment", "labels"]
+    errors.extend(_require_keys(data, required, prefix))
+    labels = data.get("labels")
+    if not isinstance(labels, dict):
+        errors.append(f"{prefix}.labels must be an object")
+        label_add: list[Any] = []
+    else:
+        label_add = labels.get("add", [])
+        if not isinstance(label_add, list):
+            errors.append(f"{prefix}.labels.add must be an array")
+            label_add = []
+        if not isinstance(labels.get("remove"), list):
+            errors.append(f"{prefix}.labels.remove must be an array")
+
+    if expected_next is not None:
+        subagent = expected_next.get("subagent")
+        executor = expected_next.get("executor")
+        if subagent and f"next:{subagent}" not in label_add:
+            errors.append(f"{prefix}.labels.add must include next:{subagent}")
+        if executor and f"executor:{executor}" not in label_add:
+            errors.append(f"{prefix}.labels.add must include executor:{executor}")
+        next_labels = expected_next.get("labels", [])
+        if isinstance(next_labels, list):
+            for label in next_labels:
+                if label not in label_add:
+                    errors.append(f"{prefix}.labels.add must include next label {label}")
+
+    create = data.get("create")
+    comment = data.get("comment")
+    target = data.get("target")
+    if ticket is not None:
+        if target is not None:
+            errors.append(f"{prefix}.target must be null for generated ticket creation")
+        if comment is not None:
+            errors.append(f"{prefix}.comment must be null for generated ticket creation")
+        if not isinstance(create, dict):
+            errors.append(f"{prefix}.create must be an object for generated ticket creation")
+        else:
+            for key in ["kind", "title", "body", "labels"]:
+                if create.get(key) != ticket.get(key):
+                    errors.append(f"{prefix}.create.{key} must match ticket.{key}")
+    else:
+        if create is not None:
+            errors.append(f"{prefix}.create must be null for existing-ticket handoffs")
+        if not isinstance(target, dict):
+            errors.append(f"{prefix}.target must identify the existing GitHub thread")
+        if not isinstance(comment, dict) or not nonempty_string(comment.get("body")):
+            errors.append(f"{prefix}.comment.body must be a non-empty string for existing-ticket handoffs")
+    return errors
+
+
 def validate_agent_handoff(data: Any, active_goal: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     if not isinstance(data, dict):
@@ -168,6 +223,7 @@ def validate_agent_handoff(data: Any, active_goal: dict[str, Any]) -> list[str]:
         "evidence",
         "required_evidence",
         "next",
+        "github",
         "stop_condition",
     ]
     errors.extend(_require_keys(data, required, "handoff"))
@@ -187,6 +243,7 @@ def validate_agent_handoff(data: Any, active_goal: dict[str, Any]) -> list[str]:
     if not isinstance(data.get("required_evidence"), list):
         errors.append("handoff.required_evidence must be an array")
     errors.extend(validate_next(data.get("next"), "handoff.next"))
+    errors.extend(validate_github_projection(data.get("github"), "handoff.github", data.get("next")))
     if not nonempty_string(data.get("stop_condition")):
         errors.append("handoff.stop_condition must be a non-empty string")
 
@@ -217,6 +274,7 @@ def validate_human_interjection(data: Any, active_goal: dict[str, Any]) -> list[
         "decision",
         "course_correction",
         "next",
+        "github",
         "required_evidence",
         "stop_condition",
     ]
@@ -255,6 +313,7 @@ def validate_human_interjection(data: Any, active_goal: dict[str, Any]) -> list[
     if not isinstance(data.get("required_evidence"), list):
         errors.append("human_interjection.required_evidence must be an array")
     errors.extend(validate_next(data.get("next"), "human_interjection.next"))
+    errors.extend(validate_github_projection(data.get("github"), "human_interjection.github", data.get("next")))
     if not nonempty_string(data.get("stop_condition")):
         errors.append("human_interjection.stop_condition must be a non-empty string")
     return errors
@@ -264,7 +323,7 @@ def validate_generated_ticket(data: Any, active_goal: dict[str, Any]) -> list[st
     errors: list[str] = []
     if not isinstance(data, dict):
         return ["generated ticket must be an object"]
-    required = ["schema", "goal", "ticket", "handoff", "goal_amendment_proposal"]
+    required = ["schema", "goal", "ticket", "handoff", "github", "goal_amendment_proposal"]
     errors.extend(_require_keys(data, required, "generated_ticket"))
     if data.get("schema") != GENERATED_TICKET_SCHEMA:
         errors.append(f"generated_ticket.schema must be {GENERATED_TICKET_SCHEMA}")
@@ -294,6 +353,7 @@ def validate_generated_ticket(data: Any, active_goal: dict[str, Any]) -> list[st
             "original_goal",
             "fresh_context",
             "rationale",
+            "next",
             "next_subagent",
             "required_result",
             "stop_condition",
@@ -305,6 +365,10 @@ def validate_generated_ticket(data: Any, active_goal: dict[str, Any]) -> list[st
             errors.append("generated_ticket.handoff.fresh_context must be an object")
         if handoff.get("next_subagent") not in ALLOWED_SUBAGENTS:
             errors.append("generated_ticket.handoff.next_subagent is invalid")
+        next_errors = validate_next(handoff.get("next"), "generated_ticket.handoff.next")
+        errors.extend(next_errors)
+        if isinstance(handoff.get("next"), dict) and handoff.get("next_subagent") != handoff["next"].get("subagent"):
+            errors.append("generated_ticket.handoff.next_subagent must match handoff.next.subagent")
         if not nonempty_string(handoff.get("rationale")):
             errors.append("generated_ticket.handoff.rationale must be a non-empty string")
         if not nonempty_string(handoff.get("required_result")):
@@ -319,4 +383,6 @@ def validate_generated_ticket(data: Any, active_goal: dict[str, Any]) -> list[st
         next_subagent = handoff.get("next_subagent") if isinstance(handoff, dict) else None
         if next_subagent not in {"human", "goal-guardian"} and "next:human" not in labels and "next:goal-guardian" not in labels:
             errors.append("generated_ticket with goal_amendment_proposal must route to human or goal-guardian")
+    next_block = handoff.get("next") if isinstance(handoff, dict) else None
+    errors.extend(validate_github_projection(data.get("github"), "generated_ticket.github", next_block, ticket if isinstance(ticket, dict) else None))
     return errors
